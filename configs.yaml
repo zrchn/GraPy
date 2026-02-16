@@ -1,0 +1,25 @@
+llm:
+  api_type: "openai"  
+  model: "qwen2.5-72b-instruct" 
+  base_url: "http://172.30.159.43:8009/v1" 
+  api_key: "sk-xxx" 
+  max_tokens: 20000 # Our token estimation algorithm only counts an entire word as a token, which may underestimate LLM token count by roughly 40%.
+grapy:
+  db_url: "mysql+pymysql://root:grapy@127.0.0.1:3309/grapy"
+  redis_host: "127.0.0.1"
+  redis_port: 6376
+  sandbox_port: 18072
+  blocked_modules: ["importlib"] 
+  max_run_history: 20 # The max number of run records (vars and prints) to maintain per node
+  node_max_prints: 1000 # we suggest not to exceed 3000
+  execution_timeout: 600 # seconds
+  max_workers: 16
+  skip_blank_prints: true
+  max_redos: 100
+  enrich_vars_display: 'lazy' # eager/lazy/off. Suggest to stick with lazy.
+  track_vars_maxlen: 999999 # Will cutoff exceeding characters of tracked vars
+  vars_enrichable_maxlen_when_lazy: 199999 # If it gets slow when rendering var values due to large vars, adjust this smaller.
+  print_maxlen: 4999999
+ui:
+  node_spacing_x: 600
+  node_spacing_y: 700

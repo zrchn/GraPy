@@ -1,0 +1,34 @@
+
+services:
+  frontend:
+    build:
+      context: ./app          # 构建上下文是 app/ 目录
+      dockerfile: DOCKERFILE  # Dockerfile 在 app/ 下
+    ports:
+      - "8808:80"
+    depends_on:
+      - redis
+      - mysql
+
+  redis:
+    image: redis/redis-stack:7.4.0-v6  
+    ports:
+      - "6376:6379"       # Redis 
+      - "8002:8001"       # RedisInsight Web UI
+    volumes:
+      - redis_data:/data  
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: grapy
+      MYSQL_DATABASE: grapy
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+
+volumes:
+  redis_data:
+  mysql_data:

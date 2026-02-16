@@ -1,0 +1,17 @@
+*.log
+logs/
+**/logs/
+*.pem
+*.key
+secrets.json
+
+app/*
+!app/dist/
+!app/DOCKERFILE
+!app/index.html
+!app/nginx.conf
+
+**/__pycache__/
+**/tests/
+
+
