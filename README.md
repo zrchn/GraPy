@@ -4,8 +4,10 @@
 
 [English](#english) | [中文](#中文说明)
 
+<span>
+<img src="/gplogo-tiny.png" style={{ width: '24px', verticalAlign: 'middle'}} />
+</span>
 
-![logo](app/public/gplogo-tiny.png)
 ## GraPy: A Visual, Nestable, and Interactive Python Programming Platform
 GraPy is the first visual programming environment that enables **interactive execution inside deeply nested Python structures**—including functions, loops, and conditionals—while maintaining local state and full language expressiveness.
 ## Key Features
