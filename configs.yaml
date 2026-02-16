@@ -1,9 +1,8 @@
 llm: # Used only for LLM workflow generation. Change to your own model configs.
-  api_type: "openai"  
   model: "qwen2.5-72b-instruct" 
   base_url: "http://172.30.159.43:8009/v1" 
   api_key: "sk-xxx" 
-  max_tokens: 20000 # Our token estimation algorithm only counts an entire word as a token, which may underestimate LLM token count by roughly 40%.
+  max_tokens: 20000 # Our token estimation algorithm only counts an entire word as a token, which may underestimate LLM English token count by roughly 40%.
 grapy:
   db_url: "mysql+pymysql://root:grapy@127.0.0.1:3309/grapy"
   redis_host: "127.0.0.1"

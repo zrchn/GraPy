@@ -3,17 +3,17 @@
 ![Complicated nested logic](gpex1.jpg)
 
 [English](#english) | [中文](#中文说明)
-## GraPy: A Visual, Nestable, and Interactive Python Programming Platform
+## ![logo](app/public/gplogo-small.png) GraPy: A Visual, Nestable, and Interactive Python Programming Platform
 GraPy is the first visual programming environment that enables **interactive execution inside deeply nested Python structures**—including functions, loops, and conditionals—while maintaining local state and full language expressiveness.
 ## Key Features
 - **Flow-based UI powered by ReactFlow**: Drag-and-drop task orchestration with seamless integration of hierarchical interactive programming and Python.
 - **Full Python coverage**: 8 control-flow nodes, 7 functional nodes (including raw Python code), and 2 tool nodes (class and function) support virtually all Python capabilities.
 - **Bidirectional graph ↔ code conversion**: Your Python code *is* the DSL—edit visually or textually.
-- **Deep nesting support**: Nodes can be nested up to ~50 levels (limited only by internal indexing), enabling complex workflows with local interactivity even inside branches or custom functions.
+- **Deep nesting support**: Flow structure can be nested up to ~50 levels (limited only by indexing length), enabling complex workflows with local interactivity even inside branches or custom functions.
 - **Hierarchical variable scoping**: The executor preserves and exposes state from any scope—even those inside user-defined functions—after execution.
 - **Automatic variable tracking**: Every node introspects and displays its inputs, outputs, and local variables for instant debugging.
 - **Enhanced productivity**: Built-in tool-call nodes, auto-completion features, and one-click auto-layout improve visual clarity and programming speed.
-- **Extensible architecture**: Call other GraPy modules, import local Python scripts (configurable paths), reuse existing virtual environments, and read/write local files. Each module acts as a hub for local and network resources.
+- **Extensible connectivity**: Call other GraPy modules, import local Python scripts (configurable paths), reuse existing virtual environments, and read/write local files. Each module acts as a hub for local and network resources.
 - **Flexible workflow manipulation**: 4 selection modes let you run, convert to code, copy, or AI-edit partial or full flows.
 - **Built-in AI agent**: Interactively generate and optimize workflows using an integrated LLM-powered assistant.
 ## Use Cases

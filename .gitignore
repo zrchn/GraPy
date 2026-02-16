@@ -10,6 +10,7 @@ app/*
 !app/DOCKERFILE
 !app/index.html
 !app/nginx.conf
+!app/public/
 
 **/__pycache__/
 **/tests/

@@ -1203,7 +1203,7 @@ class A69wspa0yq(DBHandler):
                         extpkgs = await self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
                         extpkgs = extpkgs.loc[0, 'external_pkgs']
                         for p in extpkgs:
-                            pass
+                            sys.path.insert(0, p)
                     n69wspa2lj = importlib.import_module(n69wspa38w)
                     try:
                         n69wspa304 = 1 if any([n69wspa2lj.__file__.startswith(ep + '/') for ep in extpkgs]) else 2
