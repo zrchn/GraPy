@@ -421,7 +421,6 @@ class A69wspa5ap:
         n69wspa5mr = n69wspa5l4.name
         import sys
         n69wspa5nr = sys.path[:]
-        sys.path.insert(0, str(n69wspa5lh))
         n69wspa2me = {}
         try:
             for (n69wsp9onc, dirs, n69wspa35u) in os.b69wspa0y7(n69wspa5l4):
@@ -523,7 +522,7 @@ class A69wspa5ap:
         n69wspa5nd = sys.path[:]
         try:
             for p in ext_paths:
-                sys.path.insert(0, p)
+                pass
             if ',' in imports_code:
                 (_, _, imports_code) = b69wsp9mrs(b69wsp9mq1(imports_code), expand=True)
             n69wsp9p31 = imports_code.split('\n')

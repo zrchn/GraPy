@@ -2,7 +2,6 @@ import asyncio
 import linecache
 pickle = None
 import sys
-sys.path.insert(1, '../')
 import sys
 import traceback
 from kernel_cache_handler import LoguruToCache, _disp_to_cache, _send_vars_to_cache, cache, OutToCache, ErrToCache, plt_show2cache

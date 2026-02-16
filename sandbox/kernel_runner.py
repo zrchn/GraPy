@@ -1,7 +1,6 @@
 import sys
 import traceback
 from kernel_namespaces import reset_pickled_namespace
-sys.path.insert(1, '../')
 import asyncio
 import sys
 import time

@@ -1,4 +1,4 @@
-llm:
+llm: # Used only for LLM workflow generation. Change to your own model configs.
   api_type: "openai"  
   model: "qwen2.5-72b-instruct" 
   base_url: "http://172.30.159.43:8009/v1" 

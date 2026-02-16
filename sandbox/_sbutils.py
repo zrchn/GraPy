@@ -1,6 +1,5 @@
 import math
 import sys
-sys.path.insert(1, '../../../')
 import re
 import ast
 import json
