@@ -67,7 +67,7 @@ class OutputClient:
         runcount = len([1 for x in count_data.values() if x.get('content_type') == 'node_runned'])
         overflowed = False
         count = 0
-        for (i, entity) in enumerate(data.values()):
+        for i, entity in enumerate(data.values()):
             if count > n:
                 overflowed = True
             if entity.get('content_type') in 'var':

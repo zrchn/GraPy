@@ -19,7 +19,7 @@ class Disp(bcolors):
         color = getattr(self, kwargs.get('color', 'plain'), 'plain')
         now = datetime.now()
         now = datetime.strftime(now, '%Y-%m-%d %H:%M:%S')
-        sys.__stdout__.write(color + '\n' + now + ' | ' + str(text.replace('\\n', '\n')) + add + self.RESET, **{k: v for (k, v) in kwargs.items() if not k == 'color'})
+        sys.__stdout__.write(color + '\n' + now + ' | ' + str(text.replace('\\n', '\n')) + add + self.RESET, **{k: v for k, v in kwargs.items() if not k == 'color'})
 disp = Disp()
 if __name__ == '__main__':
     disp = Disp()

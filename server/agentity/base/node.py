@@ -80,7 +80,7 @@ class Node(AsyncTaskRunner, ABC):
         nodedict['node_id'] = nodedict.get('node_id') if 'node_id' in nodedict else nodedict['task_id']
         self.is_executing = False
         self.execute_count = 0
-        for (k, v) in nodedict.items():
+        for k, v in nodedict.items():
             setattr(self, k, v)
         assert not self.node_type == 'basenode', f"Node初始化的nodedict未提供有效的node_type：{nodedict.get('node_type')}"
         assert not '_session_id' in memory_fields, '_session_id是内置键，不得使用'
@@ -212,7 +212,7 @@ class Node(AsyncTaskRunner, ABC):
             try:
                 while True:
                     try:
-                        (msg_dicts, session_id) = await self.msg_queue.get()
+                        msg_dicts, session_id = await self.msg_queue.get()
                     finally:
                         self.msg_queue.task_done()
                     logger.debug(f'({self.node_type}) msgs in start_duty_cycle(): {msg_dicts}, session_id: {session_id}')
@@ -220,7 +220,7 @@ class Node(AsyncTaskRunner, ABC):
                         logger.info(f'stopping node {self.node_type} {self.node_id}')
                         if not session_id == '<DEFAULT>':
                             logger.warning(f'<STOP>将停止整个Node所有session的会话，指定session_id无效')
-                        for (k, que) in self.rsp_queues.items():
+                        for k, que in self.rsp_queues.items():
                             await que.put('<STOP>')
                         break
                     task = asyncio.create_task(self.execute(msgs_processor(msg_dicts), session_id=session_id))
@@ -262,7 +262,7 @@ class Node(AsyncTaskRunner, ABC):
     def __repr__(self, excludes=[]):
         attributes = vars(self)
         _excludes = ['msg_queue', 'rsp_queue', 'memory']
-        nodedict = {name: value for (name, value) in attributes.items() if not callable(value) and (not name in excludes) and (not name in _excludes)}
+        nodedict = {name: value for name, value in attributes.items() if not callable(value) and (not name in excludes) and (not name in _excludes)}
         return f'node {self.node_type} {self.node_id} information: {nodedict}'
 if __name__ == '__main__':
     logger.add(sys.stdout, level='DEBUG')

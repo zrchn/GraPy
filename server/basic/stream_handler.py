@@ -57,7 +57,7 @@ class AsyncStreamHandler:
         for arg in args:
             if isinstance(arg, SSEStream):
                 return arg
-        for (k, v) in kwargs.items():
+        for k, v in kwargs.items():
             if isinstance(v, SSEStream):
                 return v
         return None

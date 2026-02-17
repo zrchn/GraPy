@@ -7,7 +7,7 @@ from _sbconsts import UID_COMMENT_LEFTLABEL, UID_COMMENT_RIGHTLABEL
 def parse_client_error(stacktrace, srccodes={}) -> list[dict]:
     tlines = stacktrace.split('\n')
     errors = []
-    for (i, line) in enumerate(tlines):
+    for i, line in enumerate(tlines):
         node_ids = re.findall(f'{UID_COMMENT_LEFTLABEL}(.*?){UID_COMMENT_RIGHTLABEL}', line, re.DOTALL)
         if not node_ids:
             continue

@@ -14,7 +14,7 @@ class AsyncTaskRunner:
     async def _monitor_tasks(self):
         while True:
             if self.tasks:
-                (done, pending) = await asyncio.wait(self.tasks, return_when=asyncio.FIRST_COMPLETED)
+                done, pending = await asyncio.wait(self.tasks, return_when=asyncio.FIRST_COMPLETED)
                 for task in done:
                     try:
                         await task

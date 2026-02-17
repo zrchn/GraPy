@@ -22,9 +22,9 @@ import pandas as pd
 def table_get_record(table: list[dict], condition: dict, ensure_unique=False, need_indices=False):
     ret = []
     indices = []
-    for (i, record) in enumerate(table):
+    for i, record in enumerate(table):
         met = True
-        for (k, v) in condition.items():
+        for k, v in condition.items():
             if record.get(k) != v:
                 met = False
                 break
@@ -42,18 +42,18 @@ def table_multi_get(table: list[dict], conditions: list[dict], ensure_unique=Fal
     got = []
     indices = []
     for condition in conditions:
-        (subgot, subids) = table_get_record(table, condition, ensure_unique=ensure_unique, need_indices=True)
+        subgot, subids = table_get_record(table, condition, ensure_unique=ensure_unique, need_indices=True)
         got = got + subgot
         indices = indices + subids
     if len(indices) > 1:
         sorted_pairs = sorted(zip(indices, got), key=lambda pair: pair[0])
-        (indices, got) = zip(*sorted_pairs)
+        indices, got = zip(*sorted_pairs)
     if need_indices:
         return (got, indices)
     return got
 
 def table_unique_get(table: list[dict], condition: dict, return_pointer=False):
-    (got, idx) = table_get_record(table, condition, ensure_unique=True, need_indices=True)
+    got, idx = table_get_record(table, condition, ensure_unique=True, need_indices=True)
     got = got[0]
     idx = idx[0]
     if not return_pointer:
@@ -135,11 +135,11 @@ def get_keychain_by_cond(node, condfunc, blocked_chains=[], advance_blockers=[])
                 traceback.print_exc()
             return subchain
         if isinstance(node, list) or isinstance(node, set):
-            for (i, item) in enumerate(node):
+            for i, item in enumerate(node):
                 subchain = _peek_one(i, item, current_chain, found_chains)
                 _peek(item, subchain)
         elif isinstance(node, dict):
-            for (i, item) in node.items():
+            for i, item in node.items():
                 subchain = _peek_one(i, item, current_chain, found_chains)
                 _peek(item, subchain)
     _peek(node, [])
@@ -294,7 +294,7 @@ def _recover(data):
         else:
             return data
     elif isinstance(data, dict):
-        return {_recover(k): _recover(v) for (k, v) in data.items()}
+        return {_recover(k): _recover(v) for k, v in data.items()}
     elif isinstance(data, list):
         return [_recover(m) for m in data]
     else:
@@ -317,7 +317,7 @@ def recover_conds(data, table_name, field):
         return data
     if field in ('cases', 'childs'):
         newdata = {}
-        for (k, v) in data.items():
+        for k, v in data.items():
             k = loadstr(k)
             newdata[k] = v
         return newdata
@@ -357,7 +357,7 @@ def int_to_base36(n: int) -> str:
     chars = '0123456789abcdefghijklmnopqrstuvwxyz'
     result = []
     while n > 0:
-        (n, remainder) = divmod(n, 36)
+        n, remainder = divmod(n, 36)
         result.append(chars[remainder])
     return ''.join(reversed(result))
 
@@ -402,7 +402,7 @@ def safe_default(obj):
 
 def stringify_dict_keys(obj):
     if isinstance(obj, dict):
-        return {str(k): stringify_dict_keys(v) for (k, v) in obj.items()}
+        return {str(k): stringify_dict_keys(v) for k, v in obj.items()}
     elif isinstance(obj, (list, tuple)):
         return [stringify_dict_keys(item) for item in obj]
     else:

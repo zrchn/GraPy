@@ -26,9 +26,9 @@ from core.cft.consts import SKIPNAMES
 def table_get_record(n69wspa34p: list[dict], condition: dict, ensure_unique=False, need_indices=False):
     n69wsp9onl = []
     n69wsp9omv = []
-    for (i, record) in enumerate(n69wspa34p):
+    for i, record in enumerate(n69wspa34p):
         met = True
-        for (k, v) in condition.items():
+        for k, v in condition.items():
             if record.get(k) != v:
                 met = False
                 break
@@ -46,18 +46,18 @@ def table_multi_get(n69wspa34p: list[dict], conditions: list[dict], ensure_uniqu
     n69wsp9otg = []
     n69wsp9omv = []
     for condition in conditions:
-        (subgot, subids) = table_get_record(n69wspa34p, condition, ensure_unique=ensure_unique, need_indices=True)
+        subgot, subids = table_get_record(n69wspa34p, condition, ensure_unique=ensure_unique, need_indices=True)
         n69wsp9otg = n69wsp9otg + subgot
         n69wsp9omv = n69wsp9omv + subids
     if len(n69wsp9omv) > 1:
         n69zpbl4xk = sorted(zip(n69wsp9omv, n69wsp9otg), key=lambda pair: pair[0])
-        (n69wsp9omv, n69wsp9otg) = zip(*n69zpbl4xk)
+        n69wsp9omv, n69wsp9otg = zip(*n69zpbl4xk)
     if need_indices:
         return (n69wsp9otg, n69wsp9omv)
     return n69wsp9otg
 
 def table_unique_get(n69wspa34p: list[dict], condition: dict, return_pointer=False):
-    (n69wsp9otg, idx) = table_get_record(n69wspa34p, condition, ensure_unique=True, need_indices=True)
+    n69wsp9otg, idx = table_get_record(n69wspa34p, condition, ensure_unique=True, need_indices=True)
     n69wsp9otg = n69wsp9otg[0]
     idx = idx[0]
     if not return_pointer:
@@ -139,11 +139,11 @@ def get_keychain_by_cond(n69wspa2mh, b69wsp9mop, blocked_chains=[], advance_bloc
                 traceback.print_exc()
             return n69wsp9ozo
         if isinstance(n69wspa2mh, list) or isinstance(n69wspa2mh, set):
-            for (i, item) in enumerate(n69wspa2mh):
+            for i, item in enumerate(n69wspa2mh):
                 n69wsp9ozo = _peek_one(i, item, current_chain, found_chains)
                 _peek(item, n69wsp9ozo)
         elif isinstance(n69wspa2mh, dict):
-            for (i, item) in n69wspa2mh.items():
+            for i, item in n69wspa2mh.items():
                 n69wsp9ozo = _peek_one(i, item, current_chain, found_chains)
                 _peek(item, n69wsp9ozo)
     _peek(n69wspa2mh, [])
@@ -282,7 +282,7 @@ def _recover(data):
         else:
             return data
     elif isinstance(data, dict):
-        return {_recover(k): _recover(v) for (k, v) in data.items()}
+        return {_recover(k): _recover(v) for k, v in data.items()}
     elif isinstance(data, list):
         return [_recover(m) for m in data]
     else:
@@ -306,7 +306,7 @@ def recover_conds(data, table_name, field):
         return data
     if field in ('cases', 'childs'):
         newdata = {}
-        for (k, v) in data.items():
+        for k, v in data.items():
             k = loadstr(k)
             newdata[k] = v
         return newdata
@@ -346,7 +346,7 @@ def int_to_base36(n: int) -> str:
     chars = '0123456789abcdefghijklmnopqrstuvwxyz'
     n69wsp9oq8 = []
     while n > 0:
-        (n, remainder) = divmod(n, 36)
+        n, remainder = divmod(n, 36)
         n69wsp9oq8.append(chars[remainder])
     return ''.join(reversed(n69wsp9oq8))
 
@@ -404,7 +404,7 @@ def to_module_id(n69wspa2wq):
 def replace_lastpart(n69wspa2wq, separator, repfrom='.', repto=DOT_REPL):
     if not separator in n69wspa2wq:
         return n69wspa2wq
-    (left, right) = n69wspa2wq.rsplit(separator, 1)
+    left, right = n69wspa2wq.rsplit(separator, 1)
     if repfrom == '.':
         assert not '^' in right, f"不安全的替换'.'：{n69wspa2wq}，可能影响hid。"
     right = right.replace(repfrom, repto)
@@ -501,7 +501,7 @@ def x69xm5du04(n69wspa2wq, n69wspa2z4):
             assert x69xm5dtzx(right) == 'folder'
             n69wsp9ole = right
         elif right.count('/') == 1:
-            (n69wsp9ole, n69wsp9p3n) = right.split('/')
+            n69wsp9ole, n69wsp9p3n = right.split('/')
         else:
             n69wsp9ole = ''
             n69wsp9p3n = right.split('/')[-1]
@@ -512,7 +512,7 @@ def x69xm5du04(n69wspa2wq, n69wspa2z4):
     return {'module': rmod, 'class': n69wsp9ole, 'func': n69wsp9p3n}
 
 def x69xm5du05(n69wspa2l4, need_defid=True, need_srcfile=True, n69wspa2z4=[], rawclass=''):
-    return x69xm5du03(n69wspa2l4, {'inputs': [{'name': n69wsp9p3n, **inp} for (n69wsp9p3n, inp) in n69wspa2l4['inputs'].items()], 'return': n69wspa2l4['return']}, need_defid=need_defid, need_srcfile=need_srcfile, n69wspa2z4=n69wspa2z4, rawclass=rawclass)
+    return x69xm5du03(n69wspa2l4, {'inputs': [{'name': n69wsp9p3n, **inp} for n69wsp9p3n, inp in n69wspa2l4['inputs'].items()], 'return': n69wspa2l4['return']}, need_defid=need_defid, need_srcfile=need_srcfile, n69wspa2z4=n69wspa2z4, rawclass=rawclass)
 
 def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[]):
     rawinfo = x69xm5du04(n69wspa2us['raw_def_id'], n69wspa2z4=n69wspa2z4)
@@ -532,22 +532,22 @@ def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[]):
         n69wspa37g = n69wspa37g + ('; '.join(sbstrs) + '.\n')
     if n69wspa2us.get('funcs'):
         n69wspa37g = n69wspa37g + 'attr funcs:\n'
-    for (n69wsp9p3n, n69wspa2l4) in n69wspa2us.get('funcs', {}).items():
+    for n69wsp9p3n, n69wspa2l4 in n69wspa2us.get('funcs', {}).items():
         fdesc = x69xm5du05(n69wspa2l4, need_defid=need_defid, need_srcfile=False, n69wspa2z4=n69wspa2z4, rawclass=rawinfo['class'])
         n69wspa37g = n69wspa37g + (fdesc + '\n\n')
     return n69wspa37g.strip()
 
 def all_desc_to_nl(ddic):
     funcdesc = '# ------ Functions ------\n' if ddic.get('funcs') else ''
-    for (n69wsp9p3n, n69wspa2l4) in ddic.get('funcs', {}).items():
+    for n69wsp9p3n, n69wspa2l4 in ddic.get('funcs', {}).items():
         fstr = '## ' + x69xm5du05(n69wspa2l4, need_defid=False, need_srcfile=False, n69wspa2z4=ddic.get('visibility', []))
         funcdesc = funcdesc + (fstr.strip() + '\n\n')
     classdesc = '# ------ Classes ------\n' if ddic.get('classes') else ''
-    for (n69wsp9ole, n69wspa2us) in ddic.get('classes', {}).items():
+    for n69wsp9ole, n69wspa2us in ddic.get('classes', {}).items():
         n69wspa37g = '## ' + x69xm5du06(n69wspa2us, need_defid=False, n69wspa2z4=ddic.get('visibility', []))
         classdesc = classdesc + (n69wspa37g.strip() + '\n\n')
     objdesc = '# ------ Objects ------\n' if ddic.get('objs') else ''
-    for (n69wspa2ce, odic) in ddic.get('objs', {}).items():
+    for n69wspa2ce, odic in ddic.get('objs', {}).items():
         objdesc = objdesc + ('## ' + n69wspa2ce + '\ntype: ' + x69xm5du06(odic['class'], need_defid=False, n69wspa2z4=ddic.get('visibility', [])).strip() + '\n\n')
     alldesc = funcdesc + '\n' + classdesc + '\n' + objdesc
     alldesc = alldesc.replace(DOT_REPL, '.')
@@ -584,7 +584,7 @@ def x69xm5dtzz(n69wsp9p0w, n69wsp9ool):
 
 def trunk_to_func(n69wspa2wq):
     assert '/' in n69wspa2wq and (not n69wspa2wq.endswith('/'))
-    (left, right) = n69wspa2wq.rsplit('/', 1)
+    left, right = n69wspa2wq.rsplit('/', 1)
     n69wsp9p3n = right.split('*')[0].split('#')[0].split('^')[0]
     return left + '/' + n69wsp9p3n
 
@@ -635,7 +635,7 @@ def x69xm5dtzy(n69wsp9onk, n69wsp9p0f, n69wspa34s):
     return '<NOT_FOUND>'
 
 def x69xm5du09(n69wsp9p12, codeswaps):
-    for (n65d20cda3, code) in codeswaps.items():
+    for n65d20cda3, code in codeswaps.items():
         n69wsp9p12.loc[(n69wsp9p12['uid'] == n65d20cda3) & (n69wsp9p12['node_type'] == 'code'), 'code'] = code
 if __name__ == '__main__':
 

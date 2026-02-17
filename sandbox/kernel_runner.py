@@ -272,21 +272,21 @@ class CodesRunner(AsyncTaskRunner):
                 prompt_buffer = []
                 if choice == 'stateonly':
                     news = cache._get_new_nodes_states(run_id)
-                    for (node_id, item) in news.items():
+                    for node_id, item in news.items():
                         if item.get('prompts'):
                             pieces = [{'run_id': run_id, 'node_id': node_id, 'prompt': p} for p in item['prompts']]
                             prompt_buffer = prompt_buffer + pieces
                             logger.info(f'发现有input prompt，加入buffer:{pieces}')
                 else:
                     news = cache._get_news(run_id)
-                    for (node_id, item) in news.items():
+                    for node_id, item in news.items():
                         for subitem in item.values():
                             if subitem['content_type'] == 'prompt':
                                 piece = {'run_id': run_id, 'node_id': node_id, 'prompt': subitem['content']}
                                 prompt_buffer.append(piece)
                                 logger.info(f"发现有input prompt，run_id={run_id}, node_id={node_id},prompt={subitem['content']},加入buffer")
                 if news:
-                    yield {'event': 'output', 'content': {k: v for (k, v) in news.items() if not k == RUN_FINISH_LABEL}, 'run_id': run_id}
+                    yield {'event': 'output', 'content': {k: v for k, v in news.items() if not k == RUN_FINISH_LABEL}, 'run_id': run_id}
                 if prompt_buffer:
                     for prompt_info in prompt_buffer:
                         inp = (yield {'event': 'prompt', 'content': prompt_info['prompt'], 'run_id': run_id, 'node_id': prompt_info['node_id']})

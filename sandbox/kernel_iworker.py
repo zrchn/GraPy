@@ -61,7 +61,7 @@ async def main():
             sys.path = orig_syspaths.copy()
             _disp_to_cache(0, codedata, node_id='<debug-iworker-codedata>')
             assert codedata.startswith('<run_id>'), codedata
-            (run_id_part, codedata) = codedata.split('</run_id>', 1)
+            run_id_part, codedata = codedata.split('</run_id>', 1)
             run_id = int(run_id_part[8:])
             _disp_to_cache(0, run_id, node_id='<debug-iworker-run_id>')
             data = json.loads(codedata)

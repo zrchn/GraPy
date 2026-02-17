@@ -113,7 +113,7 @@ def recursive_text_splitter(text, max_length, overlap=0):
             return [previous_overlap + text]
         if current_separator_index >= len(separators):
             return [previous_overlap + text[i:i + max_length - len(previous_overlap)] for i in range(0, len(text), max_length - len(previous_overlap))]
-        (separator_pattern, separator_name) = separators[current_separator_index]
+        separator_pattern, separator_name = separators[current_separator_index]
         parts = re.split(f'({separator_pattern})', text)
         result = []
         current_chunk = previous_overlap
@@ -141,7 +141,7 @@ def recursive_text_splitter(text, max_length, overlap=0):
         return result
     chunks = split_by_separators(text, separators, previous_overlap='')
     final_chunks = []
-    for (i, chunk) in enumerate(chunks):
+    for i, chunk in enumerate(chunks):
         if i > 0 and overlap > 0:
             final_chunks.append(chunks[i - 1][-overlap:] + chunk)
         else:
@@ -189,7 +189,7 @@ def custout2dict(text, lower=False):
         v = extract_section(text, a)
         outdic[a] = v
     if lower:
-        outdic = {a.lower(): v for (a, v) in outdic.items()}
+        outdic = {a.lower(): v for a, v in outdic.items()}
     return outdic
 
 def list_installed_packages():
@@ -262,7 +262,7 @@ def get_unused_name(name: str, exnames: list, remember=True, unusables=['if', 'e
     return newname
 
 def repair_condinfo(oldinfo):
-    newconds = [{'nodes': [k], 'condition': v} for (k, v) in oldinfo.items()]
+    newconds = [{'nodes': [k], 'condition': v} for k, v in oldinfo.items()]
     logic = list(oldinfo.keys())
     logic = [str(l) for l in list(range(len(logic)))]
     logic = ' && '.join(logic)
@@ -284,9 +284,9 @@ def dict_try_del(dic, keys):
 def table_get_record(table: list[dict], condition: dict, ensure_unique=False, need_indices=False):
     ret = []
     indices = []
-    for (i, record) in enumerate(table):
+    for i, record in enumerate(table):
         met = True
-        for (k, v) in condition.items():
+        for k, v in condition.items():
             if record.get(k) != v:
                 met = False
                 break
@@ -304,18 +304,18 @@ def table_multi_get(table: list[dict], conditions: list[dict], ensure_unique=Fal
     got = []
     indices = []
     for condition in conditions:
-        (subgot, subids) = table_get_record(table, condition, ensure_unique=ensure_unique, need_indices=True)
+        subgot, subids = table_get_record(table, condition, ensure_unique=ensure_unique, need_indices=True)
         got = got + subgot
         indices = indices + subids
     if len(indices) > 1:
         sorted_pairs = sorted(zip(indices, got), key=lambda pair: pair[0])
-        (indices, got) = zip(*sorted_pairs)
+        indices, got = zip(*sorted_pairs)
     if need_indices:
         return (got, indices)
     return got
 
 def table_unique_get(table: list[dict], condition: dict, return_pointer=False):
-    (got, idx) = table_get_record(table, condition, ensure_unique=True, need_indices=True)
+    got, idx = table_get_record(table, condition, ensure_unique=True, need_indices=True)
     got = got[0]
     idx = idx[0]
     if not return_pointer:
@@ -395,7 +395,7 @@ def parse_for_sugs(code, row, col, sugtype):
         targlinepart = cleanlines[row][:col]
         left = '\n'.join(fulllines) + '\n' + targlinepart
         if '(' in left:
-            (left, argpart) = left.rsplit('(', 1)
+            left, argpart = left.rsplit('(', 1)
             targrow = left.count('\n')
             left = left.strip()
             for p in partitioners:
@@ -570,7 +570,7 @@ def to_dumpable(data):
         return newdata
     if type(data) == dict:
         newdata = {}
-        for (k, subdata) in data.items():
+        for k, subdata in data.items():
             newdata[k] = to_dumpable(subdata)
         return newdata
     try:
@@ -779,7 +779,7 @@ class Bouncer:
                     logger.debug('检测到跟上次一样的输入，直接返回上次结果。tag={}', tag)
                     return self.lastrets.get(tag)
                 else:
-                    ret = await func(*args, **{k: v for (k, v) in kwargs.items() if not k in ['compare_kwargs'] + intercepted_kws})
+                    ret = await func(*args, **{k: v for k, v in kwargs.items() if not k in ['compare_kwargs'] + intercepted_kws})
                     if type(ret) in expected_ret_types:
                         if do_update:
                             logger.trace('跟上次不一样的输入，执行成功后更新上轮记录. tag={}', tag)

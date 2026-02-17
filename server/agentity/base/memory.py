@@ -17,7 +17,7 @@ def _rank4del(mycontext, important_patterns=[]):
 
     def add_imports(row):
         nonlocal importants
-        for (i, ipp) in enumerate(important_patterns):
+        for i, ipp in enumerate(important_patterns):
             if ipp[0] == row['role']:
                 matchs = re.findall(ipp[1], row['content'], re.DOTALL)
                 if matchs:
@@ -25,14 +25,14 @@ def _rank4del(mycontext, important_patterns=[]):
                         importants[i] = []
                     importants[i].insert(0, row.name)
     mycontext.apply(add_imports, axis=1)
-    for (i, imps) in importants.items():
+    for i, imps in importants.items():
         mode = 'all' if len(important_patterns[i]) < 3 else important_patterns[i][2]
         if mode == 'newest':
             importants[i] = [imps[0]]
         elif mode == 'oldest':
             importants[i] = [imps[-1]]
     impordexs = []
-    for (imlv, imdexs) in importants.items():
+    for imlv, imdexs in importants.items():
         for imdex in imdexs:
             if not imdex in impordexs:
                 impordexs.insert(0, imdex)
@@ -54,7 +54,7 @@ def suppress_by_tokens(context, max_tokens, session_id='<DEFAULT>', important_pa
     numtokens2del = pre_numtokens - max_tokens
     if pre_numtokens > max_tokens:
         idxs = _rank4del(mycontext, important_patterns=important_patterns)
-        for (idxi, i) in enumerate(idxs):
+        for idxi, i in enumerate(idxs):
             if i in deldexs:
                 continue
             deldexs.append(i)
@@ -92,7 +92,7 @@ def suppress_by_records(context, max_records, session_id='<DEFAULT>', important_
     delsyss = 0
     if len(mycontext) - len(deldexs) > maxrecs:
         idxs = _rank4del(mycontext, important_patterns=important_patterns)
-        for (idxi, i) in enumerate(idxs):
+        for idxi, i in enumerate(idxs):
             if i in deldexs:
                 continue
             deldexs.append(i)

@@ -85,14 +85,14 @@ class VirtualModuleLoader(SourceLoader, MetaPathFinder):
 
     def get_source(self, fullname):
         filename = f"{fullname.replace('.', '/')}.py"
-        for (path, code) in self.code_dict.items():
+        for path, code in self.code_dict.items():
             if path == filename:
                 return code
         if '.' in fullname:
-            (pkg, mod) = fullname.rsplit('.', 1)
+            pkg, mod = fullname.rsplit('.', 1)
             base_path = pkg.replace('.', '/')
             target = f'{base_path}/{mod}.py'
-            for (path, code) in self.code_dict.items():
+            for path, code in self.code_dict.items():
                 if path == target:
                     return code
         return None
@@ -110,7 +110,7 @@ class VirtualModuleLoader(SourceLoader, MetaPathFinder):
             else:
                 filename = f'{module_path}.py'
             code = None
-            for (path, src) in self.code_dict.items():
+            for path, src in self.code_dict.items():
                 if path == filename:
                     code = src
                     break
@@ -130,7 +130,7 @@ class VirtualModuleLoader(SourceLoader, MetaPathFinder):
         lines = code.splitlines(keepends=True)
         linecache.cache[fake_filename] = (len(code), None, lines, fake_filename)
         module.__file__ = fake_filename
-        for (k, v) in default_namespace.items():
+        for k, v in default_namespace.items():
             if not k in module.__dict__:
                 module.__dict__[k] = v
         module.__dict__['_run_id'] = self.run_id

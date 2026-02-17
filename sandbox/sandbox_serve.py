@@ -81,7 +81,7 @@ async def get_params(data: dict):
 async def get_kernel_var_value(data: dict):
     logger.info('get_kernel_var_value data: {}', data)
     try:
-        (v, vtype) = runner.get_kernel_var_value(data['name'], cnskey=data.get('defId'))
+        v, vtype = runner.get_kernel_var_value(data['name'], cnskey=data.get('defId'))
         logger.info('get_kernel_var_value val, type: {}', v, vtype)
         return {'error_code': 200, 'data': v, 'dtype': vtype}
     except Exception as e:

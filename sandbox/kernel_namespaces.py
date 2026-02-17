@@ -6,7 +6,7 @@ default_namespace = {'_disp_to_cache': _disp_to_cache, '_send_vars_to_cache': _s
 def clean_unpicklables(dic, avoids=set()):
     cleaned_dic = {}
     unp = []
-    for (k, v) in dic.items():
+    for k, v in dic.items():
         if k in avoids:
             unp.append(k)
             continue

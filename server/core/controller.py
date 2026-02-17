@@ -69,7 +69,7 @@ n69wspa2fh = [{'foreigns': 'def_id', 'references': 'funcs(def_id)', 'behaviors':
 n69wspa2tq = [{'foreigns': 'uid', 'references': 'nodes(uid)', 'behaviors': 'ON DELETE CASCADE ON UPDATE CASCADE'}]
 n69wspa36b = [{'foreigns': 'def_id', 'references': 'funcs(def_id)', 'behaviors': 'ON DELETE CASCADE ON UPDATE CASCADE'}]
 n69wspa2u3 = {'funcs': {'fields': n69wspa2ts, 'primes': n69wspa2oa, 'uniques': n69wspa33w}, 'nodes': {'fields': n69wspa2ha, 'primes': n69wspa35q, 'uniques': n69wspa2ng, 'foreigns': n69wspa32t}, 'classes': {'fields': n69wspa2dn, 'primes': n69wspa2zt, 'uniques': n69wspa2lf}, 'vars': {'fields': n69wspa2hw, 'primes': n69wspa2ge, 'foreigns': n69wspa2tq}, 'params': {'fields': n69wspa356, 'primes': n69wspa2jd, 'foreigns': n69wspa2fh}, 'funcmeta': {'fields': n69wspa2fi, 'primes': n69wspa2jl, 'foreigns': n69wspa36b}, 'misc': {'fields': n69wspa2mc, 'primes': n69wspa2ij, 'foreigns': []}}
-for (dbname, struct) in n69wspa2u3.items():
+for dbname, struct in n69wspa2u3.items():
     struct['fields'] = gen_create_sql(dbname, struct['fields'], need_new_mapping=True)[1]
 n69wspa2wn = n69wspa2u3
 n69wspa38t = {'start': {'width': 400, 'height': 100}, 'if': {'width': 400, 'height': 200}, 'for': {'width': 400, 'height': 200}, 'while': {'width': 400, 'height': 200}, 'with': {'width': 400, 'height': 200}, 'tryhead': {'width': 400, 'height': 200}, 'excepts': {'width': 520, 'height': 200}, 'finally': {'width': 400, 'height': 200}, 'match': {'width': 500, 'height': 200}, 'code': {'width': 560, 'height': 100}, 'tool': {'width': 500, 'height': 200}, 'tool_conc': {'width': 300, 'height': 200}, 'return': {'width': 300, 'height': 100}, 'yield': {'width': 300, 'height': 100}, 'pass': {'width': 300, 'height': 50}, 'continue': {'width': 300, 'height': 50}, 'break': {'width': 300, 'height': 50}, 'endwith': {'width': 240, 'height': 70}, 'endfor': {'width': 240, 'height': 70}, 'endexcepts': {'width': 240, 'height': 70}, 'endif': {'width': 240, 'height': 70}, 'endtryhead': {'width': 240, 'height': 70}, 'endfinally': {'width': 240, 'height': 70}, 'endwhile': {'width': 240, 'height': 70}, 'endmatch': {'width': 240, 'height': 70}}
@@ -94,8 +94,8 @@ def b69wspa0xo(n69wspa35c, n69wspa35i):
                 return True
     except:
         pass
-    n69wspa35c = {k: v for (k, v) in n69wspa35c.items() if not k in ('timestamp',)}
-    n69wspa35i = {k: v for (k, v) in n69wspa35i.items() if not k in ('timestamp',)}
+    n69wspa35c = {k: v for k, v in n69wspa35c.items() if not k in ('timestamp',)}
+    n69wspa35i = {k: v for k, v in n69wspa35i.items() if not k in ('timestamp',)}
     return n69wspa35c == n69wspa35i
 n69wspa2s9 = b69wspa0xo
 
@@ -108,27 +108,27 @@ def b69wspa0xp(n69wspa35c, n69wspa35i, level=0):
                 return True
     except:
         pass
-    n69wspa35c = {k: v for (k, v) in n69wspa35c.items() if not k in ('timestamp',)}
-    n69wspa35i = {k: v for (k, v) in n69wspa35i.items() if not k in ('timestamp',)}
+    n69wspa35c = {k: v for k, v in n69wspa35c.items() if not k in ('timestamp',)}
+    n69wspa35i = {k: v for k, v in n69wspa35i.items() if not k in ('timestamp',)}
     n69wspa2l6 = {}
     if not n69wspa35c:
         return False
     for e in n69wspa35c.get(2, []):
-        n69wspa36d = {k: v for (k, v) in e.items() if not k == 'id'}
+        n69wspa36d = {k: v for k, v in e.items() if not k == 'id'}
         if not 'source' in n69wspa36d or not 'target' in n69wspa36d:
             return False
         n69wspa2cp = n69wspa36d['source'] + '~' + n69wspa36d['target']
         n69wspa2l6[n69wspa2cp] = n69wspa36d
     n69wspa2zn = {}
     for e in n69wspa35i.get(2, []):
-        n69wspa36d = {k: v for (k, v) in e.items() if not k == 'id'}
+        n69wspa36d = {k: v for k, v in e.items() if not k == 'id'}
         n69wspa2cp = n69wspa36d['source'] + '~' + n69wspa36d['target']
         n69wspa2zn[n69wspa2cp] = n69wspa36d
     n69wspa2l1 = ['vars', 'source', 'vars_in', 'data_providers', 'hid', 'branch', 'vars_out', 'vars_relayed', 'tool_counts', 'pres', 'nexts', 'subWorkflowIds', 'width', 'height', 'selected', 'positionAbsolute', 'dragging']
     if level > 0:
         n69wspa2l1 = n69wspa2l1 + ['data_providers', 'code', 'xpos', 'ypos', 'toolcall', 'targets', 'params_map', 'comments', 'expr', 'source', 'iter', 'slice', 'misc', 'globals', 'nonlocals', 'imports_code', 'deco_expr', 'bases']
-    n69wspa2k8 = {n['id']: {subk: subv if subk not in ('cases', 'handle_outs') or not isinstance(subv, dict) else {loadstr(n69wspa2w8): hd for (n69wspa2w8, hd) in subv.items()} for (subk, subv) in n['data'].items() if subk not in n69wspa2l1} for n in n69wspa35c[1]}
-    n69wspa2wj = {n['id']: {subk: subv if subk not in ('cases', 'handle_outs') or not isinstance(subv, dict) else {loadstr(n69wspa2w8): hd for (n69wspa2w8, hd) in subv.items()} for (subk, subv) in n['data'].items() if subk not in n69wspa2l1} for n in n69wspa35i[1]}
+    n69wspa2k8 = {n['id']: {subk: subv if subk not in ('cases', 'handle_outs') or not isinstance(subv, dict) else {loadstr(n69wspa2w8): hd for n69wspa2w8, hd in subv.items()} for subk, subv in n['data'].items() if subk not in n69wspa2l1} for n in n69wspa35c[1]}
+    n69wspa2wj = {n['id']: {subk: subv if subk not in ('cases', 'handle_outs') or not isinstance(subv, dict) else {loadstr(n69wspa2w8): hd for n69wspa2w8, hd in subv.items()} for subk, subv in n['data'].items() if subk not in n69wspa2l1} for n in n69wspa35i[1]}
     if n69wspa2k8 == n69wspa2wj and n69wspa2l6 == n69wspa2zn:
         return True
     return False
@@ -255,7 +255,7 @@ class A69wspa0yq(DBHandler):
             n69wspa36p = {}
             for i in range(len(n69wspa36m)):
                 n69wspa36p[n69wspa36m[i]] = {'dag': n69wspa2vh[i][0].scalar(), 'funcs': n69wspa2vh[i][1].scalar(), 'classes': n69wspa2vh[i][2].scalar()}
-            for (n69wspa38w, n69wspa2vh) in n69wspa36p.items():
+            for n69wspa38w, n69wspa2vh in n69wspa36p.items():
                 for scope in ('dag', 'funcs', 'classes'):
                     if n69wspa36p[n69wspa38w][scope] is None:
                         n69wspa36p[n69wspa38w][scope] = 0
@@ -408,7 +408,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa34p = 'funcs'
         n69wspa357 = f"def_id = '{n69wspa2wq}'"
         if n69wspa34p == 'funcs':
-            (n69wsp9oya, n69wsp9osv) = await asyncio.gather(self.select(n69wspa34p, cond_sql=n69wspa357, conn=conn, _skiplock=_skiplock), self.b69x8ynnt2(n69wspa2wq, conn=conn, _skiplock=_skiplock))
+            n69wsp9oya, n69wsp9osv = await asyncio.gather(self.select(n69wspa34p, cond_sql=n69wspa357, conn=conn, _skiplock=_skiplock), self.b69x8ynnt2(n69wspa2wq, conn=conn, _skiplock=_skiplock))
         else:
             n69wsp9oya = await self.select(n69wspa34p, cond_sql=n69wspa357, conn=conn, _skiplock=_skiplock)
         if len(n69wsp9oya) == 0:
@@ -471,7 +471,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2x2 = ' OR '.join(n69wspa2x2)
             if n69wspa2x2:
                 n69wsp9osv = await self.select('params', cond_sql=n69wspa2x2, conn=conn, _skiplock=_skiplock, debuglabel='get_funcs_under_scope (2)')
-                n69wsp9osv = pd.concat([sub_df.sort_values(by='place') for (_, sub_df) in n69wsp9osv.groupby('def_id', sort=False)], ignore_index=True)
+                n69wsp9osv = pd.concat([sub_df.sort_values(by='place') for _, sub_df in n69wsp9osv.groupby('def_id', sort=False)], ignore_index=True)
             else:
                 n69wsp9osv = pd.DataFrame(columns=list(n69wspa356.keys()))
             return (n69wsp9oya, n69wsp9osv)
@@ -505,7 +505,7 @@ class A69wspa0yq(DBHandler):
         n69wsp9p2u = self.select('funcs', cond_sql=cond_sql, conn=conn, _skiplock=_skiplock)
         n69wspa2xf = self.select('classes', cond_sql=cond_sql, conn=conn, _skiplock=_skiplock)
         n69wspa2d3 = self.select('params', cond_sql=cond_sql, conn=conn, _skiplock=_skiplock)
-        (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = await asyncio.gather(n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
+        n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = await asyncio.gather(n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
         return (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
 
     async def b69x8ynnvw(self, n69wspa2wq, conn=None, _skiplock=False):
@@ -557,7 +557,7 @@ class A69wspa0yq(DBHandler):
             pass
         else:
             n65d20cda3 = n69wspa2mh['uid']
-            (n69wsp9p51, _) = await self.b69x8ynnvc(n65d20cda3, conn=conn, _skiplock=_skiplock)
+            n69wsp9p51, _ = await self.b69x8ynnvc(n65d20cda3, conn=conn, _skiplock=_skiplock)
         n69wspa2fd = {}
 
         async def b69x8ynnug(acase):
@@ -570,7 +570,7 @@ class A69wspa0yq(DBHandler):
             n69wspa37q = self.select('funcs', cond_sql=n69wspa37y, targets=['uid'], conn=conn, _skiplock=_skiplock)
             n69wspa2i3 = self.select('classes', cond_sql=n69wspa2qa, targets=['uid'], conn=conn, _skiplock=_skiplock) if n69wsp9p0w != 'class' else aidle()
             n69wspa2qb = self.select('nodes', cond_sql=n69wspa2kc, targets=['uid'], conn=conn, _skiplock=_skiplock) if n69wsp9p0w == 'func' else aidle()
-            (n69wspa37q, n69wspa2i3, n69wspa2qb) = await asyncio.gather(n69wspa37q, n69wspa2i3, n69wspa2qb)
+            n69wspa37q, n69wspa2i3, n69wspa2qb = await asyncio.gather(n69wspa37q, n69wspa2i3, n69wspa2qb)
             n69wspa2cy = {'funcs': len(n69wspa37q)}
             if n69wsp9p0w != 'class':
                 n69wspa2cy['classes'] = len(n69wspa2i3)
@@ -600,7 +600,7 @@ class A69wspa0yq(DBHandler):
             if isinstance(n69wspa2ru['params_map'], dict):
                 n69wspa2lr = []
                 pi = 0
-                for (k, v) in n69wspa2ru['params_map'].items():
+                for k, v in n69wspa2ru['params_map'].items():
                     n69wspa2lr.append([k, v])
                     pi = pi + 1
                 n69wspa2ru['params_map'] = n69wspa2lr
@@ -746,7 +746,7 @@ class A69wspa0yq(DBHandler):
                 assert n69wspa2jo[0] < n69wspa2jo[1]
                 n69wspa379 = n69wspa2wq[n69wspa2jo[0]:n69wspa2jo[1]]
                 if not '.' in n69wspa379 and n69wspa379 != '1':
-                    (last_nodehid, _) = await self.b69x8ynnvc(n69wspa379, _skiplock=_skiplock, conn=conn)
+                    last_nodehid, _ = await self.b69x8ynnvc(n69wspa379, _skiplock=_skiplock, conn=conn)
                     n69wspa2hb = n69wspa2wq
                     n69wspa2wq = n69wspa2wq[:n69wspa2jo[0]] + last_nodehid + n69wspa2wq[n69wspa2jo[1]:]
             else:
@@ -881,15 +881,15 @@ class A69wspa0yq(DBHandler):
         n69wspa36t = self.b69x8ynnuy(n69wspa2qn, _skiplock=_skiplock, conn=conn)
         n69wspa2cj = self.b69x8ynntc(n69wspa2qn, _skiplock=_skiplock, conn=conn)
         n69wspa2h2 = self.b69x8ynnvw(n69wspa2qn, _skiplock=_skiplock, conn=conn) if needvars else aidle(1)
-        (funcs_params, n69wsp9p6q, n69wsp9oya, n69wsp9osh) = await asyncio.gather(n69wspa2xg, n69wspa36t, n69wspa2cj, n69wspa2h2)
+        funcs_params, n69wsp9p6q, n69wsp9oya, n69wsp9osh = await asyncio.gather(n69wspa2xg, n69wspa36t, n69wspa2cj, n69wspa2h2)
         return (n69wsp9oya, funcs_params[0], n69wsp9p6q, funcs_params[1], n69wsp9osh)
 
     async def b69x8ynnv0(self, n69wspa2qn, n69wspa2nm=[], external_class_ids=[]):
         n69wspa2qc = self.b69x8ynnt3(n69wspa2qn)
         n69wspa383 = aidle()
-        (data, vision) = await asyncio.gather(n69wspa2qc, n69wspa383)
-        (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wsp9osh) = data
-        (n69wsp9owq, n69wsp9p0n) = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2qn, n69wspa2in=True, n69wsp9ot1=n69wsp9osh)
+        data, vision = await asyncio.gather(n69wspa2qc, n69wspa383)
+        n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wsp9osh = data
+        n69wsp9owq, n69wsp9p0n = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2qn, n69wspa2in=True, n69wsp9ot1=n69wsp9osh)
         return (n69wsp9owq, n69wsp9p0n)
 
     def b69wspa0xt(self, n69wspa2el):
@@ -917,7 +917,7 @@ class A69wspa0yq(DBHandler):
         n69wspa337 = upsert_base.split('^')[0]
 
         async def b69x8ynnvt(conn):
-            (n69wspa2ck, _) = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', conn=None, _skiplock=True)
+            n69wspa2ck, _ = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', conn=None, _skiplock=True)
             n69wspa2pw = await self.b69x8ynntd(n69wspa35p, upsert_base, n69wspa381, conn=None, _skiplock=True)
             n69wspa2ck = '# env_level: 0\n' + n69wspa2ck
             n69wspa30j = all_desc_to_nl(n69wspa2pw)
@@ -1004,7 +1004,7 @@ class A69wspa0yq(DBHandler):
                             try:
                                 await n69wspa360(json.dumps({'event': 'info', 'data': f'Agent looking up code: {str(argdic)[1:-1]}'}, ensure_ascii=False))
                                 n69wsp9p5m = await self.b69x8ynnul(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'], n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
-                                n69wspa2jw = n69wspa2jw + f"----- {str({k: v for (k, v) in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
+                                n69wspa2jw = n69wspa2jw + f"----- {str({k: v for k, v in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
                                 n69wspa2jw = n69wspa2jw + n69wsp9p5m
                                 n69wsp9p2h = '<NOT_FOUND>' not in n69wsp9p5m[:20]
                                 await n69wspa360(json.dumps({'event': 'info', 'data': 'code ' + 'found' if n69wsp9p2h else 'not found'}, ensure_ascii=False))
@@ -1064,12 +1064,12 @@ class A69wspa0yq(DBHandler):
                 n69wsp9onl = await self.b69x8ynnt6(n69wsp9orm, n69wspa35j, n69wspa2nm=[], external_class_ids=[], n69wspa2da=n69wspa2rt, cached=True, n69wspa381=n69wspa381, sustainable=True, n69znp79nl=False, _skiplock=True, conn=conn, tolerance=1)
             else:
                 n69wspa2g4 = b69wsp9mq1(n69wsp9orm, def_cutoff=False)
-                (n69wsp9oxz, maybe_badclass) = brutal_gets(n69wspa2g4, lambda x: x.get('ntype') == 'ClassDef' and x.get('name') == n69wspa2u8 if isinstance(x, dict) else False)
+                n69wsp9oxz, maybe_badclass = brutal_gets(n69wspa2g4, lambda x: x.get('ntype') == 'ClassDef' and x.get('name') == n69wspa2u8 if isinstance(x, dict) else False)
                 if n69wsp9oxz:
                     n69wspa2zk = [len(p) for p in n69wsp9oxz]
                     n69wspa2na = maybe_badclass[np.argmin(n69wspa2zk)]
                     n69wspa31e = {'ntype': 'Module', 'body': n69wspa2na['body']}
-                    (_, n69wsp9orm) = b65wsp9mrz(n69wspa31e)
+                    _, n69wsp9orm = b65wsp9mrz(n69wspa31e)
                 n69wsp9onl = await self.b69x8ynntj(n69wsp9orm, n69wspa35j, n69wspa2nm=[], external_class_ids=[], del_funcs=n69wspa2cq, n69wspa381=n69wspa381, n69znp79nl=False, cached=True, _skiplock=True, conn=conn, tolerance=2)
             return n69wsp9onl
         n69wsp9onl = await self._batch_write([b69x8ynnvt], _skiplock=_skiplock, conn=conn)
@@ -1079,19 +1079,19 @@ class A69wspa0yq(DBHandler):
     def b69wspa0xm(self, n69wsp9onk, import_data):
         n69wspa2gg = {}
         n69wsp9p2h = False
-        for (n69wsp9ole, n69wspa2us) in import_data.get('classes', {}).items():
+        for n69wsp9ole, n69wspa2us in import_data.get('classes', {}).items():
             if n69wsp9ole == n69wsp9onk:
                 n69wspa2gg = n69wspa2us
                 n69wsp9p2h = True
                 break
         if not n69wsp9p2h:
-            for (n69wspa2ce, odic) in import_data.get('objs', {}).items():
+            for n69wspa2ce, odic in import_data.get('objs', {}).items():
                 if n69wsp9onk == odic['type']:
                     n69wspa2gg = odic['class']
                     n69wsp9p2h = True
                     break
         if not n69wsp9p2h:
-            for (n69wsp9ole, n69wspa2us) in import_data.get('classes', {}).items():
+            for n69wsp9ole, n69wspa2us in import_data.get('classes', {}).items():
                 if n69wsp9ole == n69wspa2us['rawname']:
                     n69wspa2gg = n69wspa2us
                     n69wsp9p2h = True
@@ -1145,7 +1145,7 @@ class A69wspa0yq(DBHandler):
                 if not n69wsp9onk and (not n69wsp9p0f):
                     assert n69wspa2z4
                     n69wspa337 = n69wspa2z4[0].split('^')[0]
-                    (code, _) = await self.b69x8ynntv(n69wspa337, 'all', style='pure', tolerance=1, conn=conn, _skiplock=True)
+                    code, _ = await self.b69x8ynntv(n69wspa337, 'all', style='pure', tolerance=1, conn=conn, _skiplock=True)
                     return f"# code in module {n69wspa337.replace('^', '.').replace('/', '.')} (env_level=0):\n{code}"
                 n69wspa2mo = await self.b69x8ynnt9(conn, n69wsp9onk, n69wsp9p0f, n69wspa2z4)
                 if n69wspa2mo:
@@ -1167,7 +1167,7 @@ class A69wspa0yq(DBHandler):
                     elif n69wsp9p0f:
                         right = '/' + n69wsp9p0f
                     else:
-                        (modcode, _) = await self.b69x8ynntv(n69wspa337, 'all', style='pure', tolerance=1, conn=conn, _skiplock=True)
+                        modcode, _ = await self.b69x8ynntv(n69wspa337, 'all', style='pure', tolerance=1, conn=conn, _skiplock=True)
                         return f"# code in module {n69wspa337.replace('^', '.').replace('/', '.')} (env_level=0):\n{modcode}"
                     n69wspa306 = n69wspa337 + '^1#_' + right
             if n69wspa35s:
@@ -1175,10 +1175,10 @@ class A69wspa0yq(DBHandler):
                 n69wspa34p = n69wspa2qq[x69xm5dtzx(n69wspa306)]
                 n69wsp9oyc = self.select(n69wspa34p, conds=[{'def_id': n69wspa306}], targets=['def_id'], conn=conn, _skiplock=True)
                 n69wspa31f = self.select('funcs', conds=[{'def_id': n69wspa337}], targets=['imports_code'], conn=conn, _skiplock=True) if not n69wspa36e else aidle(default=pd.DataFrame(columns=['imports_code']))
-                (n69wsp9oyc, n69wspa31f) = await asyncio.gather(n69wsp9oyc, n69wspa31f)
+                n69wsp9oyc, n69wspa31f = await asyncio.gather(n69wsp9oyc, n69wspa31f)
                 if len(n69wspa31f) > 0:
                     if n69wspa31f['imports_code'].tolist()[0].strip():
-                        (_, _, n69wspa34s) = b69wsp9mrs(b69wsp9mq1(n69wspa31f['imports_code'].tolist()[0]), expand=True)
+                        _, _, n69wspa34s = b69wsp9mrs(b69wsp9mq1(n69wspa31f['imports_code'].tolist()[0]), expand=True)
                 if len(n69wsp9oyc) == 0:
                     n69wspa37j = x69xm5dtzy(n69wsp9onk, n69wsp9p0f, n69wspa34s)
                     if n69wspa37j != '<NOT_FOUND>':
@@ -1238,7 +1238,7 @@ class A69wspa0yq(DBHandler):
                 except Exception as e:
                     traceback.print_exc()
                     n69wspa2pm = b69wsp9mq1(n69wspa2iz, def_cutoff=True)
-                    (n69wspa2pm, _, n69wspa34s) = b69wsp9mrs(n69wspa2pm, expand=True)
+                    n69wspa2pm, _, n69wspa34s = b69wsp9mrs(n69wspa2pm, expand=True)
                     n69wspa38x = n69wsp9onk if n69wsp9onk else n69wsp9p0f
                     n69wspa2fk = ('ClassDef',) if n69wsp9onk else ('AsyncFunctionDef', 'FunctionDef')
                     n65d20cda3 = None
@@ -1282,13 +1282,13 @@ class A69wspa0yq(DBHandler):
     async def b69x8ynnv8(self, n65d20cda3, n69wsp9p0w, n69wspa317=None, style='both', tolerance=0, codeswaps={}, n69wspa39a=None, _skiplock=False, conn=None):
         assert x69xm5dtzx(n65d20cda3) == 'folder'
         assert n69wsp9p0w not in nesttypes
-        n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda : self.x69xm5dtzq
+        n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
 
         async def b69wsp9mrq(conn):
             n69wspa2gl = n69wspa2hg = f"uid = '{n65d20cda3}'"
             n69wsp9oya = self.select('nodes', cond_sql=n69wspa2gl, conn=conn, _skiplock=True)
             n69wspa2mh = self.select('vars', cond_sql=n69wspa2hg, conn=conn, _skiplock=True)
-            (n69wsp9oya, n69wspa2mh) = await asyncio.gather(n69wsp9oya, n69wspa2mh)
+            n69wsp9oya, n69wspa2mh = await asyncio.gather(n69wsp9oya, n69wspa2mh)
             return (n69wsp9oya, n69wspa2mh)
         n69wspa2q4 = ('_fAk84289epATh_/_fAke_FUnc',)
         if n69wspa317 and n69wspa39a():
@@ -1301,7 +1301,7 @@ class A69wspa0yq(DBHandler):
             n69wspa317['nexts'] = []
             if n69wspa317['node_type'] in ('tool', 'conc'):
                 n69wspa317['params_map'] = {p[0]: p[1] for p in n69wspa317['params_map']}
-            n69wspa317 = {k: v for (k, v) in n69wspa317.items() if not k in ('handle_in', 'handle_outs', 'width', 'height', 'selected', 'positionAbsolute', 'dragging')}
+            n69wspa317 = {k: v for k, v in n69wspa317.items() if not k in ('handle_in', 'handle_outs', 'width', 'height', 'selected', 'positionAbsolute', 'dragging')}
             n69wspa2hn = {'uid': 'fakestart', 'hid': '1.0', 'branch': '_', 'node_type': 'start', 'pres': [], 'nexts': [n69wspa317['hid']], 'xpos': 0, 'ypos': 0, 'def_id': n69wspa317['def_id']}
             n69wsp9oya = pd.DataFrame([n69wspa2hn, n69wspa317])
             n69wspa2q4 = n69wspa317['def_id']
@@ -1309,7 +1309,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9p3q = pd.DataFrame(n69wspa35f)
             n69wsp9p6q = pd.DataFrame(columns=list(n69wspa2dn.keys()))
             n69wsp9osv = pd.DataFrame(columns=list(n69wspa356.keys()))
-            (n69wsp9oya, _, _, n69wspa2mh, _) = b69wsp9mnk(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa317['def_id'], ret_type='df', strict_order=True, n69wsp9ore=False, n69wsp9oy0=True, n69wspa2y2=False, recur_into_tools=True, n69wspa2f3=True)
+            n69wsp9oya, _, _, n69wspa2mh, _ = b69wsp9mnk(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa317['def_id'], ret_type='df', strict_order=True, n69wsp9ore=False, n69wsp9oy0=True, n69wspa2y2=False, recur_into_tools=True, n69wspa2f3=True)
             n69wsp9oya = n69wsp9oya[~(n69wsp9oya['node_type'] == 'start')].reset_index(drop=True)
             if 'toolcall' in n69wsp9oya.columns:
                 n69wsp9oya['toolcall'] = n69wsp9oya.apply(lambda n69wspa2xo: x69xm5dtzz(n69wspa2xo['node_type'], n69wspa2xo['toolcall']), axis=1)
@@ -1318,7 +1318,7 @@ class A69wspa0yq(DBHandler):
             if 'name' in n69wspa2mh.columns:
                 n69wspa2mh['name'] = n69wspa2mh['name'].apply(lambda x: x.replace(DOT_REPL, '.') if isinstance(x, str) else x)
         else:
-            (n69wsp9oya, n69wspa2mh) = (await self._batch_read([b69wsp9mrq], _skiplock=_skiplock, conn=conn))[0]
+            n69wsp9oya, n69wspa2mh = (await self._batch_read([b69wsp9mrq], _skiplock=_skiplock, conn=conn))[0]
             if len(n69wsp9oya) > 0 and 'def_id' in n69wsp9oya.columns:
                 n69wspa2q4 = n69wsp9oya['def_id'].tolist()[0]
         if len(n69wsp9oya) == 0:
@@ -1340,11 +1340,11 @@ class A69wspa0yq(DBHandler):
         return (b6a0gjsmt7(code[0]), b6a0gjsmt7(code[1]))
 
     async def b69x8ynntv(self, base_id, choice, n69wspa2zf=None, n69wspa2wz=None, style='both', codeswaps={}, tolerance=0, n69wspa39a=None, conn=None, _skiplock=False):
-        n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda : self.x69xm5dtzq
+        n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
         if x69xm5dtzx(base_id) == 'cond':
             assert not n69wspa2zf
             assert choice in ('funcs', 'classes')
-            (shellfid, hidbr) = base_id.rsplit('^', 1)
+            shellfid, hidbr = base_id.rsplit('^', 1)
             n69wsp9p6r = await self.b69x8ynnu5(shellfid, n69wspa2k7=hidbr, choices=['imports', choice], style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock)
             return n69wsp9p6r
 
@@ -1385,7 +1385,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9p6q = self.select('classes', cond_sql=n69wspa2l8, conn=conn, _skiplock=True)
             n69wspa2mh = self.select('vars', cond_sql=n69wspa2hg, conn=conn, _skiplock=True)
             n69wsp9osv = self.select('params', cond_sql=n69wspa31y, conn=conn, _skiplock=True)
-            (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh) = await asyncio.gather(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh)
+            n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh = await asyncio.gather(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh)
             n69wsp9p51 = None
             if x69xm5dtzx(base_id) in 'class':
                 assert '/' in base_id
@@ -1422,12 +1422,12 @@ class A69wspa0yq(DBHandler):
                         n69wspa2vc = 'if'
                     elif n69wsp9p51.isdigit():
                         n69wspa2vc = 'match'
-                    (n69wspa2nm, _) = await self.b69x8ynnvo(n69wspa2vc, n69wspa2qn, '', '', 0, 0, save_new_node=False)
+                    n69wspa2nm, _ = await self.b69x8ynnvo(n69wspa2vc, n69wspa2qn, '', '', 0, 0, save_new_node=False)
                     n69wspa2nm = n69wspa2nm[0]['data']
                     n69wspa2nm['uid'] = n69wspa34a[-1]
                     n69wspa2nm['hid'] = n69wspa2n6
                     n69wspa2nm['branch'] = '_'
-                    n69wspa2nm = {k: v for (k, v) in n69wspa2nm.items() if not k in ('handle_in', 'handle_outs', 'width', 'height', 'selected', 'positionAbsolute', 'dragging', 'subWorkflowIds', 'tool_counts')}
+                    n69wspa2nm = {k: v for k, v in n69wspa2nm.items() if not k in ('handle_in', 'handle_outs', 'width', 'height', 'selected', 'positionAbsolute', 'dragging', 'subWorkflowIds', 'tool_counts')}
                     if n69wspa2vc == 'match':
                         n69wspa2iq = int(n69wspa2w8.split('#')[-1]) + 1
                         n69wspa2hs = {c: {'expr': '', 'spawn_vars': []} for c in range(n69wspa2iq)}
@@ -1450,7 +1450,7 @@ class A69wspa0yq(DBHandler):
                     if not n69wspa2v8:
                         pass
                     else:
-                        (n69wspa30p, n69wsp9orl, n69wspa34s) = (n69wspa2v8[0]['globals'], n69wspa2v8[0]['nonlocals'], n69wspa2v8[0]['imports_code'])
+                        n69wspa30p, n69wsp9orl, n69wspa34s = (n69wspa2v8[0]['globals'], n69wspa2v8[0]['nonlocals'], n69wspa2v8[0]['imports_code'])
             if n69wspa2zf['mode'] == 'replace':
                 n69wspa2wr = await self.b69x8ynnv4(n69wspa2zf['section'][0], n69wspa2zf['section'][1], n69wspa2wz['nodes'], n69wspa2wz['edges'], dest='return', conn=conn, _skiplock=True)
             elif n69wspa2zf['mode'] == 'insert':
@@ -1458,9 +1458,9 @@ class A69wspa0yq(DBHandler):
             elif n69wspa2zf['mode'] == 'allbelow':
                 n69wspa2wr = await self.b69x8ynnui(n69wspa2zf['branch'], n69wspa2wz['nodes'], n69wspa2wz['edges'], dest='return', conn=conn, _skiplock=True)
             if n69wspa2wr['parent_hid'] == '1' and n69wspa2wr['parent_br'] == '_':
-                (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv) = (n69wspa2wr['nodes'], n69wspa2wr['funcs'], n69wspa2wr['classes'], n69wspa2wr['params'])
+                n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv = (n69wspa2wr['nodes'], n69wspa2wr['funcs'], n69wspa2wr['classes'], n69wspa2wr['params'])
             else:
-                (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, _, _) = self.b69wspa0y2(base_id, '1', '_', n69wspa2wr, new_parent_class=None, renew_uids=False)
+                n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, _, _ = self.b69wspa0y2(base_id, '1', '_', n69wspa2wr, new_parent_class=None, renew_uids=False)
             if n69wspa2zf['mode'] == 'insert':
                 n69wspa2zf['br_id'] = base_id + '^1#_'
             elif n69wspa2zf['mode'] == 'allbelow':
@@ -1471,7 +1471,7 @@ class A69wspa0yq(DBHandler):
             if n69wspa2zf['mode'] == 'insert':
                 n69wspa2cs = n69wsp9oya[(n69wsp9oya['def_id'] == base_id) & (n69wsp9oya['hid'].str[:2] == '1.') & ~n69wsp9oya['hid'].str[2:].str.contains('\\.')]
                 n69wspa2cs = n69wspa2cs.to_dict(orient='records')[0]
-            (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wspa2mh, n69wsp9osv) = b69wsp9mnk(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, base_id, ret_type='df', strict_order=True, n69wsp9ore=False, n69wsp9oy0=True, n69wspa2y2=False, recur_into_tools=True, n69wspa2f3=True, tolerance=tolerance)
+            n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wspa2mh, n69wsp9osv = b69wsp9mnk(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, base_id, ret_type='df', strict_order=True, n69wsp9ore=False, n69wsp9oy0=True, n69wspa2y2=False, recur_into_tools=True, n69wspa2f3=True, tolerance=tolerance)
             if 'toolcall' in n69wsp9oya.columns:
                 n69wsp9oya['toolcall'] = n69wsp9oya.apply(lambda n69wspa2xo: x69xm5dtzz(n69wspa2xo['node_type'], n69wspa2xo['toolcall']), axis=1)
             if 'type' in n69wspa2mh.columns:
@@ -1485,7 +1485,7 @@ class A69wspa0yq(DBHandler):
         else:
             n69wsp9otg = await self._batch_read([b69wsp9mrq], _skiplock=_skiplock, conn=conn)
             n69wsp9otg = n69wsp9otg[0]
-            (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh, n69wspa2in, n69wspa2zj, n69wspa387, n69wsp9p51) = n69wsp9otg
+            n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2mh, n69wspa2in, n69wspa2zj, n69wspa387, n69wsp9p51 = n69wsp9otg
         n69wspa2r3 = {}
         if n69wspa2zf:
             if n69wspa2zf['mode'] == 'replace':
@@ -1510,7 +1510,7 @@ class A69wspa0yq(DBHandler):
             elif n69wspa2zf['mode'] == 'append':
                 n69wspa2y1 = INSERT_LABEL
                 if x69xm5dtzx(n69wspa2zf['shell_id']) == 'cond':
-                    (n69wspa2j6, targ_br) = n69wspa2zf['shell_id'].split('^')[-1].split('.')[-1].split('#')
+                    n69wspa2j6, targ_br = n69wspa2zf['shell_id'].split('^')[-1].split('.')[-1].split('#')
                     assert '^' in n69wspa2zf['shell_id']
                     n69wspa2qn = n69wspa2zf['shell_id'][:n69wspa2zf['shell_id'].rfind('^')]
                     n69wspa2r3 = {'by-branch': [{'func_id': n69wspa2qn, 'uid': n69wspa2j6, 'cond': loadstr(targ_br), 'label': n69wspa2y1, 'mode': 'between'}]}
@@ -1528,8 +1528,8 @@ class A69wspa0yq(DBHandler):
                 if n69wsp9oq2 == '0' or not n69wsp9oq2:
                     n69wspa2tb = n69wspa2zf['br_id']
                     assert x69xm5dtzx(n69wspa2tb) == 'cond'
-                    (n69wspa2it, condpart) = n69wspa2tb.rsplit('^', 1)
-                    (n69wsp9oz5, n69wspa2w8) = condpart.split('#')
+                    n69wspa2it, condpart = n69wspa2tb.rsplit('^', 1)
+                    n69wsp9oz5, n69wspa2w8 = condpart.split('#')
                     n69wsp9oz5 = n69wsp9oz5.split('.')[-1]
                     n69wspa2w8 = loadstr(n69wspa2w8)
                     n69wspa2r3 = {'by-branch': [{'uid': n69wsp9oz5, 'func_id': n69wspa2it, 'cond': n69wspa2w8, 'label': n69wspa2y1, 'mode': 'append'}]}
@@ -1556,7 +1556,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa2it = n69wspa2q8[0]['def_id']
                         n69wspa2r3['by-branch'] = [{'uid': n69wspa2r0, 'func_id': n69wspa2it, 'cond': loadstr(n69wspa2ml), 'label1': n69wspa2ew, 'label2': n69wspa2i7, 'mode': 'embrace'}]
             elif n69wspa2zf['mode'] == 'allbelow':
-                (n69wspa2j6, targ_br) = n69wspa2zf['branch'].split('^')[-1].split('.')[-1].split('#')
+                n69wspa2j6, targ_br = n69wspa2zf['branch'].split('^')[-1].split('.')[-1].split('#')
                 n69wspa2ew = SECTION_START_LABEL
                 n69wspa2i7 = SECTION_END_LABEL
                 n69wspa2r3 = {'by-branch': [{'uid': n69wspa2j6, 'func_id': n69wspa2zf['func_id'], 'cond': loadstr(targ_br), 'label1': n69wspa2ew, 'label2': n69wspa2i7, 'mode': 'embrace'}]}
@@ -1567,7 +1567,7 @@ class A69wspa0yq(DBHandler):
         if codeswaps:
             x69xm5du09(n69wsp9oya, codeswaps)
         n69wspa2xu = asyncio.get_running_loop()
-        code = await n69wspa2xu.run_in_executor(None, lambda : b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance))
+        code = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance))
         if n69wspa387 > 0:
 
             def b69wspa0xl(n69wspa2ta):
@@ -1597,7 +1597,7 @@ class A69wspa0yq(DBHandler):
         n69wspa2lb = aidle() if not add_start_uidcomments else self.select('nodes', conds=[{'def_id': n69wspa2wq, 'node_type': 'start'}], targets=['uid'], conn=conn, _skiplock=_skiplock)
         n69wspa2tb = n69wspa2wq + n69wspa2k7
         n69wspa2tb = self.b69x8ynnvl(n69wspa2tb, _skiplock=_skiplock, conn=conn)
-        (n69wspa2lb, n69wspa2tb) = await asyncio.gather(n69wspa2lb, n69wspa2tb)
+        n69wspa2lb, n69wspa2tb = await asyncio.gather(n69wspa2lb, n69wspa2tb)
         if add_start_uidcomments:
             n69wspa2lb = n69wspa2lb['uid'].tolist()[0] if len(n69wspa2lb) > 0 else '<UNDEFINED>'
             if n69wspa2lb == '<UNDEFINED>':
@@ -1606,16 +1606,16 @@ class A69wspa0yq(DBHandler):
         n69wspa2i8 = f"def_id LIKE '{n69wspa2tb}*%' AND\n            (SUBSTRING(def_id, LENGTH('{n69wspa2tb}*') + 1) NOT LIKE '%/%'\n            AND SUBSTRING(def_id, LENGTH('{n69wspa2tb}*') + 1) NOT LIKE '%#%'\n            AND SUBSTRING(def_id, LENGTH('{n69wspa2tb}*') + 1) NOT LIKE '%^%'\n            AND SUBSTRING(def_id, LENGTH('{n69wspa2tb}*') + 1) NOT LIKE '%*%')"
         n69wspa2gf = self.select('funcs', cond_sql=n69wspa353, targets=['def_id'], conn=conn, _skiplock=_skiplock) if 'funcs' in choices else aidle(default=pd.DataFrame(columns=list(n69wspa2ts.keys())))
         n69wspa2dp = self.select('classes', cond_sql=n69wspa2i8, targets=['def_id', 'ypos'], conn=conn, _skiplock=_skiplock) if 'classes' in choices else aidle(default=pd.DataFrame(columns=list(n69wspa2dn.keys())))
-        (n69wsp9p6r, n69wspa2gf, n69wspa2dp) = await asyncio.gather(n69wsp9p6r, n69wspa2gf, n69wspa2dp)
+        n69wsp9p6r, n69wspa2gf, n69wspa2dp = await asyncio.gather(n69wsp9p6r, n69wspa2gf, n69wspa2dp)
         n69wspa2gf = n69wspa2gf['def_id'].tolist()
         n69zpbli8f = n69wspa2dp['ypos'].tolist()
         n69wspa2dp = n69wspa2dp['def_id'].tolist()
-        (n69zpbli8f, n69wspa2dp) = zip(*sorted(zip(n69zpbli8f, n69wspa2dp))) if n69wspa2dp else ([], [])
+        n69zpbli8f, n69wspa2dp = zip(*sorted(zip(n69zpbli8f, n69wspa2dp))) if n69wspa2dp else ([], [])
         n69wspa2vf = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock) for aid in n69wspa2gf]
         n69wspa2dh = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock) for aid in n69wspa2dp]
         n69wspa2vf = asyncio.gather(*n69wspa2vf)
         n69wspa2dh = asyncio.gather(*n69wspa2dh)
-        (n69wspa2vf, n69wspa2dh) = await asyncio.gather(n69wspa2vf, n69wspa2dh)
+        n69wspa2vf, n69wspa2dh = await asyncio.gather(n69wspa2vf, n69wspa2dh)
         n69wspa2qt = [c[1] for c in n69wspa2vf]
         n69wspa31n = [c[1] for c in n69wspa2dh]
         n69wspa2qt = '\n'.join(n69wspa2qt)
@@ -1679,7 +1679,7 @@ class A69wspa0yq(DBHandler):
             else:
                 n69wspa2pu = self.b69x8ynntv(base_id, choice, n69wspa2zf=None, style=style, tolerance=tolerance, codeswaps=codeswaps, _skiplock=True, conn=conn)
             n69wspa2r3 = self.b69x8ynnw4(trunk_to_func(base_id), conn=conn, _skiplock=True) if import_range == 'allabove' else aidle()
-            (n69wspa2pu, n69wspa2r3) = await asyncio.gather(n69wspa2pu, n69wspa2r3)
+            n69wspa2pu, n69wspa2r3 = await asyncio.gather(n69wspa2pu, n69wspa2r3)
             n69wspa2dc = n69wspa2pu[0] if style == 'pure' else n69wspa2pu[1]
             if import_range == 'current':
                 pass
@@ -1708,7 +1708,7 @@ class A69wspa0yq(DBHandler):
                 if n69wspa2ga['ntype'] == 'ImportFrom':
                     n69wspa2my = n69wspa2ga['module']
                     if '.' in n69wspa2my:
-                        (n69wspa322, n69wspa38w) = n69wspa2my.rsplit('.', 1)
+                        n69wspa322, n69wspa38w = n69wspa2my.rsplit('.', 1)
                         n69wspa2u9 = (n69wspa396.rstrip('>') + '>' if n69wspa396 else '') + n69wspa322.replace('.', '>') + '/' + n69wspa38w
                         n69wspa375.append(n69wspa2u9)
                     else:
@@ -1748,7 +1748,7 @@ class A69wspa0yq(DBHandler):
             async def b69x8ynnud(code, hier_module_id):
                 nonlocal n69wspa395
                 nonlocal n69wspa2ul
-                (_, _, n69wsp9oq3) = b69wsp9mrs(b69wsp9mq1(code))
+                _, _, n69wsp9oq3 = b69wsp9mrs(b69wsp9mq1(code))
                 n69wspa2jm = b69wsp9mq1(n69wsp9oq3)['body']
                 n69wspa33s = []
                 for n69wspa2ga in n69wspa2jm:
@@ -1787,10 +1787,10 @@ class A69wspa0yq(DBHandler):
                     return []
             n69wspa2m5 = [to_func_id(base_id)] + list(n69wspa395.keys())[1:]
             n69wspa31u = self.b69x8ynnuc(n69wspa2m5, conn=conn, _skiplock=True)
-            (n69wspa2ky, n69wspa31u) = await asyncio.gather(b69x8ynnua(), n69wspa31u)
+            n69wspa2ky, n69wspa31u = await asyncio.gather(b69x8ynnua(), n69wspa31u)
             return (n69wspa395, n69wspa2ul, n69wspa2ky, n69wspa31u)
         n69wsp9otg = await self._batch_read([b69wsp9mrq], _skiplock=_skiplock, conn=conn)
-        (n69wsp9otg, n69wspa2ul, n69wspa2ky, n69wspa31u) = n69wsp9otg[0]
+        n69wsp9otg, n69wspa2ul, n69wspa2ky, n69wspa31u = n69wsp9otg[0]
         for x69xm5dtzo in n69wsp9otg:
             if x69xm5dtzo == n69wspa2lv:
                 continue
@@ -1798,18 +1798,18 @@ class A69wspa0yq(DBHandler):
                 n69wsp9otg[x69xm5dtzo] = b69wsp9moj(n69wsp9otg[x69xm5dtzo])
             except Exception as e:
                 traceback.print_exc()
-        for (n69wspa38w, modcode) in n69wsp9otg.items():
+        for n69wspa38w, modcode in n69wsp9otg.items():
             if n69wspa38w != n69wspa2lv:
                 self.x69xm5dtzs[n69wspa38w] = modcode
         n69wspa35u = {}
-        for (k, v) in n69wsp9otg.items():
+        for k, v in n69wsp9otg.items():
             n69wspa2dd = k.replace('>', '/') + '.py'
             n69wsp9orm = PRECODE + v
             n69wspa35u[n69wspa2dd] = n69wsp9orm
         n69wspa2gp = n69wspa2lv.replace('>', '/') + '.py'
         n69wspa2dk = [r.replace('>', '.').replace('/', '.') for r in self.x69xm5dtzr]
         n69wspa38r = {}
-        for (k, v) in n69wspa2ul.items():
+        for k, v in n69wspa2ul.items():
             k = k.replace('>', '.').replace('/', '.')
             v = [name.replace('>', '.').replace('/', '.') for name in v]
             n69wspa38r[k] = v
@@ -1820,7 +1820,7 @@ class A69wspa0yq(DBHandler):
         def b69wspa0yl(n69wspa2x4):
             nonlocal n69wspa2dk
             n69wspa38l = []
-            for (k, v) in n69wspa38r.items():
+            for k, v in n69wspa38r.items():
                 if n69wspa2x4 in v:
                     if not k in n69wspa2dk:
                         n69wspa38l.append(k)
@@ -1890,7 +1890,7 @@ class A69wspa0yq(DBHandler):
 
     async def b69x8ynnw2(self, n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=''):
         n69x75d5wx = '\n'.join([l.strip() for l in targcode.split('\n') if l.strip().startswith('import') or l.strip().startswith('from')])
-        (n69wspa371, _) = await self.b69x8ynnvd(n69wspa2yk, n69wspa381, 'both', extpkgs=extpkgs, n69wspa2z4=n69wspa2wc, recur_objs=True, n69x75d5wx=n69x75d5wx, conn=conn, _skiplock=True)
+        n69wspa371, _ = await self.b69x8ynnvd(n69wspa2yk, n69wspa381, 'both', extpkgs=extpkgs, n69wspa2z4=n69wspa2wc, recur_objs=True, n69x75d5wx=n69x75d5wx, conn=conn, _skiplock=True)
         n69wspa2xj = n69wspa371['classes']['def_id'].tolist()
         n69wspa2ka = n69wspa371['funcs']
         n69wspa2cc = n69wspa371['params']
@@ -1903,7 +1903,7 @@ class A69wspa0yq(DBHandler):
         n69wspa2ek = {}
         n69wspa2sb = 0
         n69wspa2jr = time.time()
-        n69wspa2pf = {key: sub_df for (key, sub_df) in n69wspa2cc[n69wspa2cc['ctx'] == 'input'].groupby('def_id', sort=False)}
+        n69wspa2pf = {key: sub_df for key, sub_df in n69wspa2cc[n69wspa2cc['ctx'] == 'input'].groupby('def_id', sort=False)}
         n69wspa2ex = time.time()
         n69wspa2sb = n69wspa2ex - n69wspa2jr
         n69wspa2yq = 0
@@ -1911,7 +1911,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2ex = time.time()
             n69wspa2ln = n69wspa2pf.get(imppid)
             n69wspa2ln = [] if n69wspa2ln is None else n69wspa2ln.to_dict(orient='records')
-            (myexpr, myfmtd) = b69wsp9mon(n69wspa2ln, resort=True)
+            myexpr, myfmtd = b69wsp9mon(n69wspa2ln, resort=True)
             n69wspa302 = time.time()
             n69wspa2yq = n69wspa2yq + (n69wspa302 - n69wspa2ex)
             n69wspa2ek[imppid] = myfmtd
@@ -1949,7 +1949,7 @@ class A69wspa0yq(DBHandler):
         n69wsp9p2u = self.select('funcs', cond_sql=n69wspa32s, conn=conn, _skiplock=_skiplock)
         n69wspa2xf = self.select('classes', cond_sql=n69wspa32s, conn=conn, _skiplock=_skiplock)
         n69wspa2d3 = self.select('params', cond_sql=n69wspa32s, conn=conn, _skiplock=_skiplock)
-        (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = await asyncio.gather(n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
+        n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = await asyncio.gather(n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
         return (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3)
 
     async def b69x8ynnv4(self, leftuid, rightuid, n69wsp9oya, n69wspa34y, dest='cache', conn=None, _skiplock=False):
@@ -1971,7 +1971,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9onr = n69wspa2gv.rsplit('.', 1)[0]
             assert n69wspa2yl.startswith(n69wsp9onr + '.'), f'The two ends of the selection are not under the same parent: {n69wspa2gv} vs {n69wspa2gv}'
             assert n69wspa2e1 == n69wspa2od, f'The two ends of the selection are not under the same branch: {n69wspa2e1} vs {n69wspa2od}'
-            (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = await self.b69x8ynnuo(n69wspa2zz, conn=conn, _skiplock=True)
+            n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = await self.b69x8ynnuo(n69wspa2zz, conn=conn, _skiplock=True)
             n69wspa2pn = [c for c in n69wspa2zz.columns.tolist() if c in n69wspa2ha.keys()]
             n69wspa2g7 = n69wspa2zz[n69wspa2pn]
             n69wspa2fo = {'def_id': n69wspa2el, 'parent_hid': n69wsp9onr, 'left_hids': [n69wspa2gv], 'right_hids': [n69wspa2yl], 'parent_br': rectify_cond(n69wspa2e1), 'nodes': pd.concat([n69wspa2g7, n69wspa34c], ignore_index=True), 'funcs': n69wsp9p2u, 'classes': n69wspa2xf, 'params': n69wspa2d3}
@@ -2029,7 +2029,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9p3g = n69wspa34q[0]
             assert n69wsp9p3g == n69wspa2ip
             n69wspa354 = n69wspa2zz[n69wspa2zz['hid'].str.startswith(n69wsp9onr + '.') & ~n69wspa2zz['hid'].str[len(n69wsp9onr) + 1:].str.contains('\\.') & (n69wspa2zz['branch'] == n69wspa2ip) & (n69wspa2zz['nexts'].isna() | n69wspa2zz['nexts'].apply(lambda x: x == []))]['hid'].tolist()
-            (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = await self.b69x8ynnuo(n69wspa2zz, conn=conn, _skiplock=True)
+            n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = await self.b69x8ynnuo(n69wspa2zz, conn=conn, _skiplock=True)
             n69wspa2pn = [c for c in n69wspa2zz.columns.tolist() if c in n69wspa2ha.keys()]
             n69wspa2g7 = n69wspa2zz[n69wspa2pn]
             n69wspa2fo = {'def_id': n69wspa2el, 'parent_hid': n69wsp9onr, 'left_hids': n69wspa2z7, 'right_hids': n69wspa354, 'parent_br': rectify_cond(n69wsp9p3g), 'nodes': pd.concat([n69wspa2g7, n69wspa34c], ignore_index=True), 'funcs': n69wsp9p2u, 'classes': n69wspa2xf, 'params': n69wspa2d3}
@@ -2074,9 +2074,9 @@ class A69wspa0yq(DBHandler):
             n69wspa354 = n69wspa2zz[n69wspa2zz['hid'].str.startswith(n69wsp9onr + '.') & ~n69wspa2zz['hid'].str[len(n69wsp9onr) + 1:].str.contains('\\.') & (n69wspa2zz['branch'] == n69wspa2ip) & (n69wspa2zz['nexts'].isna() | n69wspa2zz['nexts'].apply(lambda x: x == []))]['hid'].tolist()
             n69wspa2nn = self.b69x8ynnuo(n69wspa2zz, conn=conn, _skiplock=True)
             n69wspa34h = self.b69x8ynnvs(n69wspa2el + '^' + n69wsp9onr + '#' + str(n69wspa2ip), conn=conn, _skiplock=True)
-            (n69wspa2nn, n69wspa34h) = await asyncio.gather(n69wspa2nn, n69wspa34h)
-            (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = n69wspa2nn
-            (innodes, infuncs, inclasses, inparams) = n69wspa34h
+            n69wspa2nn, n69wspa34h = await asyncio.gather(n69wspa2nn, n69wspa34h)
+            n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = n69wspa2nn
+            innodes, infuncs, inclasses, inparams = n69wspa34h
             n69wspa2pn = [c for c in n69wspa2zz.columns.tolist() if c in n69wspa2ha.keys()]
             n69wspa2g7 = n69wspa2zz[n69wspa2pn]
             n69wspa2h6 = pd.concat([n69wspa2g7, n69wspa34c, innodes], ignore_index=True)
@@ -2103,12 +2103,12 @@ class A69wspa0yq(DBHandler):
                 n69wspa2sz = '^'
             else:
                 raise f'def_id neither func nor class: {n69wspa2wq}'
-            (hier_defid, right) = n69wspa2wq.rsplit('^', 1)
-            (n69wspa2cn, right) = right.split('#', 1)
-            (n69wspa35y, right) = right.split(n69wspa2xv, 1)
+            hier_defid, right = n69wspa2wq.rsplit('^', 1)
+            n69wspa2cn, right = right.split('#', 1)
+            n69wspa35y, right = right.split(n69wspa2xv, 1)
             n69wspa2op = None
             if '*' in n69wspa35y:
-                (n69wspa35y, n69wspa2op) = n69wspa35y.split('*')
+                n69wspa35y, n69wspa2op = n69wspa35y.split('*')
             assert x69xm5dtzx(hier_defid) == 'func'
             assert not any([x in n69wspa2cn for x in ('#', '/', '^', '*')]), n69wspa2cn
             if not n69wspa2cn.startswith('1.') and (not n69wspa2cn == '1'):
@@ -2123,7 +2123,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9p3q = self.select('funcs', cond_sql=n69wspa357, conn=conn, _skiplock=True)
             n69wsp9p6q = self.select('classes', cond_sql=n69wspa357, conn=conn, _skiplock=True)
             n69wsp9osv = self.select('params', cond_sql=n69wspa357, conn=conn, _skiplock=True)
-            (n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv) = await asyncio.gather(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv)
+            n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv = await asyncio.gather(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv)
             self.n69wspa2fo = {'def_id': hier_defid, 'parent_hid': n69wspa2cn, 'left_hids': [], 'right_hids': [], 'parent_br': n69wspa35y, 'nodes': n69wsp9oya, 'funcs': n69wsp9p3q, 'classes': n69wsp9p6q, 'params': n69wsp9osv}
             if n69wspa2op:
                 self.n69wspa2fo['parent_class'] = n69wspa2op
@@ -2135,7 +2135,7 @@ class A69wspa0yq(DBHandler):
         n69wspa2go = [u for u in n69wspa2z0 if '-end' in u]
         n69wsp9own = {n69wsp9oq0: gen_base36_id() if renew_uids else n69wsp9oq0 for n69wsp9oq0 in n69wspa2mn}
         for n69wspa2i0 in n69wspa2go:
-            (olduid, endfix) = n69wspa2i0.split('-')
+            olduid, endfix = n69wspa2i0.split('-')
             if not olduid in n69wsp9own:
                 continue
             n69wspa2ni = n69wsp9own[olduid] + '-' + endfix
@@ -2260,7 +2260,7 @@ class A69wspa0yq(DBHandler):
             nonlocal n69wspa2lp
             n69wsp9onh = None
             if x69xm5dtzx(n69wspa2lp) == 'class':
-                (n69wspa2lp, n69wsp9onh) = n69wspa2lp.rsplit('*', 1)
+                n69wspa2lp, n69wsp9onh = n69wspa2lp.rsplit('*', 1)
                 assert n69wsp9onh.strip()
                 assert x69xm5dtzx(n69wsp9onh) == 'folder'
             n69wspa2lp = await self.b69x8ynnvl(n69wspa2lp, _skiplock=True, conn=conn)
@@ -2269,7 +2269,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2uy = n69wspa2lp[len(n69wspa2yk) + 1:n69wspa2lp.rfind('#')]
             n69wsp9omy = n69wspa2lp[n69wspa2lp.rfind('#') + 1:]
             n69wsp9omy = loadstr(n69wsp9omy)
-            (n69wsp9oz2, n69wsp9ox6, n69wsp9p0s, n69wspa2ws, n69wspa364, n69wspa2qk) = self.b69wspa0y2(n69wspa2yk, n69wspa2uy, n69wsp9omy, self.n69wspa2fo, new_parent_class=n69wsp9onh)
+            n69wsp9oz2, n69wsp9ox6, n69wsp9p0s, n69wspa2ws, n69wspa364, n69wspa2qk = self.b69wspa0y2(n69wspa2yk, n69wspa2uy, n69wsp9omy, self.n69wspa2fo, new_parent_class=n69wsp9onh)
             n69wsp9ox6 = pd.concat([n69wsp9ox6, pd.DataFrame([{'def_id': n69wspa2yk, 'code': '', 'globals': [], 'nonlocals': [], 'imports_code': '', 'xpos': 0, 'ypos': 0, 'doc': '', 'is_async': False, 'deco_expr': ''}])], ignore_index=True)
             n69wsp9oz2 = pd.concat([pd.DataFrame([{'hid': n69wspa2uy + '.0', 'uid': gen_base36_id(), 'branch': n69wsp9omy, 'data_providers': [], 'node_type': 'start', 'code': '', 'pres': [], 'nexts': n69wspa364, 'xpos': 0, 'ypos': 0, 'def_id': n69wspa2yk}]), n69wsp9oz2], ignore_index=True)
             if not n69wsp9onh:
@@ -2326,7 +2326,7 @@ class A69wspa0yq(DBHandler):
                 assert n69wspa2uy == n69wspa320[0][:n69wspa320[0].rfind('.')]
                 assert n69wspa320[0].count('.') == n69wspa320[1].count('.') == n69wspa2uy.count('.') + 1
                 assert n69wspa320[0].startswith(n69wspa2uy + '.') and n69wspa320[1].startswith(n69wspa2uy + '.')
-                (n69wspa2he, n69wspa2mz) = n69wspa320
+                n69wspa2he, n69wspa2mz = n69wspa320
                 n69wspa2he = n69wspa2he.split('-end')[0]
                 n69wspa2mz = n69wspa2mz.split('-end')[0]
             elif n69wspa2da['mode'] == 'allbelow':
@@ -2353,19 +2353,19 @@ class A69wspa0yq(DBHandler):
                 if len(n69wspa359) < len(n69wspa2h9['body']):
                     n69wspa2xa = [n for n in n69wspa2h9['body'] if n['ntype'] not in n69wspa37r]
                     n69wspa2wh = {'ntype': 'Module', 'body': n69wspa2xa}
-                    (_, dirtycode) = b65wsp9mrz(n69wspa2wh)
+                    _, dirtycode = b65wsp9mrz(n69wspa2wh)
                 n69wspa2h9['body'] = n69wspa359
-                (_, code) = b65wsp9mrz(n69wspa2h9)
+                _, code = b65wsp9mrz(n69wspa2h9)
             n69wspa2z4 = self.b69x8ynnto(n69wspa2lp, n69wspa2nm=n69wspa2nm, external_class_ids=external_class_ids, inject_imports=True, return_visible_brs=True, _skiplock=True, conn=conn)
             n69wspa34t = self.b69x8ynnt3(n69wspa2yk, needvars=False, _skiplock=True, conn=conn)
             n69wspa2ow = f"\n            def_id = '{n69wspa2yk}'\n            "
             n69wspa31h = self.select('funcs', cond_sql=n69wspa2ow, targets=['def_id'], _skiplock=True, conn=conn)
             extpkgs = self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
-            (n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs) = await asyncio.gather(n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs)
+            n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs = await asyncio.gather(n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs)
             if len(n69wspa31h) == 0:
                 raise ValueError(f'[404] Parent func no loger exists: {n69wspa2yk}')
-            (n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2wc) = n69wspa2z4
-            (n69wspa2gh, n69wspa354, n69wspa326, n69wspa2fn, _) = n69wspa34t
+            n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2wc = n69wspa2z4
+            n69wspa2gh, n69wspa354, n69wspa326, n69wspa2fn, _ = n69wspa34t
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
             if not do_refresh and pastedata:
                 n69wspa2j1 = []
@@ -2373,7 +2373,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa2ek = {}
                 n69wspa358 = pd.DataFrame(columns=list(n69wspa2hw.keys()))
             else:
-                (n69wspa2j1, n69wspa2eh, n69wspa2ek, n69wspa358) = await self.b69x8ynnw2(n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=code)
+                n69wspa2j1, n69wspa2eh, n69wspa2ek, n69wspa358 = await self.b69x8ynnw2(n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=code)
             n69wsp9opz = n69wsp9opz + n69wspa2j1
             n69wsp9oxq = n69wsp9oxq + n69wspa2eh
             n69wsp9p60 = {**n69wspa2ek, **n69wsp9p60}
@@ -2410,7 +2410,7 @@ class A69wspa0yq(DBHandler):
                             if not n69wspa2wq or n69wspa2wq is np.nan:
                                 n69wspa2wq = []
                             if n69wspa2he != n69wspa2mz:
-                                (_, n69wspa2hi) = b69wsp9mnd(n69wsp9owh, n69wsp9owh[n69wspa2he], 'nexts', endhid=n69wspa2mz, unend_behavior='raise')
+                                _, n69wspa2hi = b69wsp9mnd(n69wsp9owh, n69wsp9owh[n69wspa2he], 'nexts', endhid=n69wspa2mz, unend_behavior='raise')
                             else:
                                 n69wspa2hi = {n69wspa2mz}
                             n69wspa2m9 = n69wspa2gh.loc[n69wspa2gh['hid'].str.startswith(tuple([r + '.' for r in n69wspa2hi] + [r + '-' for r in n69wspa2hi]))]
@@ -2453,12 +2453,12 @@ class A69wspa0yq(DBHandler):
             n69wspa341 = None
             if not pastedata:
                 n69wspa2xu = asyncio.get_running_loop()
-                (n69wspa32w, n69wspa2ei, n69wspa35a, myvarsdf, n69wspa34y) = await n69wspa2xu.run_in_executor(None, lambda : b69wsp9mpo(code, n69wspa2yk, n69wspa2uy=n69wspa2uy, n69wsp9omy=n69wsp9omy, n69wspa2oe=n69wspa2oe, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p19=n69wspa30u, base_extra_info={'func_params': n69wsp9p60}, relocate_asks=False, ret_type='df', base_xpos=0, base_ypos=0, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, strict_order=True, skip_outershell=False, needvars=False, n69wsp9p3l=n69wspa358))
+                n69wspa32w, n69wspa2ei, n69wspa35a, myvarsdf, n69wspa34y = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mpo(code, n69wspa2yk, n69wspa2uy=n69wspa2uy, n69wsp9omy=n69wsp9omy, n69wspa2oe=n69wspa2oe, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p19=n69wspa30u, base_extra_info={'func_params': n69wsp9p60}, relocate_asks=False, ret_type='df', base_xpos=0, base_ypos=0, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, strict_order=True, skip_outershell=False, needvars=False, n69wsp9p3l=n69wspa358))
                 if 'toolcall' in n69wspa32w.columns:
                     n69wspa32w['toolcall'] = n69wspa32w.apply(lambda n69wspa2xo: x69xm5dtzz(n69wspa2xo['node_type'], n69wspa2xo['toolcall']), axis=1)
             else:
                 assert not code.strip() or code.strip() in ('pass', EMPTY_PASSER)
-                (n69wspa32w, n69wspa2ei, n69wspa35a, n69wspa34y) = pastedata
+                n69wspa32w, n69wspa2ei, n69wspa35a, n69wspa34y = pastedata
             if sustainable and n69wspa2da['mode'] in ('allbelow', 'replace'):
                 n69wspa35h = n69wspa32w[(n69wspa32w['def_id'] == n69wspa2yk) & (n69wspa32w['node_type'] != 'start')]
                 if len(n69wspa35h) == 0:
@@ -2484,7 +2484,7 @@ class A69wspa0yq(DBHandler):
                     n69wsp9oye = self.b69wspa0yj(n69wspa2yk[:n69wspa2xk]) + ':funcs'
                 n69wspa2w0 = copy.deepcopy(n69wspa2zq)
                 n69wspa2x5 = n69wsp9owv['imports_code'] + '\n' + n69wspa2w0['imports_code']
-                (_, _, n69wspa2x5) = b69wsp9mrs(b69wsp9mq1(n69wspa2x5), expand=True)
+                _, _, n69wspa2x5 = b69wsp9mrs(b69wsp9mq1(n69wspa2x5), expand=True)
                 n69wspa2x5 = '\n'.join(list(set(n69wspa2x5.split('\n'))))
                 n69wspa2w0['imports_code'] = n69wspa2x5
                 for ng in n69wsp9owv['globals']:
@@ -2624,7 +2624,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2rm = pd.concat([n69wspa2on, n69wspa365], ignore_index=True)
                 else:
                     n69wspa2xu = asyncio.get_running_loop()
-                    (n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2zr, n69wspa2m8) = await n69wspa2xu.run_in_executor(None, lambda : b69wsp9mnk(n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2m8, n69wspa2yk, ret_type='df', n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p60=n69wsp9p60, strict_order=True, n69wsp9ore=n69wsp9ore, n69wsp9oy0=n69wsp9oy0, n69wspa2y2=n69wspa2y2, n69wspa2lx=n69wspa2lx, recur_into_tools=n69wspa2ca, n69wspa2f3=n69wspa2f3, n69wsp9p3l=n69wspa358, tolerance=tolerance, n69znp79nl=n69znp79nl))
+                    n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2zr, n69wspa2m8 = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnk(n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2m8, n69wspa2yk, ret_type='df', n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p60=n69wsp9p60, strict_order=True, n69wsp9ore=n69wsp9ore, n69wsp9oy0=n69wsp9oy0, n69wspa2y2=n69wspa2y2, n69wspa2lx=n69wspa2lx, recur_into_tools=n69wspa2ca, n69wspa2f3=n69wspa2f3, n69wsp9p3l=n69wspa358, tolerance=tolerance, n69znp79nl=n69znp79nl))
                 n69wspa2y7 = n69wspa32w['uid'].tolist()
                 n69wspa31j = n69wspa31j[~n69wspa31j['uid'].isin(n69wspa2y7)]
                 n69wspa34e = n69wspa31j.set_index('uid')['code']
@@ -2699,13 +2699,13 @@ class A69wspa0yq(DBHandler):
             n69wspa31h = self.select('classes', cond_sql=n69wspa2ow, targets=['def_id'], _skiplock=True, conn=conn)
             n69wspa34t = self.b69x8ynnt3(n69wspa2yk, needvars=False, _skiplock=True, conn=conn)
             extpkgs = self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
-            (n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs) = await asyncio.gather(n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs)
+            n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs = await asyncio.gather(n69wspa2z4, n69wspa34t, n69wspa31h, extpkgs)
             if len(n69wspa31h) == 0:
                 raise ValueError(f'[404] Parent class no loger exists: {base_class_id}')
-            (n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2wc) = n69wspa2z4
-            (n69wspa2gh, n69wspa354, n69wspa326, n69wspa2fn, _) = n69wspa34t
+            n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2wc = n69wspa2z4
+            n69wspa2gh, n69wspa354, n69wspa326, n69wspa2fn, _ = n69wspa34t
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
-            (n69wspa2j1, n69wspa2eh, n69wspa2ek, n69wspa358) = await self.b69x8ynnw2(n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=code)
+            n69wspa2j1, n69wspa2eh, n69wspa2ek, n69wspa358 = await self.b69x8ynnw2(n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=code)
             n69wsp9opz = n69wsp9opz + n69wspa2j1
             n69wsp9oxq = n69wsp9oxq + n69wspa2eh
             n69wsp9p60 = {**n69wspa2ek, **n69wsp9p60}
@@ -2718,16 +2718,16 @@ class A69wspa0yq(DBHandler):
             if len(n69wspa359) < len(n69wspa2h9['body']):
                 n69wspa2xa = [n for n in n69wspa2h9['body'] if n['ntype'] not in n69wspa37r]
                 n69wspa2wh = {'ntype': 'Module', 'body': n69wspa2xa}
-                (_, dirtycode) = b65wsp9mrz(n69wspa2wh)
+                _, dirtycode = b65wsp9mrz(n69wspa2wh)
             n69wspa2yy = {'ntype': 'Module', 'body': [n69wspa35z, {'ntype': 'ClassDef', 'name': n69wspa313, 'bases': [], 'keywords': [], 'body': n69wspa359, 'decorator_list': []}]}
-            (_, code) = b65wsp9mrz(n69wspa2yy)
+            _, code = b65wsp9mrz(n69wspa2yy)
             if not pastedata:
-                (n69wspa32w, n69wspa2ei, n69wspa35a, myvarsdf, n69wspa34y) = b69wsp9mpo(code, n69wspa2yk, n69wspa2uy=n69wspa2uy, n69wsp9omy=n69wsp9omy, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p19=None, base_extra_info={'func_params': n69wsp9p60}, relocate_asks=False, ret_type='df', base_xpos=0, base_ypos=0, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, strict_order=True, skip_outershell=False, needvars=False, n69wsp9p3l=n69wspa358)
+                n69wspa32w, n69wspa2ei, n69wspa35a, myvarsdf, n69wspa34y = b69wsp9mpo(code, n69wspa2yk, n69wspa2uy=n69wspa2uy, n69wsp9omy=n69wsp9omy, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p19=None, base_extra_info={'func_params': n69wsp9p60}, relocate_asks=False, ret_type='df', base_xpos=0, base_ypos=0, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, strict_order=True, skip_outershell=False, needvars=False, n69wsp9p3l=n69wspa358)
                 if 'toolcall' in n69wspa32w.columns:
                     n69wspa32w['toolcall'] = n69wspa32w.apply(lambda n69wspa2xo: x69xm5dtzz(n69wspa2xo['node_type'], n69wspa2xo['toolcall']), axis=1)
             else:
                 assert not code.strip() or code.strip() in ('pass', EMPTY_PASSER), code
-                (n69wspa32w, n69wspa2ei, n69wspa35a, n69wspa34y) = pastedata
+                n69wspa32w, n69wspa2ei, n69wspa35a, n69wspa34y = pastedata
             n69wsp9owv = n69wspa2ei[n69wspa2ei['def_id'] == n69wspa2yk].to_dict(orient='records')[0]
             n69wsp9oye = None
             if n69wsp9owv.get('globals') or n69wsp9owv.get('nonlocals') or n69wsp9owv.get('imports_code'):
@@ -2788,7 +2788,7 @@ class A69wspa0yq(DBHandler):
             for n69wspa2hh in n69wspa33a:
                 n69wspa2lx[n69wspa2hh] = n69wspa32w[n69wspa32w['def_id'] == n69wspa2hh]['hid'].tolist()
             n69wspa31j = n69wspa2rm[['uid', 'code']].copy()
-            (n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2zr, n69wspa2m8) = b69wsp9mnk(n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2m8, n69wspa2yk, ret_type='df', n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p60=n69wsp9p60, strict_order=True, n69wsp9ore=True, n69wsp9oy0=True, n69wspa2y2=True, n69wspa2lx=n69wspa2lx, recur_into_tools=True, n69wspa2f3=True, n69wsp9p3l=n69wspa358, tolerance=tolerance, n69znp79nl=n69znp79nl)
+            n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2zr, n69wspa2m8 = b69wsp9mnk(n69wspa2rm, n69wspa2tl, n65d20cda3, n69wspa2m8, n69wspa2yk, ret_type='df', n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, base_funcs=n69wsp9opz, base_classes=n69wsp9oxq, n69wsp9p60=n69wsp9p60, strict_order=True, n69wsp9ore=True, n69wsp9oy0=True, n69wspa2y2=True, n69wspa2lx=n69wspa2lx, recur_into_tools=True, n69wspa2f3=True, n69wsp9p3l=n69wspa358, tolerance=tolerance, n69znp79nl=n69znp79nl)
             n69wspa2rm = n69wspa2rm.replace(np.nan, None)
             n69wspa2tl = n69wspa2tl.replace(np.nan, None)
             n65d20cda3 = n65d20cda3.replace(np.nan, None)
@@ -2868,13 +2868,13 @@ class A69wspa0yq(DBHandler):
             return int(n69wspa2s3)
         n69wspa38y = {}
         if rectify_caseids:
-            for (k, n69wspa2mh) in n69wsp9oy3.items():
+            for k, n69wspa2mh in n69wsp9oy3.items():
                 if n69wspa2mh['node_type'] in ('excepts', 'match'):
                     n69wsp9ot8 = {}
                     n69wspa2oj = {}
                     n69wspa2up = {}
                     n69wsp9osi = 0
-                    for (oldc, caseinfo) in n69wspa2mh['cases'].items():
+                    for oldc, caseinfo in n69wspa2mh['cases'].items():
                         assert oldc.isdigit()
                         n69wsp9ot8[n69wsp9osi] = caseinfo
                         n69wspa2oj[oldc] = n69wsp9osi
@@ -2895,7 +2895,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2km['source'] = n69wspa2km['source'].apply(lambda x: n69wspa2x6.get(x, x))
                     n69wspa38y[n69wspa2mh['uid']] = n69wspa2oj
                 else:
-                    n69wspa2mh['cases'] = {rectify_cond(k): v for (k, v) in n69wspa2mh['cases'].items()}
+                    n69wspa2mh['cases'] = {rectify_cond(k): v for k, v in n69wspa2mh['cases'].items()}
         n69wspa2pt = set(n69wsp9oy3.keys())
         if 1:
             pass
@@ -3037,7 +3037,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa2uv = (n69wspa2qd - n69wspa2os) / n69wsp9osu + 1
             else:
                 n69wspa2uv = 0
-            for (n69wsp9p34, nn) in enumerate(n69wspa2pi):
+            for n69wsp9p34, nn in enumerate(n69wspa2pi):
                 n69wspa2ti = insection
                 if nn['uid'] in section['lefts']:
                     n69wspa2ti = True
@@ -3081,7 +3081,7 @@ class A69wspa0yq(DBHandler):
         if n69wsp9ore and (not n69wspa2f3):
             n69wspa2yv = n69wspa2uq[['uid', 'code']].copy() if 'code' in n69wspa2uq.columns else None
             n69wspa2xu = asyncio.get_running_loop()
-            n69wspa2uq = await n69wspa2xu.run_in_executor(None, lambda : b69wsp9mpz(n69wsp9oo8, n69wspa2yk, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, tolerance=2 if level == 'adlvl' else 0))
+            n69wspa2uq = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mpz(n69wsp9oo8, n69wspa2yk, n69wsp9osu=NODESPACINGX, n69wsp9ozl=NODESPACINGY, tolerance=2 if level == 'adlvl' else 0))
             if level == 'adlvl' and 'code' in n69wspa2uq.columns:
                 n69wspa2uq = n69wspa2uq[[c for c in n69wspa2uq.columns if c != 'code']]
                 n69wspa2uq = pd.merge(n69wspa2uq, n69wspa2yv, on='uid', how='left')
@@ -3120,7 +3120,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2d3 = self.select('params', cond_sql=n69wspa357, targets=list(n69wspa356.keys()), _skiplock=True, conn=conn) if n69wspa2sf else aidle()
             n69wspa34c = self.select('nodes', cond_sql=n69wspa357, targets=list(n69wspa2ha.keys()), _skiplock=True, conn=conn) if n69wspa2sf else aidle()
             n69wspa31h = self.select('funcs', cond_sql=n69wspa2ow, targets=['def_id'], _skiplock=True, conn=conn)
-            (n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c, n69wspa31h) = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c, n69wspa31h)
+            n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c, n69wspa31h = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c, n69wspa31h)
             if len(n69wspa31h) == 0:
                 raise ValueError(f'[404] Parent func no loger exists: {n69wspa2yk}')
             n69wspa2u4 = n69wspa2y6['uid'].tolist()
@@ -3226,7 +3226,7 @@ class A69wspa0yq(DBHandler):
 
     async def b69x8ynnvk(self, n65d20cda3, rela, todel=None, conn=None, _skiplock=False):
         n69wspa2yo = []
-        for (k, v) in rela.items():
+        for k, v in rela.items():
             assert k.count('#') == 1 and k.count('@') == 1
             assert v.count('#') == 1 and v.count('@') == 1
             assert k.find('#') < k.find('@')
@@ -3289,7 +3289,7 @@ class A69wspa0yq(DBHandler):
             return n69wspa2tb
         if n65d20cda3 == '1':
             return n69wspa2tb
-        (n69wsp9p51, _) = await self.b69x8ynnvc(n65d20cda3, _skiplock=_skiplock, conn=conn)
+        n69wsp9p51, _ = await self.b69x8ynnvc(n65d20cda3, _skiplock=_skiplock, conn=conn)
         n69wspa37n = n69wspa2tb[:n69wspa2eq] + n69wsp9p51 + n69wspa2tb[n69wspa2ox:]
         return n69wspa37n
 
@@ -3363,7 +3363,7 @@ class A69wspa0yq(DBHandler):
                 pass
             n69wsp9onl['name'] = 'return'
             del func['inputs'], func['return']
-            for (ii, inp) in enumerate(n69wsp9ozv):
+            for ii, inp in enumerate(n69wsp9ozv):
                 if not inp['name'].strip():
                     continue
                 inp['def_id'] = func['def_id']
@@ -3403,7 +3403,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2nb = n69wspa2qg.rsplit('^', 1)[0]
                     n69wspa2xc = f"def_id = '{n69wspa2nb}'"
                     n69wspa31h = self.select('funcs', cond_sql=n69wspa2xc, targets=['def_id'], _skiplock=True, conn=conn)
-            (n69wspa34j, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h) = await asyncio.gather(n69wspa34j, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h)
+            n69wspa34j, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h = await asyncio.gather(n69wspa34j, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h)
             if len(n69wspa31h) == 0:
                 raise ValueError(f'[404] Parent element no longer exists. Cannot edit funcs.')
             if cached:
@@ -3512,7 +3512,7 @@ class A69wspa0yq(DBHandler):
             n69wspa36j = n69wspa2qg.rsplit('^', 1)[0]
             n69wspa2ow = f"\n            def_id = '{n69wspa36j}'\n            "
             n69wspa31h = self.select('funcs', cond_sql=n69wspa2ow, targets=['def_id'], _skiplock=True, conn=conn)
-            (n69wspa2i2, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h) = await asyncio.gather(n69wspa2i2, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h)
+            n69wspa2i2, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h = await asyncio.gather(n69wspa2i2, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt, n69wspa31h)
             if len(n69wspa31h) == 0:
                 raise ValueError(f'[404] Parent func no loger exists: {n69wspa36j}')
             if cached:
@@ -3580,7 +3580,7 @@ class A69wspa0yq(DBHandler):
         async def b69x8ynnsr(conn):
 
             def b69wspa0xv(existing_data, n69wspa2qn, separator):
-                (n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3) = (existing_data['funcs'], existing_data['classes'], existing_data['nodes'], existing_data['params'])
+                n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3 = (existing_data['funcs'], existing_data['classes'], existing_data['nodes'], existing_data['params'])
                 n69wsp9p2u = n69wsp9p2u[(n69wsp9p2u['def_id'] == n69wspa2qn) | n69wsp9p2u['def_id'].str.startswith(n69wspa2qn + separator)]
                 n69wspa2xf = n69wspa2xf[n69wspa2xf['def_id'].str.startswith(n69wspa2qn + separator)]
                 n69wspa2d3 = n69wspa2d3[(n69wspa2d3['def_id'] == n69wspa2qn) | n69wspa2d3['def_id'].str.startswith(n69wspa2qn + separator)]
@@ -3629,9 +3629,9 @@ class A69wspa0yq(DBHandler):
                     n69wspa2xf = self.select('classes', cond_sql=n69wspa357, _skiplock=True, conn=conn)
                     n69wspa2d3 = self.select('params', cond_sql=n69wspa357, _skiplock=True, conn=conn)
                     n69wspa34c = self.select('nodes', cond_sql=n69wspa357, _skiplock=True, conn=conn)
-                    (n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3) = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3)
+                    n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3 = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa34c, n69wspa2d3)
                 else:
-                    (n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3) = b69wspa0xv(existing_data, n69wspa2qn, '^')
+                    n69wspa34c, n69wsp9p2u, n69wspa2xf, n69wspa2d3 = b69wspa0xv(existing_data, n69wspa2qn, '^')
                     assert n69wspa2qn in n69wsp9p2u['def_id'].tolist(), f"eh024 {n69wspa2qn}。有的funcs：{n69wsp9p2u['def_id'].tolist()}"
                 assert n69wspa2pz.count(':') == 1
                 if n69wspa2jq == 'dag':
@@ -3658,9 +3658,9 @@ class A69wspa0yq(DBHandler):
                     n69wspa2jt = self.select('params', cond_sql=n69wspa2p1, _skiplock=True, conn=conn)
                     n69wsp9omx = self.select('nodes', cond_sql=n69wspa2p1, _skiplock=True, conn=conn)
                     n69wspa2uj = self.select('classes', cond_sql=n69wspa2p1, _skiplock=True, conn=conn)
-                    (n69wspa2n0, n69wspa2jt, n69wsp9omx, n69wspa2uj) = await asyncio.gather(n69wspa2n0, n69wspa2jt, n69wsp9omx, n69wspa2uj)
+                    n69wspa2n0, n69wspa2jt, n69wsp9omx, n69wspa2uj = await asyncio.gather(n69wspa2n0, n69wspa2jt, n69wsp9omx, n69wspa2uj)
                 else:
-                    (n69wsp9omx, n69wspa2n0, n69wspa2uj, n69wspa2jt) = b69wspa0xv(existing_data, n69wspa2qg, '/')
+                    n69wsp9omx, n69wspa2n0, n69wspa2uj, n69wspa2jt = b69wspa0xv(existing_data, n69wspa2qg, '/')
                 if n69wspa2jq == 'funcs':
                     n69wspa34x = b69wspa0yo(n69wspa2n0, n69wspa2jt, n69wspa31m)
                     n69wspa2mh = await self.b69x8ynnta(n69wspa34x, 'funcs', count_previews=True, conn=conn, _skiplock=True)
@@ -3729,7 +3729,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa2y6 = self.select('nodes', cond_sql=n69wspa33n, targets=list(n69wspa2ha.keys()), _skiplock=True, conn=conn)
                 n69wspa2d3 = self.select('params', cond_sql=n69wspa357, targets=list(n69wspa356.keys()), _skiplock=True, conn=conn)
                 n69wspa34c = self.select('nodes', cond_sql=n69wspa357, targets=list(n69wspa2ha.keys()), _skiplock=True, conn=conn)
-                (n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c) = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c)
+                n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c = await asyncio.gather(n69wsp9p2u, n69wspa2xf, n69wspa2y6, n69wspa2d3, n69wspa34c)
                 n69wspa31i = copy.deepcopy(n69wspa36f)
                 n69wspa31i['data']['db'] = {'nodes': n69wspa2y6.to_dict(orient='records') + n69wspa34c.to_dict(orient='records'), 'funcs': n69wsp9p2u.to_dict(orient='records'), 'classes': n69wspa2xf.to_dict(orient='records'), 'params': n69wspa2d3.to_dict(orient='records')}
                 n69wspa31i['data']['app'] = await self.b69x8ynnta(n69wspa2y6, 'dag', count_previews=True, conn=conn, _skiplock=True)
@@ -3744,7 +3744,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2zv = await self.b69x8ynnu2(n69wspa2qg, conn=conn, _skiplock=True)
                     n69wspa2zv = await self.b69x8ynnta(n69wspa2zv, 'funcs', count_previews=True, conn=conn, _skiplock=True)
                     return n69wspa2zv
-                (n69wspa2zv, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt) = await asyncio.gather(b69x8ynnve(), n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt)
+                n69wspa2zv, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt = await asyncio.gather(b69x8ynnve(), n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt)
                 n69wspa31i = copy.deepcopy(n69wspa36f)
                 n69wspa31i['data']['db'] = {'nodes': n69wspa2no.to_dict(orient='records'), 'funcs': n69wspa329.to_dict(orient='records'), 'classes': n69wspa2vt.to_dict(orient='records'), 'params': n69wspa2qh.to_dict(orient='records')}
                 assert n69wspa2zv is not None
@@ -3760,7 +3760,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2vs = await self.b69x8ynntl(n69wspa2qg, conn=conn, _skiplock=True)
                     n69wspa2vs = await self.b69x8ynnta(n69wspa2vs, 'classes', count_previews=True, conn=conn, _skiplock=True)
                     return n69wspa2vs
-                (n69wspa2vs, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt) = await asyncio.gather(b69x8ynntn(), n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt)
+                n69wspa2vs, n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt = await asyncio.gather(b69x8ynntn(), n69wspa329, n69wspa2qh, n69wspa2no, n69wspa2vt)
                 n69wspa31i = copy.deepcopy(n69wspa36f)
                 n69wspa31i['data']['db'] = {'nodes': n69wspa2no.to_dict(orient='records'), 'funcs': n69wspa329.to_dict(orient='records'), 'classes': n69wspa2vt.to_dict(orient='records'), 'params': n69wspa2qh.to_dict(orient='records')}
                 assert not n69wspa2vs is None
@@ -3805,7 +3805,7 @@ class A69wspa0yq(DBHandler):
         n69wspa38m = '>'.join(n69wspa33t[:-1]) + '/' + n69wspa33t[-1]
         assert x69xm5dtzx(n69wspa38m) == 'func', f"invalid module id: {n69wspa38m}. Module_id must contain EXACTLY one '/', and nested folders are connected with '>', like 'path>to>folder/module_name'."
         assert not '^' in n69wspa38m and n69wspa38m.count('/') == 1, f"module_id must contain EXACTLY one '/', and nested folders are connected with '>', like 'path>to>folder/module_name'."
-        (n69wspa322, n69wspa38w) = n69wspa38m.split('/')
+        n69wspa322, n69wspa38w = n69wspa38m.split('/')
         assert n69wspa322 == n69wspa322.strip(), 'Heading and trailing spaces are not allowed'
         assert n69wspa38w == n69wspa38w.strip(), 'Heading and trailing spaces are not allowed'
         assert x69xm5dtzx(n69wspa322) == 'folder' and (not ' ' in n69wspa322), f'invalid module id (invalid dir): {n69wspa38m}'
@@ -3849,7 +3849,7 @@ class A69wspa0yq(DBHandler):
         assert x69xm5dtzx(n69wspa2o4) == 'func', f'invalid module id: {n69wspa2o4}'
         assert n69wspa2o4.count('/') == 1, f'invalid module id {n69wspa2o4}, must contain one "/"'
         assert not n69wspa2o4.strip().startswith('/'), f"Module id must have a directory name before the '/'"
-        (n69wspa322, n69wspa38w) = n69wspa2o4.split('/')
+        n69wspa322, n69wspa38w = n69wspa2o4.split('/')
         assert n69wspa322 == n69wspa322.strip(), 'Heading and trailing spaces are not allowed'
         assert n69wspa38w == n69wspa38w.strip(), 'Heading and trailing spaces are not allowed'
         assert x69xm5dtzx(n69wspa322) == 'folder' and (not ' ' in n69wspa322), f'invalid module id (invalid dir): {n69wspa2o4}'
@@ -3908,7 +3908,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2gk = f'@module_id:{{{n69wspa2h0}}} @undoed:{{T}}'
                     n69wspa2fc = self.n69wspa36f.execute_command('FT.SEARCH', f'idx:undo', n69wspa2gk, 'SORTBY', 'save_id', 'ASC', 'VERBATIM', 'LIMIT', '0', '1', 'RETURN', '5', 'def_id', 'save_id', 'scope_type', '$.data', '$.focus_scope')
                     return n69wspa2fc
-                (n69wspa2d6, n69wspa2fc) = await asyncio.gather(b69x8ynnuk(), b69x8ynnub())
+                n69wspa2d6, n69wspa2fc = await asyncio.gather(b69x8ynnuk(), b69x8ynnub())
                 if len(n69wspa2d6) != 3:
                     n69wspa2ua = '<EMPTY>'
                     n69wspa2mh = None
@@ -3953,7 +3953,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa2rb = ['data_providers']
                         if n1.get('node_type') != 'code' and n2.get('node_type') != 'code':
                             n69wspa2rb.append('code')
-                    for (k, v) in n1.items():
+                    for k, v in n1.items():
                         if k in n69wspa2rb:
                             continue
                         if n2.get(k) != v:
@@ -3989,7 +3989,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa340 = time.time()
                 n69wspa2dx = None
                 for key in ['nodes', 'funcs', 'classes', 'params']:
-                    (myups, myupids, mydels) = b69wspa0yk(n69wspa35c['db'][key], n69wspa35i['db'][key], primekeys[key], key)
+                    myups, myupids, mydels = b69wspa0yk(n69wspa35c['db'][key], n69wspa35i['db'][key], primekeys[key], key)
                     n69wspa2k5[key] = myups
                     n69wspa2ds[key] = myupids
                     n69wspa2sw[key] = mydels
@@ -4009,7 +4009,7 @@ class A69wspa0yq(DBHandler):
                     await asyncio.gather(*n69wspa36n)
                     await asyncio.gather(*n69wspa35x)
                 await asyncio.gather(b69x8ynnw0(), n69wspa36i)
-                (focus_defid, n69wspa2pz) = n69wspa2ua.split(':')
+                focus_defid, n69wspa2pz = n69wspa2ua.split(':')
                 if n69wspa2pz == 'dag':
                     n69wspa5ld = n69wspa2k5['nodes']
                     n69wspa5ld = [n69wspa33x for n69wspa33x in n69wspa5ld if n69wspa33x['def_id'] == focus_defid and n69wspa33x['node_type'] != 'start']
@@ -4024,12 +4024,12 @@ class A69wspa0yq(DBHandler):
                         n69yxx8iwg = n69wspa5ld[n69yxx8ivv]['uid']
                 n69wspa2ug = time.time()
             else:
-                n69wspa2li = {k: pd.DataFrame(v) for (k, v) in n69wspa35i['db'].items()}
+                n69wspa2li = {k: pd.DataFrame(v) for k, v in n69wspa35i['db'].items()}
                 if n69wspa2jq in ('all', 'dag'):
                     assert x69xm5dtzx(n69wspa2wq) in ('folder', 'func')
                     n69wspa2cb = [self.b69x8ynnuu(n69wspa2wq, n69wspa30o=n69wspa2jq == 'dag', skipshell=n69wspa2jq == 'all', conn=conn, _skiplock=True)]
-                    n69wspa2x0 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for (k, v) in n69wspa2li.items() if k in ('classes', 'funcs')]
-                    n69wspa378 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for (k, v) in n69wspa2li.items() if not k in ('classes', 'funcs')]
+                    n69wspa2x0 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for k, v in n69wspa2li.items() if k in ('classes', 'funcs')]
+                    n69wspa378 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for k, v in n69wspa2li.items() if not k in ('classes', 'funcs')]
                 else:
                     n69wspa2rr = n69wspa2wq if x69xm5dtzx(n69wspa2wq) in ('folder', 'class') else await self.b69x8ynnvl(n69wspa2wq, _skiplock=True, conn=conn)
                     if n69wspa2jq == 'funcs':
@@ -4040,8 +4040,8 @@ class A69wspa0yq(DBHandler):
                         raise
                     n69wspa2o5 = f"\n                    def_id LIKE '{n69wspa2rr}{n69wsp9p3w}%'\n                    "
                     n69wspa2cb = [self.delete(tb, cond_sql=n69wspa2o5, conn=conn, _skiplock=True) for tb in ['funcs', 'classes', 'nodes']]
-                    n69wspa2x0 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for (k, v) in n69wspa2li.items() if k in ('classes', 'funcs')]
-                    n69wspa378 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for (k, v) in n69wspa2li.items() if not k in ('classes', 'funcs')]
+                    n69wspa2x0 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for k, v in n69wspa2li.items() if k in ('classes', 'funcs')]
+                    n69wspa378 = [self.upsert(k, v, skipna=False, conn=conn, _skiplock=True) for k, v in n69wspa2li.items() if not k in ('classes', 'funcs')]
                 n69wspa36i = self.b69x8ynntp(n69wspa2li['funcs'], conn=conn, _skiplock=True)
 
                 async def b69x8ynnw0():
@@ -4077,10 +4077,10 @@ class A69wspa0yq(DBHandler):
             right = n69wspa2w8[n69wspa2ox + 1:].lower()
             n69wspa330.append((left, n69wspa2hh, right))
         n69wspa357 = "\n        def_id = '{def_id}' AND\n        (SUBSTRING(hid, LENGTH('{hid}.') + 1) NOT LIKE '%.%') AND\n        branch = {branch}\n        "
-        n69wsp9omx = [self.select('nodes', cond_sql=n69wspa357.format(def_id=n69wspa2wq, hid=n69wsp9p51, branch=f"'{n69wspa2w8}'" if not n69wspa2w8.isdigit() and (not n69wspa2w8 in ('true', 'false')) else n69wspa2w8), targets=['uid', 'hid', 'pres'], conn=conn, _skiplock=_skiplock) for (n69wspa2wq, n69wsp9p51, n69wspa2w8) in n69wspa330]
+        n69wsp9omx = [self.select('nodes', cond_sql=n69wspa357.format(def_id=n69wspa2wq, hid=n69wsp9p51, branch=f"'{n69wspa2w8}'" if not n69wspa2w8.isdigit() and (not n69wspa2w8 in ('true', 'false')) else n69wspa2w8), targets=['uid', 'hid', 'pres'], conn=conn, _skiplock=_skiplock) for n69wspa2wq, n69wsp9p51, n69wspa2w8 in n69wspa330]
         n69wsp9omx = await asyncio.gather(*n69wsp9omx)
         n69wspa2h3 = []
-        for (i, n69wsp9oya) in enumerate(n69wsp9omx):
+        for i, n69wsp9oya in enumerate(n69wsp9omx):
             if i < len(n69wsp9omx) - 1:
                 if n69wspa330[i][0] == n69wspa330[i + 1][0]:
                     n69wsp9ow5 = n69wspa330[i + 1][1].split('.')[-1]
@@ -4144,7 +4144,7 @@ class A69wspa0yq(DBHandler):
         n69wspa31t = [self.b69x8ynnvv(did, 'func', conn=conn, _skiplock=_skiplock) for did in n69wspa2nm] + [self.b69x8ynnu2(did, conn=conn, _skiplock=_skiplock) for did in n69wspa2wc]
         n69wspa374 = [self.b69x8ynnvv(did, 'class', conn=conn, _skiplock=_skiplock) for did in external_class_ids] + [self.b69x8ynntl(did, conn=conn, _skiplock=_skiplock) for did in n69wspa2wc[1:]]
         n69wspa2tf = await asyncio.gather(asyncio.gather(*n69wspa31t), asyncio.gather(*n69wspa374))
-        (n69wsp9p3q, n69wsp9p6q) = n69wspa2tf
+        n69wsp9p3q, n69wsp9p6q = n69wspa2tf
         n69wsp9p3q.reverse()
         n69wsp9opz = []
         n69wsp9p60 = {}
@@ -4155,7 +4155,7 @@ class A69wspa0yq(DBHandler):
                 assert '/' in n69wspa2ob and (not any([s in n69wspa2ob.split('/')[-1] for s in ('#', '/', '-', '^', '.', '*')]))
                 n69wsp9opz.append((n69wspa2ob[n69wspa2ob.rfind('/') + 1:], n69wspa2ob))
                 n69wsp9ozv = n69wsp9p3q[i].loc[j, 'inputs']
-                (n69wsp9orh, raw_args) = b69wsp9mon(n69wsp9ozv)
+                n69wsp9orh, raw_args = b69wsp9mon(n69wsp9ozv)
                 n69wsp9p60[n69wspa2ob] = raw_args
                 if n69wspa2de.startswith(n69wspa2ob + '^'):
                     n69wspa2y3 = n69wsp9p3q[i].loc[j, 'imports_code'] or ''
@@ -4173,13 +4173,13 @@ class A69wspa0yq(DBHandler):
             for j in range(len(clf)):
                 n69wspa2ob = clf.loc[j, 'def_id']
                 n69wsp9ozv = clf.loc[j, 'inputs']
-                (n69wsp9orh, raw_args) = b69wsp9mon(n69wsp9ozv)
+                n69wsp9orh, raw_args = b69wsp9mon(n69wsp9ozv)
                 n69wsp9p60[n69wspa2ob] = raw_args
         if not inject_imports:
             n69wsp9onl = [n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2yn]
         else:
             n69wsp9on4 = b69wsp9mrs(b69wsp9mq1(n69wspa2yn), names_only=True)
-            (n69wsp9opz, n69wsp9oxq) = b69wsp9mp9(n69wsp9on4, n69wsp9opz, n69wsp9oxq)
+            n69wsp9opz, n69wsp9oxq = b69wsp9mp9(n69wsp9on4, n69wsp9opz, n69wsp9oxq)
             n69wsp9onl = [n69wsp9opz, n69wsp9oxq, n69wsp9p60]
         if return_visible_brs:
             n69wsp9onl.append(n69wspa2wc)
@@ -4196,12 +4196,12 @@ class A69wspa0yq(DBHandler):
             n69wspa2lw = await self.select('funcs', conds=[{'def_id': did} for did in n69wspa35m], targets=['imports_code'], conn=conn, _skiplock=True)
             return (n69wspa2lw, n69wspa35m)
         n69wspa2lw = await self._batch_read([b69x8ynnsv], conn=conn, _skiplock=_skiplock)
-        (n69wspa2lw, n69wspa35m) = n69wspa2lw[0]
+        n69wspa2lw, n69wspa35m = n69wspa2lw[0]
         n69wspa2lw = n69wspa2lw['imports_code'].tolist()
         n69wspa2lw = '\n'.join(n69wspa2lw)
         if n69x75d5wx:
             n69wspa2lw = n69wspa2lw + '\n' + remove_common_indents(n69x75d5wx)
-        (_, _, n69wspa2lw) = b69wsp9mrs(b69wsp9mq1(n69wspa2lw), expand=True)
+        _, _, n69wspa2lw = b69wsp9mrs(b69wsp9mq1(n69wspa2lw), expand=True)
         n69wspa2lw = list(set(n69wspa2lw.split('\n')))
         n69wspa2yn = [x for x in n69wspa2lw if x.startswith('import')]
         n69wspa2zx = [x for x in n69wspa2lw if x.startswith('from')]
@@ -4235,7 +4235,7 @@ class A69wspa0yq(DBHandler):
         assert all(['^' in bid for bid in n69wspa2lt])
         n69wspa2lu = [(bid[:bid.rfind('^')], bid[bid.rfind('^') + 1:]) for bid in n69wspa2lt]
         n69wspa2mq = await asyncio.gather(*[self.b69x8ynnv6(*pair, conn=conn, _skiplock=_skiplock) for pair in n69wspa2lu])
-        for (i, apair) in enumerate(n69wspa2lu):
+        for i, apair in enumerate(n69wspa2lu):
             n69wspa2y4 = n69wspa2y4 + [apair[0] + childbr for childbr in n69wspa2mq[i]]
             n69wspa2y4.append(n69wspa36r[i])
         n69wspa322 = n69wspa2yk.split('/')[0]
@@ -4265,7 +4265,7 @@ class A69wspa0yq(DBHandler):
         assert n69wspa38f > 0
         n69wspa30d = my_branch_id[:n69wspa38f]
         assert '^' in n69wspa30d
-        (my_def_id, my_hid) = (n69wspa30d[:n69wspa30d.rfind('^')], n69wspa30d[n69wspa30d.rfind('^') + 1:])
+        my_def_id, my_hid = (n69wspa30d[:n69wspa30d.rfind('^')], n69wspa30d[n69wspa30d.rfind('^') + 1:])
         assert my_def_id == src_branch_id[:src_branch_id.rfind('^')]
         n69wspa33c = []
         try:
@@ -4280,7 +4280,7 @@ class A69wspa0yq(DBHandler):
     async def b69x8ynnsw(self, n65d20cda3, run_id=None, start_block_dotted=False, conn=None, _skiplock=False):
         n69wspa2z8 = self.select('nodes', conds=[{'uid': n65d20cda3}], targets=['node_type'], conn=conn, _skiplock=_skiplock) if start_block_dotted else aidle(default=[])
         n69wspa2iy = self.select(table_name='vars', conds=[{'uid': n65d20cda3}], conn=conn, _skiplock=_skiplock)
-        (n69wspa2z8, n69wspa2iy) = await asyncio.gather(n69wspa2z8, n69wspa2iy)
+        n69wspa2z8, n69wspa2iy = await asyncio.gather(n69wspa2z8, n69wspa2iy)
         if len(n69wspa2z8) > 0:
             if n69wspa2z8.loc[0, 'node_type'] == 'start':
                 n69wspa2iy = n69wspa2iy[~n69wspa2iy['name'].str.contains('\\.')]
@@ -4314,7 +4314,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2s5.append(n69wspa2ii)
         n69wspa2me = await asyncio.gather(*n69wspa35t)
         n69wspa2uk = ['^1#_']
-        for (i, rdf) in enumerate(n69wspa2me):
+        for i, rdf in enumerate(n69wspa2me):
             if len(rdf) > 0:
                 n69wspa2ch = f"^{n69wspa2s5[i]}#{rdf.loc[0, 'branch']}"
                 n69wspa2uk.append(n69wspa2ch)
@@ -4345,7 +4345,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9p3q = self.select('funcs', cond_sql=n69wspa2re, conn=conn, _skiplock=True)
             n69wsp9p6q = self.b69x8ynntl(n69wspa2tb, conn=conn, _skiplock=True)
             n69wsp9osv = self.select('params', cond_sql=n69wspa2re, conn=conn, _skiplock=True)
-            (n69wsp9p3q, n69wsp9p6q, n69wsp9osv) = await asyncio.gather(n69wsp9p3q, n69wsp9p6q, n69wsp9osv)
+            n69wsp9p3q, n69wsp9p6q, n69wsp9osv = await asyncio.gather(n69wsp9p3q, n69wsp9p6q, n69wsp9osv)
             return (n69wsp9p6q, n69wsp9p3q, n69wsp9osv)
         n69wspa2p9 = await self._batch_read([b69wsp9mrq], conn=conn, _skiplock=_skiplock)
         return n69wspa2p9[0]
@@ -4366,7 +4366,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa2qa = f"\n                NOT SUBSTRING(def_id, LENGTH('{n69wspa2tb}') + 2) LIKE '%^%' AND\n                (\n                    (\n                        def_id LIKE '{n69wspa2tb}*%' AND (NOT SUBSTRING(def_id, LENGTH('{n69wspa2tb}*') + 1) LIKE '%*%')\n                    )\n                ) {n69wspa2nq}\n                "
                 n69wsp9p3q = self.select('funcs', cond_sql=n69wspa37y, targets=['def_id'], conn=conn, _skiplock=True)
                 n69wsp9p6q = self.select('classes', cond_sql=n69wspa2qa, targets=['def_id'], conn=conn, _skiplock=True)
-                (n69wsp9p3q, n69wsp9p6q) = await asyncio.gather(n69wsp9p3q, n69wsp9p6q)
+                n69wsp9p3q, n69wsp9p6q = await asyncio.gather(n69wsp9p3q, n69wsp9p6q)
                 n69wspa2lg = n69wsp9p3q['def_id'].tolist()
                 n69wspa2j8 = n69wsp9p6q['def_id'].tolist()
                 n69wspa2lg = [n.split('/')[-1] for n in n69wspa2lg]
@@ -4418,10 +4418,10 @@ class A69wspa0yq(DBHandler):
             n69wspa2rg = f"\n            WITH \n                nodes_visible AS ( \n                    SELECT `uid`,'hid'\n                    FROM nodes\n                    WHERE def_id = '{n69wspa337}' AND (LENGTH(hid) - LENGTH(REPLACE(hid, '.', ''))) = 1 \n                ),\n                vars_visible AS ( \n                    SELECT \n                        vars.`name`,vars.`type`,vars.`def_id`,vars.`uid`,vars.`ctx`,\n                        nodes_visible.hid AS hid\n                    FROM \n                        vars\n                    INNER JOIN \n                        nodes_visible \n                    ON \n                        vars.uid = nodes_visible.uid\n                    WHERE \n                        vars.`type` IS NOT NULL AND {n69wspa2rj} \n                ),\n                vars_dup AS (\n                    SELECT \n                        ROW_NUMBER() OVER (PARTITION BY `name`, `def_id` ORDER BY LENGTH(`type`) DESC) AS rn, \n                        `name`,`def_id`,`type`,`uid`,`ctx`\n                    FROM vars_visible\n                )\n            SELECT * FROM vars_dup WHERE rn=1\n            "
             n69wspa2nl = conn.execute(text(n69wspa2rg))
             n69wspa2s0 = self.b69x8ynnsz(n69wspa2el, conn=conn, _skiplock=True)
-            (n69wspa2nl, n69wspa2s0) = await asyncio.gather(n69wspa2nl, n69wspa2s0)
+            n69wspa2nl, n69wspa2s0 = await asyncio.gather(n69wspa2nl, n69wspa2s0)
             n69wspa2nl = n69wspa2nl.fetchall()
             n69wspa2nl = pd.DataFrame([{'name': x[1], 'def_id': x[2], 'type': x[3], 'uid': x[4], 'ctx': x[5], 'ethnic': None} for x in n69wspa2nl]) if n69wspa2nl else pd.DataFrame(columns=['name', 'def_id', 'type', 'uid', 'ctx', 'ethnic'])
-            (n69wsp9p6q, n69wsp9p3q, n69wsp9osv) = n69wspa2s0
+            n69wsp9p6q, n69wsp9p3q, n69wsp9osv = n69wspa2s0
             n69wsp9p6q['raw_def_id'] = n69wsp9p6q['def_id']
             n69wsp9p3q['raw_def_id'] = n69wsp9p3q['def_id']
             n69wspa2nl['rawname'] = n69wspa2nl['name']
@@ -4488,7 +4488,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa2t8 = n69wspa2ki.loc[0, 'imports_code'] if len(n69wspa2ki) > 0 else ''
                 n69wspa2nz = []
                 n69wspa2x7 = []
-                (_, _, impcode_washed) = b69wsp9mrs(b69wsp9mq1(n69wspa2t8), expand=True)
+                _, _, impcode_washed = b69wsp9mrs(b69wsp9mq1(n69wspa2t8), expand=True)
                 for impline in impcode_washed.split('\n'):
                     if impline.startswith('import'):
                         n69wspa2nz.append(impline)
@@ -4509,9 +4509,9 @@ class A69wspa0yq(DBHandler):
                 n69wspa2x7 = '\n'.join(n69wspa2x7)
                 n69wspa2g3 = n69wspa5l3.b69x8ynrdt(n69wspa2x7, extpkgs, retype='df', recur_obj_cls=False, xform_imports=True)
                 n69wspa2gb = self.b69x8ynnva(n69wspa2nz, n69wspa381, extpkgs=extpkgs, recur_objs=False, retype='df', conn=conn, _skiplock=True)
-                (n69wspa2g3, n69wspa2gb) = await asyncio.gather(n69wspa2g3, n69wspa2gb)
-                (env_recdata, n69wspa2lc) = n69wspa2g3
-                (cpx_recdata, _) = n69wspa2gb
+                n69wspa2g3, n69wspa2gb = await asyncio.gather(n69wspa2g3, n69wspa2gb)
+                env_recdata, n69wspa2lc = n69wspa2g3
+                cpx_recdata, _ = n69wspa2gb
                 n69wspa2z1 = tuple(['*' + x for x in n69wspa33q])
                 n69wspa2ee = '|'.join(['\\*' + c + '/' for c in n69wspa33q])
                 n69wspa2o0 = n69wspa305[n69wspa305['def_id'].str.endswith(n69wspa2z1)].copy()
@@ -4548,7 +4548,7 @@ class A69wspa0yq(DBHandler):
         def b69wspa0xh(n69wspa2el, n69wspa2xv, n69wspa2sz=None):
             if DOT_REPL in n69wspa2el:
                 return n69wspa2el
-            (left, namepart) = n69wspa2el.rsplit(n69wspa2xv, 1)
+            left, namepart = n69wspa2el.rsplit(n69wspa2xv, 1)
             if not n69wspa2sz:
                 n69wspa2dd = n69wspa2kg.get(namepart, namepart)
                 n69wspa2kx = left + n69wspa2xv + n69wspa2dd
@@ -4556,12 +4556,12 @@ class A69wspa0yq(DBHandler):
             else:
                 if not n69wspa2sz in namepart:
                     return n69wspa2el
-                (n69wspa2hh, right) = namepart.split(n69wspa2sz, 1)
+                n69wspa2hh, right = namepart.split(n69wspa2sz, 1)
                 n69wspa2dd = n69wspa2kg.get(n69wspa2hh, n69wspa2hh)
                 n69wspa2kx = left + n69wspa2xv + n69wspa2dd + n69wspa2sz + right
                 return n69wspa2kx
         n69wsp9onl = await self._batch_read([b69wsp9mrq], conn=conn, _skiplock=_skiplock)
-        (n69wsp9onl, n69wsp9omi) = n69wsp9onl[0]
+        n69wsp9onl, n69wsp9omi = n69wsp9onl[0]
         for k in n69wsp9onl:
             if k == 'objs':
                 n69wsp9onl[k]['name'] = n69wsp9onl[k]['name'].apply(lambda x: n69wspa2kg.get(x, x))
@@ -4611,9 +4611,9 @@ class A69wspa0yq(DBHandler):
         if choice in ('imports', 'both'):
             n69wspa371 = n69wspa5l3.b69x8ynrdt(n69wspa2lw['imports'], extpkgs, retype='df')
             n69wspa2dw = self.b69x8ynnva(n69wspa2lw['imports'], n69wspa381, extpkgs=extpkgs, recur_objs=recur_objs, retype='df', conn=conn, _skiplock=_skiplock)
-            (n69wspa371, n69wspa2dw) = await asyncio.gather(n69wspa371, n69wspa2dw)
-            (n69wspa2dr, _fails) = n69wspa371
-            (intermod_data, _cfails) = n69wspa2dw
+            n69wspa371, n69wspa2dw = await asyncio.gather(n69wspa371, n69wspa2dw)
+            n69wspa2dr, _fails = n69wspa371
+            intermod_data, _cfails = n69wspa2dw
             n69wspa2kv = n69wspa2kv + _fails
             n69wspa2r5 = n69wspa2r5 + _cfails
             for k in n69wspa2dr.keys():
@@ -4622,9 +4622,9 @@ class A69wspa0yq(DBHandler):
         if choice in ('froms', 'both'):
             n69wspa30k = n69wspa5l3.b69x8ynrdt(n69wspa2lw['froms'], extpkgs, retype='df')
             n69wspa2dw = self.b69x8ynnva(n69wspa2lw['froms'], n69wspa381, extpkgs=extpkgs, recur_objs=recur_objs, retype='df', conn=conn, _skiplock=_skiplock)
-            (n69wspa30k, n69wspa2dw) = await asyncio.gather(n69wspa30k, n69wspa2dw)
-            (n69wspa31q, _fails) = n69wspa30k
-            (intermod_data, _cfails) = n69wspa2dw
+            n69wspa30k, n69wspa2dw = await asyncio.gather(n69wspa30k, n69wspa2dw)
+            n69wspa31q, _fails = n69wspa30k
+            intermod_data, _cfails = n69wspa2dw
             n69wspa2kv = n69wspa2kv + _fails
             n69wspa2r5 = n69wspa2r5 + _cfails
             for k in n69wspa31q.keys():
@@ -4647,7 +4647,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2ub = await self.b69x8ynnus(n69wspa2wq, n69wspa381, choice, extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=recur_objs, retype='df', n69wspa2r3=n69wspa2r3, n69x75d5wx=n69x75d5wx, conn=conn, _skiplock=True)
             return n69wspa2ub
         n69wsp9onl = await self._batch_read([b69wsp9mrq], conn=conn, _skiplock=_skiplock)
-        (n69wspa2dr, n69wspa31q, n69wspa2lc, n69wspa2r3) = n69wsp9onl[0]
+        n69wspa2dr, n69wspa31q, n69wspa2lc, n69wspa2r3 = n69wsp9onl[0]
         n69wspa2g9 = {}
         for k in ('funcs', 'params', 'classes', 'objs'):
             n69wspa36s = pd.concat([n69wspa2dr.get(k, n69wspa2nd[k]), n69wspa31q.get(k, n69wspa2nd[k])], ignore_index=True)
@@ -4685,7 +4685,7 @@ class A69wspa0yq(DBHandler):
         async def b69wsp9mrq(conn):
             extpkgs = self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
             n69wspa2og = self.select('nodes', cond_sql='true', conds=[{'def_id': n69wspa2it, 'node_type': 'start'}], targets=['uid'], conn=conn, _skiplock=True)
-            (extpkgs, n69wspa2og) = await asyncio.gather(extpkgs, n69wspa2og)
+            extpkgs, n69wspa2og = await asyncio.gather(extpkgs, n69wspa2og)
             assert len(n69wspa2og) == 1, f'eh026{n69wspa2og}'
             n69wspa2og = n69wspa2og.loc[0, 'uid']
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
@@ -4698,7 +4698,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa33e = [self.b69x8ynnu2(n69wspa2tb, params_style='separate', _skiplock=True, conn=conn) for n69wspa2tb in n69wspa2z4]
                 n69wspa33e = asyncio.gather(*n69wspa33e)
                 n69wspa2pa = self.b69x8ynnsx(n69wspa2og, n69wspa2it, 'obj', '', helpinfo={'class': '', 'root': n69wspa381, 'desc_format': 'dict'}, consider_imports=False, _skiplock=True, conn=conn)
-                (n69wspa2l3, n69wspa33e, n69wspa2pa) = await asyncio.gather(n69wspa2l3, n69wspa33e, n69wspa2pa)
+                n69wspa2l3, n69wspa33e, n69wspa2pa = await asyncio.gather(n69wspa2l3, n69wspa33e, n69wspa2pa)
                 n69wspa2pa = n69wspa2pa[0]
                 n69wspa2l3 = pd.concat(n69wspa2l3) if n69wspa2l3 else pd.DataFrame(columns=list(n69wspa2dn.keys()))
                 n69wspa33f = [l[0] for l in n69wspa33e]
@@ -4714,16 +4714,16 @@ class A69wspa0yq(DBHandler):
                 n69wspa2l3['raw_def_id'] = n69wspa2l3['def_id']
                 return (n69wspa2l3, n69wspa33f, n69wspa37d, n69wspa2pa, n69wspa2z4)
             n69wspa384 = self.b69x8ynnvd(n69wspa2it, n69wspa381, 'both', extpkgs=extpkgs, recur_objs=True, conn=None, _skiplock=True)
-            (lvs, n69wspa384) = await asyncio.gather(b69x8ynnss(), n69wspa384)
-            (n69wspa371, misc) = n69wspa384
-            (n69wspa2l3, n69wspa33f, n69wspa37d, n69wspa2pa, n69wspa2z4) = lvs
+            lvs, n69wspa384 = await asyncio.gather(b69x8ynnss(), n69wspa384)
+            n69wspa371, misc = n69wspa384
+            n69wspa2l3, n69wspa33f, n69wspa37d, n69wspa2pa, n69wspa2z4 = lvs
             if misc.get('fails'):
                 pass
             n69wspa32e = {}
             for fline in misc['imports_codes']['froms'].split('\n'):
                 if not ' as ' in fline:
                     continue
-                (left, right) = fline.split(' as ')
+                left, right = fline.split(' as ')
                 left = left.split('import ')[-1].strip()
                 right = right.strip()
                 n69wspa32e[right] = left
@@ -4753,9 +4753,9 @@ class A69wspa0yq(DBHandler):
             n69wspa2pe = pd.concat([n69wspa2es, n69wspa2pa], ignore_index=True)
             n69wspa2ya = {}
             n69wspa2gf = list(set(n69wspa2ke['def_id'].tolist()))
-            n69wspa2rl = {key: sub_df for (key, sub_df) in n69wspa2iw[n69wspa2iw['ctx'] == 'input'].groupby('def_id', sort=False)}
-            n69wspa2g0 = {key: sub_df for (key, sub_df) in n69wspa2iw[n69wspa2iw['ctx'] == 'return'].groupby('def_id', sort=False)}
-            n69wspa2uf = {key: sub_df for (key, sub_df) in n69wspa2ke.groupby('def_id', sort=False)}
+            n69wspa2rl = {key: sub_df for key, sub_df in n69wspa2iw[n69wspa2iw['ctx'] == 'input'].groupby('def_id', sort=False)}
+            n69wspa2g0 = {key: sub_df for key, sub_df in n69wspa2iw[n69wspa2iw['ctx'] == 'return'].groupby('def_id', sort=False)}
+            n69wspa2uf = {key: sub_df for key, sub_df in n69wspa2ke.groupby('def_id', sort=False)}
             for n69wspa2jx in n69wspa2uf:
                 n69wspa392 = n69wspa2g0.get(n69wspa2jx, [])
                 if len(n69wspa392) > 0:
@@ -4769,7 +4769,7 @@ class A69wspa0yq(DBHandler):
                 else:
                     n69wspa2kn['rawname'] = n69wsp9p3n.split('.')[-1]
                 n69wspa2ya[n69wsp9p3n] = n69wspa2kn
-            n69wspa30a = {key: sub_df for (key, sub_df) in n69wspa2gn.groupby('def_id', sort=False)}
+            n69wspa30a = {key: sub_df for key, sub_df in n69wspa2gn.groupby('def_id', sort=False)}
             n69wspa2ho = []
             n69wspa31c = {}
             n69wsp9p6f = []
@@ -4834,7 +4834,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2vp = n69wspa32e.get(n69wspa2ce, n69wspa2ce)
                 else:
                     n69wspa2vp = n69wspa2ce.split('.')[-1]
-                for (n69wsp9ole, n69wspa2cg) in n69wspa31c.items():
+                for n69wsp9ole, n69wspa2cg in n69wspa31c.items():
                     if odic['type'] == n69wspa2cg['def_id']:
                         n69wspa351[odic['name'].replace(DOT_REPL, '.')] = {'type': n69wsp9ole, 'rawname': n69wspa2vp, 'class': n69wspa2cg}
                         n69wspa2ro.remove(odic['name'])
@@ -4858,7 +4858,7 @@ class A69wspa0yq(DBHandler):
                         continue
             if n69wspa2ro:
                 pass
-            n69wspa31c = {k: v for (k, v) in n69wspa31c.items() if v.get('direct')}
+            n69wspa31c = {k: v for k, v in n69wspa31c.items() if v.get('direct')}
             n69wspa2h1 = {'funcs': n69wspa2ya, 'classes': n69wspa31c, 'objs': n69wspa351, 'imports_codes': misc['imports_codes'], 'visibility': n69wspa2z4}
             return n69wspa2h1
         n69wsp9onl = await self._batch_read([b69wsp9mrq], conn=conn, _skiplock=_skiplock)
@@ -4884,7 +4884,7 @@ class A69wspa0yq(DBHandler):
                 else:
                     n69wspa2cx = 0
                     n69wspa2q2 = n69wsp9p1l.split('^')[0].replace('>', '.').replace('/', '.').strip('.')
-                    (n69wspa2d4, n69wspa2ut) = n69wsp9p1l.rsplit('*', 1)
+                    n69wspa2d4, n69wspa2ut = n69wsp9p1l.rsplit('*', 1)
                     n69wspa2d4 = [n69wspa2d4]
                 n69wspa2h5 = False
                 n69wspa2lk = '# <NOT_FOUND>'
@@ -4900,11 +4900,11 @@ class A69wspa0yq(DBHandler):
                                 if n69wspa2mh['name'] == n69wspa2ut.split('.')[-1]:
                                     return True
                         return False
-                    (_, n69wspa2vl) = brutal_gets(n69wspa2k1, b69wspa0yd)
+                    _, n69wspa2vl = brutal_gets(n69wspa2k1, b69wspa0yd)
                     if not n69wspa2vl:
                         n69wspa38j = n69wspa2lk.split('\n')[0].split('(env_level=')[-1].split(')')[0]
                         n69wspa2cx = int(n69wspa38j) if n69wspa38j.isdigit() else n69wspa2cx
-                        (_, _, lcimps) = b69wsp9mrs(n69wspa2k1, expand=True)
+                        _, _, lcimps = b69wsp9mrs(n69wspa2k1, expand=True)
                         n69wspa2mw = [l for l in lcimps.split('\n') if l.startswith('from ')]
                         n69wspa2pq = [l for l in lcimps.split('\n') if l.startswith('import ')]
                         n69wspa2zp = False
@@ -4940,7 +4940,7 @@ class A69wspa0yq(DBHandler):
                 if not n69wspa2o1:
                     return (False, None, None)
                 n69wspa2o1 = b69wsp9mq1(n69wspa2o1[0]['code'])
-                (_, n69wspa2dg) = b65wsp9mrz({'ntype': 'Module', 'body': n69wspa2o1['body'][0]['body']})
+                _, n69wspa2dg = b65wsp9mrz({'ntype': 'Module', 'body': n69wspa2o1['body'][0]['body']})
                 n69wspa345 = n69wspa2dg
                 if n69wspa2ik == '[CODE]':
                     break
@@ -4958,7 +4958,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa37o = n69wspa2wu.split('Import code:')[-1].strip().split(' import ')[0].split('from ')[1]
                         n69wspa2td = f'from {n69wspa37o} import {n69wspa2fa}'
                     else:
-                        (_, _, n69wspa38l) = b69wsp9mrs(n69wspa2k1, expand=True)
+                        _, _, n69wspa38l = b69wsp9mrs(n69wspa2k1, expand=True)
                         n69wspa2fb = [l for l in n69wspa38l.split('\n') if l.startswith('from ')]
                         n69wspa2t9 = False
                         for f in n69wspa2fb:
@@ -4974,7 +4974,7 @@ class A69wspa0yq(DBHandler):
                 else:
                     n69wspa32x = await self.b69x8ynnul(n69wspa2q2, '', '', n69wspa2d4, n69wspa381, current_space=n69wspa2cx, conn=conn, _skiplock=True)
                     n69wspa2j5 = b69wsp9mq1(n69wspa32x, def_cutoff=True)
-                    (_, _, lord_imports_code) = b69wsp9mrs(n69wspa2j5, expand=True)
+                    _, _, lord_imports_code = b69wsp9mrs(n69wspa2j5, expand=True)
                     n69wspa2oh = [l for l in lord_imports_code.split('\n') if l.startswith('import ')]
                     n69wspa37o = n69wspa2fa.rsplit(DOT_REPL, 1)[0]
                     n69wspa2s1 = [l for l in n69wspa2oh if f"import {n69wspa37o.replace(DOT_REPL, '.')}" in l or f"as {n69wspa37o.replace(DOT_REPL, '.')}" in l]
@@ -5011,11 +5011,11 @@ class A69wspa0yq(DBHandler):
         async def b69wsp9mrq(conn):
             nonlocal value, n69wspa37a, n69wspa30r
             n69wspa38m = n69wspa2wq.split('^')[0]
-            (n69wsp9p51, _) = await self.b69x8ynnvc(n65d20cda3, _skiplock=True, conn=conn) if n65d20cda3 != 'UNDEFINED' else ['1.' + n65d20cda3, '']
+            n69wsp9p51, _ = await self.b69x8ynnvc(n65d20cda3, _skiplock=True, conn=conn) if n65d20cda3 != 'UNDEFINED' else ['1.' + n65d20cda3, '']
             n69wspa2e5 = n69wspa2wq + '^' + n69wsp9p51
             value = value.strip() if not value is None else None
             n69wspa2xe = self.select('funcs', cond_sql=f"(def_id LIKE '{n69wspa381}/%' OR def_id LIKE '{n69wspa381}>%') AND (LENGTH(def_id) - LENGTH(REPLACE(def_id, '/', ''))) = 1", targets=['def_id'], conn=conn, _skiplock=True) if n65d20cda3 != 'UNDEFINED' else aidle(default=pd.DataFrame(columns=['def_id']))
-            (n69wspa2z4, extpkgs, n69wspa2xe) = await asyncio.gather(self.b69x8ynnv5(n69wspa2e5, _skiplock=True, conn=conn) if n65d20cda3 != 'UNDEFINED' else aidle(default=blind_vision), self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True), n69wspa2xe)
+            n69wspa2z4, extpkgs, n69wspa2xe = await asyncio.gather(self.b69x8ynnv5(n69wspa2e5, _skiplock=True, conn=conn) if n65d20cda3 != 'UNDEFINED' else aidle(default=blind_vision), self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True), n69wspa2xe)
             n69wspa2z4 = [v for v in n69wspa2z4 if not x69xm5dtzx(v) == 'folder']
             n69wspa2xe = [x for x in n69wspa2xe['def_id'].tolist() if x != n69wspa38m]
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
@@ -5052,7 +5052,7 @@ class A69wspa0yq(DBHandler):
                     sql = sql + f" AND type LIKE '%*{helpinfo['class'].strip()}'"
                 n69wspa2v7 = self.select('params', cond_sql=f"def_id = '{n69wspa2wq}' AND (name = 'cls' OR name = 'self')", targets=['name'], _skiplock=True, conn=conn) if '*' in n69wspa2wq else aidle(default=pd.DataFrame(columns=['name']))
                 n69wsp9oq8 = conn.execute(text(sql))
-                (n69wspa2v7, n69wsp9oq8) = await asyncio.gather(n69wspa2v7, n69wsp9oq8)
+                n69wspa2v7, n69wsp9oq8 = await asyncio.gather(n69wspa2v7, n69wsp9oq8)
                 n69wspa32z = n69wspa2v7['name'].tolist()
                 n69wsp9oq8 = n69wsp9oq8.fetchall()
                 n69wsp9onl = [x[0] for x in n69wsp9oq8] if not n69wspa2p3 else [{'name': x[0], 'def_id': x[1], 'type': x[2]} for x in n69wsp9oq8]
@@ -5064,9 +5064,9 @@ class A69wspa0yq(DBHandler):
                         n69wsp9onl = ['cls'] + n69wsp9onl if not n69wspa2p3 else [{'name': 'self', 'type': 'Type'}] + n69wsp9onl
                 if not n69wsp9oq8:
                     if '.' in value:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                     else:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                     n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}': {f[1]}" for f in n69wspa2lc['fails']]
                     n69wspa2es = n69wspa371['objs']
                     n69wsp9onl = n69wspa2es[n69wspa2es['name'].str.startswith(value.replace('.', DOT_REPL))]['name'].tolist() if not n69wspa2p3 else n69wspa2es[n69wspa2es['name'].str.startswith(value.replace('.', DOT_REPL))].to_dict(orient='records')
@@ -5093,7 +5093,7 @@ class A69wspa0yq(DBHandler):
                                         traceback.print_exc()
                                 if not n69wsp9orc:
                                     n69wspa30r = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'both', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
-                                    (n69wsp9orc, warns0) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': helpinfo['obj'], 'root': helpinfo['root']}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
+                                    n69wsp9orc, warns0 = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': helpinfo['obj'], 'root': helpinfo['root']}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
                                     if warns0:
                                         for w in warns0:
                                             n69wspa37a.append(w)
@@ -5111,14 +5111,14 @@ class A69wspa0yq(DBHandler):
                                 else:
                                     n69wspa34f = helpinfo['obj']
                                     n69wspa32f = n69wsp9p0f.split('.')
-                                    (n69wsp9p1l, _) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': n69wspa34f, 'root': helpinfo['root'], 'full': True, 'israw': True}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
+                                    n69wsp9p1l, _ = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': n69wspa34f, 'root': helpinfo['root'], 'full': True, 'israw': True}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
                                     if not n69wsp9p1l:
                                         return '<UNK>'
                                     n69wsp9p1l = n69wsp9p1l[0]
                                     n69wspa38o = await self.b69x8ynntr(n69wsp9p1l, n69wspa32f[:-1], helpinfo['root'], extpkgs, conn=conn, _skiplock=True)
                                     if not n69wspa38o[0]:
                                         return '<UNK>'
-                                    (_, n69wspa2dg, n69wspa33o, n69wsp9p1l, n69wspa2fa) = n69wspa38o
+                                    _, n69wspa2dg, n69wspa33o, n69wsp9p1l, n69wspa2fa = n69wspa38o
                                     n69wspa310 = helpinfo.copy()
                                     n69wspa2mp = value
                                     if item == 'argname':
@@ -5140,7 +5140,7 @@ class A69wspa0yq(DBHandler):
                         if not n69wsp9orc:
                             return '<UNK>'
                         n69wspa310 = {**helpinfo, 'class': n69wsp9orc}
-                        (n69wsp9onl, warns1) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, item, value, helpinfo=n69wspa310, n69wspa30r=n69wspa30r, consider_imports=consider_imports, _skiplock=True, conn=conn)
+                        n69wsp9onl, warns1 = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, item, value, helpinfo=n69wspa310, n69wspa30r=n69wspa30r, consider_imports=consider_imports, _skiplock=True, conn=conn)
                         if warns1:
                             for w in warns1:
                                 n69wspa37a.append(w)
@@ -5150,7 +5150,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2me = pd.concat(n69wspa2me, ignore_index=True)
                     n69wspa2me = n69wspa2me['def_id'].tolist()
                     if '.' in n69wsp9p0f:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
                         n69wspa2ka = n69wspa371['funcs']
                         n69wspa2ka = n69wspa2ka[~n69wspa2ka['def_id'].str.contains('\\*')]
                         n69wspa2pg = n69wspa2ka
@@ -5159,7 +5159,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa37q = n69wspa2ka['def_id'].tolist()
                         n69wspa2me = n69wspa2me + n69wspa37q
                     else:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
                         n69wspa37m = n69wspa371['funcs'].to_dict(orient='records')
                         n69wspa2ka = n69wspa371['funcs']
                         n69wspa2ka = n69wspa2ka[~n69wspa2ka['def_id'].str.contains('\\*')]
@@ -5193,8 +5193,8 @@ class A69wspa0yq(DBHandler):
                     async def b69x8ynnu1():
                         return n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, n69wspa334, extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                     n69wspa32c = b69x8ynnu1()
-                    (n69wspa2tc, n69wspa32c) = await asyncio.gather(n69wspa2tc, n69wspa32c)
-                    (n69wspa371, n69wspa2lc) = n69wspa32c
+                    n69wspa2tc, n69wspa32c = await asyncio.gather(n69wspa2tc, n69wspa32c)
+                    n69wspa371, n69wspa2lc = n69wspa32c
                     n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                     n69wspa2tc = '' if not n69wspa2tc else n69wspa2tc
                     if helpinfo.get('obj') and helpinfo.get('obj') != '[UNDEFINED]':
@@ -5234,7 +5234,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa2ph = 'local' if n69wspa2z2 else 'env'
                         if n69wspa2z2:
                             for c in n69wspa2l5:
-                                for (n69wsp9p68, v) in enumerate(vision):
+                                for n69wsp9p68, v in enumerate(vision):
                                     if c.startswith(v + '*'):
                                         if c[len(v) + 1:] == n69wsp9onk:
                                             n69wspa2sn.append(c)
@@ -5255,9 +5255,9 @@ class A69wspa0yq(DBHandler):
                                     if not n69wspa2q3.startswith('[ENV]'):
                                         n69wspa2t4 = self.b69x8ynnsz(n69wspa2q3 + '^1#_', conn=conn, _skiplock=True)
                                         n69wspa2n1 = self.b69x8ynnvd(n69wspa2q3, n69wspa381, 'both', extpkgs=extpkgs, n69wspa2z4=[n69wspa2q3 + '^1#_'], recur_objs=False, conn=conn, _skiplock=True)
-                                        (n69wspa2t4, n69wspa2n1) = await asyncio.gather(n69wspa2t4, n69wspa2n1)
-                                        (slclasss, slfuncs, slparams) = n69wspa2t4
-                                        (n69wspa2n1, n69wspa2lc) = n69wspa2n1
+                                        n69wspa2t4, n69wspa2n1 = await asyncio.gather(n69wspa2t4, n69wspa2n1)
+                                        slclasss, slfuncs, slparams = n69wspa2t4
+                                        n69wspa2n1, n69wspa2lc = n69wspa2n1
                                         n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                                         slclasss['raw_def_id'] = slclasss['def_id']
                                         slfuncs['raw_def_id'] = slfuncs['def_id']
@@ -5304,7 +5304,7 @@ class A69wspa0yq(DBHandler):
                             n69wspa2tv = n69wspa2tv + n69wspa2mj
                         assert isinstance(n69wsp9oxo, list), n69wspa2fu
                         return (n69wspa313, n69wsp9oxo, n69wspa36z, n69wspa2yp)
-                    (n69wspa313, n69wsp9oxo, n69wspa36z, n69wspa2yp) = await b69x8ynnw1(helpinfo['class'], n69wspa2z4, round1=True)
+                    n69wspa313, n69wsp9oxo, n69wspa36z, n69wspa2yp = await b69x8ynnw1(helpinfo['class'], n69wspa2z4, round1=True)
                     if not n69wspa313:
                         match item:
                             case 'func':
@@ -5320,7 +5320,7 @@ class A69wspa0yq(DBHandler):
                                 n69wspa303.append((thisclass, thisorigin))
                                 return
                         for n69wspa380 in thisbases:
-                            (n69wspa5m7, newbases, n69wspa36z, neworigin) = await b69x8ynnw1(n69wspa380, thisvision)
+                            n69wspa5m7, newbases, n69wspa36z, neworigin = await b69x8ynnw1(n69wspa380, thisvision)
                             if n69wspa5m7 is not None:
                                 n69wspa2uj.append(n69wspa5m7)
                                 if newbases:
@@ -5391,7 +5391,7 @@ class A69wspa0yq(DBHandler):
                         if not n69wspa2it.startswith('[ENV]'):
                             n69wsp9osv = self.b69x8ynnt2(n69wspa2it, _skiplock=True, conn=conn)
                             n69wsp9p3c = self.select('funcs', conds=[{'def_id': n69wspa2it}], targets=['def_id', 'doc', 'is_async'], _skiplock=True, conn=conn)
-                            (n69wsp9osv, n69wsp9p3c) = await asyncio.gather(n69wsp9osv, n69wsp9p3c)
+                            n69wsp9osv, n69wsp9p3c = await asyncio.gather(n69wsp9osv, n69wsp9p3c)
                             n69wsp9p3c['raw_def_id'] = n69wsp9p3c['def_id']
                     if len(n69wsp9p3c) == 0:
                         n69wspa392 = n69wspa30l[(n69wspa30l['def_id'] == n69wspa2it) & (n69wspa30l['ctx'] == 'return')].to_dict(orient='records')
@@ -5412,7 +5412,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa32f = value.split('.')
                 n69wspa2uu = n69wspa32f[-1]
                 n69wspa32f[-1] = '[CODE]'
-                (n69wsp9p1l, _) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': n69wspa34f, 'root': helpinfo['root'], 'full': True, 'israw': True}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
+                n69wsp9p1l, _ = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'class', None, helpinfo={'obj': n69wspa34f, 'root': helpinfo['root'], 'full': True, 'israw': True}, n69wspa30r=n69wspa30r, consider_imports=True, _skiplock=True, conn=conn)
                 if not n69wsp9p1l:
                     return []
                 n69wsp9p1l = n69wsp9p1l[0]
@@ -5437,7 +5437,7 @@ class A69wspa0yq(DBHandler):
                         if not helpinfo.get('full'):
                             n69wsp9orc = n69wspa2wq.split('*')[-1].split('/')[0]
                         else:
-                            (left, right) = n69wspa2wq.rsplit('*', 1)
+                            left, right = n69wspa2wq.rsplit('*', 1)
                             n69wspa2zg = right.split('/')[0]
                             n69wsp9orc = left + '*' + n69wspa2zg
                         return [n69wsp9orc]
@@ -5464,9 +5464,9 @@ class A69wspa0yq(DBHandler):
                             n69wspa2dq = n69wsp9oq8[0][0].rsplit('*', 1)[0] + '*' + n69wspa37p.split('.')[-1]
                     if not n69wsp9oq8:
                         if '.' in helpinfo['obj']:
-                            (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                            n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                         else:
-                            (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                            n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                         n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                         n69wspa2es = n69wspa371['objs']
                         n69wsp9oq8 = n69wspa2es[n69wspa2es['name'] == helpinfo['obj'].replace('.', DOT_REPL)]
@@ -5492,7 +5492,7 @@ class A69wspa0yq(DBHandler):
                         return [n69wspa2tc]
                 elif '.' in value:
                     value = value.replace('.', DOT_REPL)
-                    (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
+                    n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
                     n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                     n69wspa30s = n69wspa371['classes']
                     n69wspa2me = list(set([r.split('*')[-1] for r in n69wspa30s['def_id'].tolist()]))
@@ -5506,7 +5506,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2me = list(set([r.split('*')[-1] for r in n69wspa2me]))
                     n69wspa2me = [r for r in n69wspa2me if r.startswith(value)]
                     if not n69wspa2me:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=False, conn=conn, _skiplock=True)
                         n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                         n69wspa30s = n69wspa371['classes']
                         n69wspa2me = list(set([r.split('*')[-1] for r in n69wspa30s['def_id'].tolist()]))
@@ -5545,7 +5545,7 @@ class A69wspa0yq(DBHandler):
                             n69wspa37a.append(f"Cannot find class of obj {helpinfo['obj']}. This is normal if this object has never appeared before this node.")
                             n69wspa2m7 = True
                         if n69wspa2m7:
-                            (clonly_ret, clonly_warns) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, item, value, helpinfo={**helpinfo, 'obj': None}, n69wspa30r=n69wspa30r, consider_imports=consider_imports, _skiplock=True, conn=conn)
+                            clonly_ret, clonly_warns = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, item, value, helpinfo={**helpinfo, 'obj': None}, n69wspa30r=n69wspa30r, consider_imports=consider_imports, _skiplock=True, conn=conn)
                             for cw in clonly_warns:
                                 n69wspa37a.append(cw)
                             return clonly_ret
@@ -5573,7 +5573,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa2me = n69wspa2me.to_dict(orient='records')
                         n69wspa2me = [r for r in n69wspa2me if r['def_id'].endswith('*' + value)]
                         if not n69wspa2me:
-                            (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                            n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'froms', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                             n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                             n69wspa30s = n69wspa371['classes']
                             n69wspa2me = [r for r in n69wspa30s.to_dict(orient='records') if r['def_id'].endswith(f'*{value}')]
@@ -5581,7 +5581,7 @@ class A69wspa0yq(DBHandler):
                             n69wspa37a.append(f'Cannot find class {value}.')
                             return '<UNK>'
                     else:
-                        (n69wspa371, n69wspa2lc) = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
+                        n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)
                         n69wspa37a = n69wspa37a + [f"Failed to import '{f[0]}':{f[1]}" for f in n69wspa2lc['fails']]
                         n69wspa30s = n69wspa371['classes']
                         n69wspa30s['def_id'] = n69wspa30s['def_id'].apply(lambda x: x.replace(DOT_REPL, '.'))
@@ -5600,7 +5600,7 @@ class A69wspa0yq(DBHandler):
     def b69wspa0yf(self, code, pos, sugtype):
         n69wspa2xo = int(pos['lineNumber']) - 1
         n69wspa2id = int(pos['column']) - 1
-        (n69wspa2uu, targrow, already_params) = parse_for_sugs(code, n69wspa2xo, n69wspa2id, sugtype)
+        n69wspa2uu, targrow, already_params = parse_for_sugs(code, n69wspa2xo, n69wspa2id, sugtype)
         if sugtype == 'kernel_objs':
             n69wspa2or = requests_post(url=f'http://localhost:{configer.grapy.sandbox_port}/get_sugs', data={'objpart': n69wspa2uu})
             n69wspa2or = n69wspa2or['data']
@@ -5616,9 +5616,9 @@ class A69wspa0yq(DBHandler):
     async def b69x8ynnu3(self, n69wspa2wq, n65d20cda3, code, pos, word={'word': ''}, n69wspa381='', sugtype='objs', conn=None, _skiplock=False):
         n69wspa2xo = int(pos['lineNumber']) - 1
         n69wspa2id = int(pos['column']) - 1
-        (n69wspa2uu, targrow, already_params) = parse_for_sugs(code, n69wspa2xo, n69wspa2id, sugtype)
+        n69wspa2uu, targrow, already_params = parse_for_sugs(code, n69wspa2xo, n69wspa2id, sugtype)
         if '.' in n69wspa2uu:
-            (n69wspa2zs, value) = n69wspa2uu.rsplit('.', 1)
+            n69wspa2zs, value = n69wspa2uu.rsplit('.', 1)
         else:
             n69wspa2zs = ''
             value = n69wspa2uu
@@ -5627,8 +5627,8 @@ class A69wspa0yq(DBHandler):
             n69wspa38m = n69wspa2wq.split('^')[0]
             n69wspa34g = self.b69x8ynnvc(n65d20cda3, _skiplock=True, conn=conn)
             extpkgs = self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
-            (n69wspa34g, extpkgs) = await asyncio.gather(n69wspa34g, extpkgs)
-            (n69wsp9p51, _) = n69wspa34g
+            n69wspa34g, extpkgs = await asyncio.gather(n69wspa34g, extpkgs)
+            n69wsp9p51, _ = n69wspa34g
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
             n69wspa2e5 = n69wspa2wq + '^' + n69wsp9p51
             n69wspa2z4 = await self.b69x8ynnv5(n69wspa2e5, _skiplock=True, conn=conn)
@@ -5661,7 +5661,7 @@ class A69wspa0yq(DBHandler):
 
             async def b69x8ynnux():
                 n69wspa31x = []
-                (n69wspa371, impmisc) = await self.b69x8ynnvd(n69wspa2wq, n69wspa381, n69wspa2ps, extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=None, _skiplock=True)
+                n69wspa371, impmisc = await self.b69x8ynnvd(n69wspa2wq, n69wspa381, n69wspa2ps, extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=None, _skiplock=True)
                 n69wspa30r = (n69wspa371, impmisc)
                 n69wspa2h7 = impmisc['imports_codes']['imports'].split('\n')
                 n69wspa2zh = [c[6:].split(' as ')[-1].strip() for c in n69wspa2h7]
@@ -5691,7 +5691,7 @@ class A69wspa0yq(DBHandler):
                 if not n69wspa2uu:
                     return []
                 n69wspa31x = []
-                (n69wspa2zh, n69wspa30r) = await b69x8ynnux()
+                n69wspa2zh, n69wspa30r = await b69x8ynnux()
                 n69wspa35t = []
                 if n69wspa2uu.count('.') == 0:
                     n69wspa368 = self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'params', n69wspa2uu, helpinfo={'hasObj': False, 'obj': '', 'root': n69wspa381, 'class': None}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
@@ -5702,14 +5702,14 @@ class A69wspa0yq(DBHandler):
                     else:
                         n69wspa35t = [n69wspa2f5, n69wspa368, n69wspa2jz]
                     for n69wsp9p6g in n69wspa35t:
-                        (n69wspa2w2, n69wspa37a) = await n69wsp9p6g
+                        n69wspa2w2, n69wspa37a = await n69wsp9p6g
                         if n69wspa2w2 != '<UNK>':
                             n69wspa31x = [p[0] for p in n69wspa2w2]
                             break
                 else:
                     n69wspa31x = []
                     if not n69wspa2uu.startswith('self.'):
-                        (left, right, _) = b69wspa0xy(n69wspa2uu, n69wspa2zh)
+                        left, right, _ = b69wspa0xy(n69wspa2uu, n69wspa2zh)
                         n69wspa35t = []
                         if not right:
                             n69wspa2gc = self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'params', left, helpinfo={'hasObj': False, 'obj': '', 'root': n69wspa381, 'class': None}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
@@ -5727,7 +5727,7 @@ class A69wspa0yq(DBHandler):
                             else:
                                 n69wspa35t = [n69wspa2q0, n69wspa35b]
                         for n69wsp9p6g in n69wspa35t:
-                            (n69wspa2w2, n69wspa37a) = await n69wsp9p6g
+                            n69wspa2w2, n69wspa37a = await n69wsp9p6g
                             if n69wspa2w2 != '<UNK>':
                                 n69wspa31x = [p[0] for p in n69wspa2w2]
                                 break
@@ -5738,7 +5738,7 @@ class A69wspa0yq(DBHandler):
                         else:
                             left = 'cls'
                             right = n69wspa2uu[4:]
-                        (n69wspa2w2, n69wspa37a) = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'params', right, helpinfo={'hasObj': left == 'self', 'obj': left, 'root': n69wspa381, 'class': ''}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
+                        n69wspa2w2, n69wspa37a = await self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'params', right, helpinfo={'hasObj': left == 'self', 'obj': left, 'root': n69wspa381, 'class': ''}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
                         n69wspa31x = [p[0] for p in n69wspa2w2] if n69wspa2w2 != '<UNK>' else []
                 n69wsp9onl = [{'name': n + '=' if not n.startswith('*') else '*' * n.count('*'), 'type': 'variable'} for n in n69wspa31x if not n in already_params]
                 return n69wsp9onl
@@ -5749,7 +5749,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2xn = f"\n                    WITH \n                        nodes_in_module AS ( \n                            SELECT `uid`,`hid`,`branch`,`def_id`\n                            FROM nodes\n                            WHERE def_id LIKE '{n69wspa38m}^%' OR def_id = '{n69wspa38m}'\n                        ),\n                        nodes_visible AS (\n                            SELECT * FROM nodes_in_module \n                            WHERE {n69wspa2gi}\n                        ),\n                        vars_visible AS ( \n                            SELECT \n                                vars.`name`,vars.`type`,vars.`def_id`,vars.`uid`,\n                                nodes_visible.hid AS hid\n                            FROM \n                                vars\n                            INNER JOIN \n                                nodes_visible \n                            ON \n                                vars.uid = nodes_visible.uid AND vars.name LIKE '{n69wspa2g1}'\n                        )\n                    SELECT `name` FROM vars_visible\n                    "
                     n69wsp9p5l = conn.execute(text(n69wspa2xn))
                     n69wspa2wd = self.b69x8ynnuj(n69wspa2z4, value, _skiplock=True, conn=conn)
-                    (n69wsp9p5l, n69wspa2wd) = await asyncio.gather(n69wsp9p5l, n69wspa2wd)
+                    n69wsp9p5l, n69wspa2wd = await asyncio.gather(n69wsp9p5l, n69wspa2wd)
                     n69wsp9p5l = n69wsp9p5l.fetchall()
                     n69wsp9p5l = [x[0] for x in n69wsp9p5l]
                     n69wspa2kj = [{'name': n, 'type': 'variable'} for n in n69wsp9p5l]
@@ -5759,7 +5759,7 @@ class A69wspa0yq(DBHandler):
                 else:
                     n69wspa2or = []
             if not n69wspa2or:
-                (n69wspa2zh, n69wspa30r) = await b69x8ynnux()
+                n69wspa2zh, n69wspa30r = await b69x8ynnux()
                 if not n69wspa2uu:
                     return []
                 n69wspa2or = n69wspa2or + [{'name': m, 'type': 'module'} for m in n69wspa2zh if m.startswith(n69wspa2uu)]
@@ -5771,7 +5771,7 @@ class A69wspa0yq(DBHandler):
                     n69wspa2ib = self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'obj', n69wspa2uu, helpinfo={'root': n69wspa381, 'class': ''}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
                     n69wspa2nt = await asyncio.gather(n69wspa368, n69wspa2iu, n69wspa2ib)
                     n69wspa2hp = ['function', 'class', 'variable']
-                    for (ti, tips) in enumerate(n69wspa2nt):
+                    for ti, tips in enumerate(n69wspa2nt):
                         if tips[0] == '<UNK>':
                             continue
                         n69wspa34z = n69wspa34z + [{'name': n, 'type': n69wspa2hp[ti]} for n in tips[0]]
@@ -5779,7 +5779,7 @@ class A69wspa0yq(DBHandler):
                 if n69wspa2uu.count('.') == 0:
                     n69wspa2or = n69wspa2or + await b69x8ynnv3(n69wspa2uu)
                 else:
-                    (left, right, has_attr) = b69wspa0xy(n69wspa2uu, n69wspa2zh)
+                    left, right, has_attr = b69wspa0xy(n69wspa2uu, n69wspa2zh)
                     if not has_attr:
                         n69wspa2or = n69wspa2or + await b69x8ynnv3(n69wspa2uu)
                     else:
@@ -5787,7 +5787,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa2u0 = self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'func', right, helpinfo={'class': '', 'hasObj': True, 'obj': left, 'root': n69wspa381}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
                         n69wspa2ql = self.b69x8ynnsx(n65d20cda3, n69wspa2wq, 'attr', right, helpinfo={'class': '', 'hasObj': True, 'obj': left, 'root': n69wspa381}, n69wspa30r=n69wspa30r, _skiplock=True, conn=conn)
                         n69wspa2nt = await asyncio.gather(n69wspa2jk, n69wspa2u0, n69wspa2ql)
-                        for (ti, tips) in enumerate(n69wspa2nt):
+                        for ti, tips in enumerate(n69wspa2nt):
                             if tips[0] == '<UNK>':
                                 continue
                             n69wspa2or = n69wspa2or + [{'name': n, 'type': 'attribute' if ti == 2 else 'function'} for n in tips[0]]
@@ -5847,7 +5847,7 @@ class A69wspa0yq(DBHandler):
                 n69wsp9oyj = n69wspa2va.count('\n') + pos['lineNumber']
                 n69wspa2id = n69wsp9p1r + pos['column'] - 1
                 n69wspa2sx = {}
-                for (path, cod) in n69wspa2i1['files'].items():
+                for path, cod in n69wspa2i1['files'].items():
                     n69wspa2v4 = n69wspa381.replace('>', '/').strip('/')
                     if path == n69wspa2i1['entry']:
                         continue
@@ -5905,7 +5905,7 @@ class A69wspa0yq(DBHandler):
                 if choice == 'funcs':
                     n69wspa2oq = self.select('params', cond_sql=f"name LIKE '%{n69wsp9omn}%'", targets=['def_id'], conn=conn, _skiplock=True)
             n69wspa2hj = conn.execute(text(sql))
-            (n69wsp9oq8, presult) = await asyncio.gather(n69wspa2hj, n69wspa2oq)
+            n69wsp9oq8, presult = await asyncio.gather(n69wspa2hj, n69wspa2oq)
             n69wsp9oq8 = n69wsp9oq8.fetchall()
             n69wsp9oq8 = pd.DataFrame(n69wsp9oq8, columns=n69wspa2r1)
             if choice == 'funcs':
@@ -5939,7 +5939,7 @@ class A69wspa0yq(DBHandler):
         async def b69wspa5ai(conn):
             n69wspa2r3 = self.select('funcs', cond_sql='true', targets=['imports_code'], conn=conn, _skiplock=True)
             extpkgs = self.select('misc', cond_sql='true', targets=['external_pkgs'], conn=conn, _skiplock=True)
-            (n69wspa2r3, extpkgs) = await asyncio.gather(n69wspa2r3, extpkgs)
+            n69wspa2r3, extpkgs = await asyncio.gather(n69wspa2r3, extpkgs)
             extpkgs = extpkgs.loc[0, 'external_pkgs'] if len(extpkgs) > 0 else []
             n69wspa2r3 = n69wspa2r3['imports_code'].tolist()
             n69wspa2p4 = ''
@@ -5979,7 +5979,7 @@ class A69wspa0yq(DBHandler):
             n69wspa2le = self.delete('funcs', cond_sql="ethnic = '[ENV]'", conn=conn, _skiplock=True)
             n69wspa2db = self.delete('funcs', cond_sql="ethnic = '[ENV]'", conn=conn, _skiplock=True)
             n69wspa377 = self.delete('vars', cond_sql="ethnic = '[ENV]'", conn=conn, _skiplock=True)
-            (n69wspa2r7, _, _, _) = await asyncio.gather(n69wspa2r7, n69wspa2le, n69wspa2db, n69wspa377)
+            n69wspa2r7, _, _, _ = await asyncio.gather(n69wspa2r7, n69wspa2le, n69wspa2db, n69wspa377)
             await self.b69x8ynntp(n69wspa2r7, conn=conn, _skiplock=True)
         await self._batch_write([b69x8ynnu4], conn=conn, _skiplock=_skiplock)
 

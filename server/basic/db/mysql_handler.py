@@ -26,7 +26,7 @@ def gen_create_sql(table_name, typesdict, primes=[], need_new_mapping=False):
     type_mapping = {'int64': 'INT', 'int': 'INT', 'float64': 'FLOAT', 'float': 'FLOAT', 'str': 'VARCHAR(255)', 'bool': 'TINYINT(1)', 'object': 'JSON', 'dict': 'JSON', 'list': 'JSON', 'json': 'JSON', 'datetime64[ns]': 'DATETIME', 'timedelta[ns]': 'BIGINT'}
     new_mapping = {}
     sqls = []
-    for (vname, vtypes) in typesdict.items():
+    for vname, vtypes in typesdict.items():
         allownull = False
         if 'NoneType' in vtypes:
             allownull = True
@@ -55,7 +55,7 @@ def fill_nan_from_other_df(n69wsp9p0u: pd.DataFrame, n69wsp9olz: pd.DataFrame, c
         n69wsp9p0u = n69wsp9p0u.copy()
     nan_mask = n69wsp9p0u.isna()
     nan_positions = nan_mask.stack()[nan_mask.stack()].index
-    for (row_idx, n69wspa2id) in nan_positions:
+    for row_idx, n69wspa2id in nan_positions:
         n69wspa2xo = n69wsp9p0u.loc[row_idx]
         if not cond_cols:
             cond_cols = n69wspa2xo.dropna().index.tolist()
@@ -108,7 +108,7 @@ class DBHandler:
             with self.engine.connect() as conn:
                 conn.execute(text('SELECT 1'))
             self.inspector = inspect(self.engine)
-            for (table_name, config) in self.table_definitions.items():
+            for table_name, config in self.table_definitions.items():
                 self._check_or_create_table(table_name, config)
         except Exception as e:
             raise ConnectionError(f'❌ 数据库初始化失败: {e}')
@@ -143,7 +143,7 @@ class DBHandler:
 
     def _create_table_with_unique_key(self, table_name: str, fields: Dict[str, str], primes: List[str], uniques: List[Union[List[str], str]], foreigns: List[Dict]):
         column_defs = []
-        for (col_name, col_type) in fields.items():
+        for col_name, col_type in fields.items():
             column_defs.append(f'`{col_name}` {col_type.strip()}')
         assert primes, f'表{table_name}缺乏primes'
         primary_clause = f", PRIMARY KEY ({','.join(primes)})"
@@ -193,7 +193,7 @@ class DBHandler:
                     kpath = ''
                     if '->' in k:
                         assert k.count('->') == 1, f'使用json路径筛选时只允许出现一个->，收到：{k}'
-                        (real_k, kpath) = k.split('->')
+                        real_k, kpath = k.split('->')
                         real_k = real_k.strip()
                         kpath = ' -> ' + f"'{kpath.strip()}'"
                         assert 'JSON' in self.table_definitions[table_name]['fields'][real_k], f'字段{real_k}不是JSON类型'
@@ -289,7 +289,7 @@ class DBHandler:
             n69wsp9oq8 = [{n69wspa2r1[i]: n69wspa2hl[i] for i in range(len(n69wspa2r1))} for n69wspa2hl in n69wsp9oq8]
             n69wsp9oq8 = pd.DataFrame(n69wsp9oq8)
             jkeys = []
-            for (k, v) in self.table_definitions[table_name]['fields'].items():
+            for k, v in self.table_definitions[table_name]['fields'].items():
                 if 'JSON' in v.upper():
                     jkeys.append(k)
             jkeys = set(jkeys) & set(n69wsp9oq8.columns.tolist())
@@ -414,25 +414,25 @@ class DBHandler:
             async with self._write_lock:
                 if conn is None:
                     async with self.async_engine.begin() as conn:
-                        (records, sql) = await _form_records(conn, df)
+                        records, sql = await _form_records(conn, df)
                         if len(records) == 0:
                             return
                         await conn.execute(text(sql), records)
                         await conn.commit()
                 else:
-                    (records, sql) = await _form_records(conn, df)
+                    records, sql = await _form_records(conn, df)
                     if len(records) == 0:
                         return
                     await conn.execute(text(sql), records)
         elif conn is None:
             async with self.async_engine.begin() as conn:
-                (records, sql) = await _form_records(conn, df)
+                records, sql = await _form_records(conn, df)
                 if len(records) == 0:
                     return
                 await conn.execute(text(sql), records)
                 await conn.commit()
         else:
-            (records, sql) = await _form_records(conn, df)
+            records, sql = await _form_records(conn, df)
             if len(records) == 0:
                 return
             await conn.execute(text(sql), records)

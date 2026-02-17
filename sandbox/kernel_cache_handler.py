@@ -71,7 +71,7 @@ def to_dumpable(data):
         return newdata
     if type(data) == dict:
         newdata = {}
-        for (k, subdata) in data.items():
+        for k, subdata in data.items():
             newdata[k] = to_dumpable(subdata)
         return newdata
     try:
@@ -390,8 +390,8 @@ class CacheHandler:
             self.olds[run_id] = []
         allouts = self.get_all_by_run_id(run_id, choice=choice)
         news = {}
-        for (node_id, records) in allouts.items():
-            for (record_id, data) in records.items():
+        for node_id, records in allouts.items():
+            for record_id, data in records.items():
                 if not record_id in self.olds[run_id]:
                     self.olds[run_id].append(record_id)
                     if not node_id in news:
@@ -402,7 +402,7 @@ class CacheHandler:
     def _get_new_nodes_states(self, run_id):
         news = self._get_news(run_id, choice='stateonly')
         retdic = {}
-        for (nodeid, record) in news.items():
+        for nodeid, record in news.items():
             runcount = [1 for v in record.values() if v['content_type'] == 'node_runned']
             runcount = len(runcount)
             errs = [v for v in record.values() if v['content_type'] == 'error']
@@ -437,7 +437,7 @@ def _send_vars_to_cache(run_id, node_id, varsdic, cascns=None, cnskey=None, vars
     if varinfo:
         option = varinfo.get('option', 'untrack')
         varnames = varinfo.get('vars') or []
-    for (k, v) in varsdic.items():
+    for k, v in varsdic.items():
         if k == '_BUG_':
             print('[WARNING] 存变量出现_BUG_：', run_id, cnskey, node_id, v, file=sys.__stderr__)
         try:
@@ -474,7 +474,7 @@ def _input_via_cache(run_id, *prompt, node_id=None):
         if maybe_kill:
             raise KernelInterrupted(f'Inputer interrupted.')
         inputs = cache.get_n_outputs(run_id, node_id, choice='inputed', dolog=False)
-        for (record_id, inpdic) in inputs.items():
+        for record_id, inpdic in inputs.items():
             if inpdic['content']['prompt'] == prompt and inpdic['content']['consumed'] == 0:
                 cache.consume_input(record_id)
                 return inpdic['content']['input']

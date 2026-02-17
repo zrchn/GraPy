@@ -36,7 +36,7 @@ def b69wspa5ab(n69wspa2wq, n69wspa5mk, n69wspa381):
         n69wspa2xv = '*'
     else:
         return '<UNK>'
-    (left, right) = n69wspa2jx.rsplit(n69wspa2xv, 1)
+    left, right = n69wspa2jx.rsplit(n69wspa2xv, 1)
     if not left.count('^1#_') == 1:
         return '<UNK>'
     n69wspa38w = left.split('^1#_')[0]
@@ -102,10 +102,10 @@ def b69wspa5am(n69wspa2dr, n69wspa5np=None):
     def b69wspa5ai(n69wspa2xo):
         n69wspa2wq = n69wspa2xo['def_id']
         if '*' in n69wspa2wq:
-            (left, right) = n69wspa2wq.rsplit('*', 1)
+            left, right = n69wspa2wq.rsplit('*', 1)
             n69wspa2jj = n69wspa2wq
             if '/' in right:
-                (n69wsp9ole, n69wsp9p3n) = right.split('/')
+                n69wsp9ole, n69wsp9p3n = right.split('/')
                 n69wspa5mc = n69wsp9ole.split(DOT_REPL)[-1]
                 n69wspa2jj = left + '*' + n69wspa5mc + '/' + n69wsp9p3n
             else:
@@ -124,7 +124,7 @@ def b69wspa5am(n69wspa2dr, n69wspa5np=None):
                         n69wspa2jj = n69wspa2jj + ('/' + right.split('/')[-1])
             return n69wspa2jj
         elif '/' in n69wspa2wq:
-            (left, right) = n69wspa2wq.rsplit('/', 1)
+            left, right = n69wspa2wq.rsplit('/', 1)
             n69wspa5mi = right.split(DOT_REPL)[-1]
             return left + '/' + n69wspa5mi
         return n69wspa2wq
@@ -147,7 +147,7 @@ def b69wspa5a9(n69wspa31q, n69wspa5mo, n69wspa5np=None):
             continue
         if not ' as ' in n69wsp9ou8:
             continue
-        (left, right) = n69wsp9ou8.split(' as ')
+        left, right = n69wsp9ou8.split(' as ')
         left = left.split(' import ')[-1].strip()
         right = right.strip()
         n69wspa32e[right] = left
@@ -155,10 +155,10 @@ def b69wspa5a9(n69wspa31q, n69wspa5mo, n69wspa5np=None):
     def b69wspa5ao(n69wspa2xo):
         n69wspa2wq = n69wspa2xo['def_id']
         if '*' in n69wspa2wq:
-            (left, right) = n69wspa2wq.rsplit('*', 1)
+            left, right = n69wspa2wq.rsplit('*', 1)
             n69wspa2jj = n69wspa2wq
             if '/' in right:
-                (n69wsp9ole, n69wsp9p3n) = right.split('/')
+                n69wsp9ole, n69wsp9p3n = right.split('/')
                 n69wspa5mc = n69wspa32e.get(n69wsp9ole, n69wsp9ole)
                 n69wspa2jj = left + '*' + n69wspa5mc + '/' + n69wsp9p3n
             else:
@@ -180,7 +180,7 @@ def b69wspa5a9(n69wspa31q, n69wspa5mo, n69wspa5np=None):
                     raise
             return n69wspa2jj
         elif '/' in n69wspa2wq:
-            (left, right) = n69wspa2wq.rsplit('/', 1)
+            left, right = n69wspa2wq.rsplit('/', 1)
             n69wspa5mi = n69wspa32e.get(right, right)
             return left + '/' + n69wspa5mi
         raise
@@ -280,7 +280,7 @@ class A69wspa5ap:
     def b69wspa5an(self, module, skip_privates=True, source_file=None) -> List[Dict[str, Any]]:
         n69wspa5ln = []
         n69wspa35k = []
-        for (name, obj) in inspect.getmembers(module):
+        for name, obj in inspect.getmembers(module):
             if name.startswith('_') and skip_privates:
                 continue
             if name in SKIPNAMES:
@@ -295,17 +295,17 @@ class A69wspa5ap:
             if inspect.isfunction(obj) or inspect.ismethod(obj):
                 info['type'] = 'function'
                 info['is_async'] = True if inspect.iscoroutinefunction(obj) else False
-                (info['params'], n69wspa5ns) = self.b69wspa5af(obj)
+                info['params'], n69wspa5ns = self.b69wspa5af(obj)
                 info['homeclass'] = ''
                 n69wspa5ln.append(info)
             elif inspect.isclass(obj):
                 info['type'] = 'class'
                 info['bases'] = [n69wspa380.__name__ for n69wspa380 in obj.__mro__[1:-1]]
                 n69wspa5ne = []
-                for (m_name, m_obj) in inspect.getmembers(obj):
+                for m_name, m_obj in inspect.getmembers(obj):
                     if m_name.startswith('_') and m_name not in ('__init__', '__call__') or not inspect.isfunction(m_obj):
                         continue
-                    (n69wsp9p0t, n69wspa5ns) = self.b69wspa5af(m_obj)
+                    n69wsp9p0t, n69wspa5ns = self.b69wspa5af(m_obj)
                     n69wspa5lc = info['source_file']
                     try:
                         n69wspa5lc = inspect.getfile(m_obj)
@@ -322,7 +322,7 @@ class A69wspa5ap:
             elif callable(obj):
                 info['type'] = 'callable'
                 info['value_type'] = self.b69wspa5aa(type(obj))
-                (info['params'], n69wspa5ns) = self.b69wspa5af(obj)
+                info['params'], n69wspa5ns = self.b69wspa5af(obj)
                 n69wspa5ln.append(info)
             else:
                 info['type'] = 'object'
@@ -374,7 +374,7 @@ class A69wspa5ap:
                         n69wspa5n4.append(n69wspa2mh['code'])
                         continue
                 n69wspa5l8 = {'ntype': 'Module', 'body': [n69wspa2mh]}
-                (_, n69wspa2dv) = b65wsp9mrz(n69wspa5l8)
+                _, n69wspa2dv = b65wsp9mrz(n69wspa5l8)
                 n69wspa2ej.append(n69wspa2dv)
                 n69wspa36m.append(n69wspa2mh['module'])
             elif n69wspa2mh['ntype'] == 'Import':
@@ -388,7 +388,7 @@ class A69wspa5ap:
                     if namedic['name'].startswith('.'):
                         pass
                     n69wsp9p59 = {'ntype': 'Module', 'body': [{'ntype': 'ImportFrom', 'module': namedic['name'], 'names': [{'ntype': 'alias', 'code': '*', 'name': '*', 'asname': None}]}]}
-                    (_, n69wsp9otb) = b65wsp9mrz(n69wsp9p59)
+                    _, n69wsp9otb = b65wsp9mrz(n69wsp9p59)
                     n69wspa2ej.append(n69wsp9otb)
                     n69wspa36m.append(namedic['name'])
             else:
@@ -424,7 +424,7 @@ class A69wspa5ap:
         sys.path.insert(0, str(n69wspa5lh))
         n69wspa2me = {}
         try:
-            for (n69wsp9onc, dirs, n69wspa35u) in os.b69wspa0y7(n69wspa5l4):
+            for n69wsp9onc, dirs, n69wspa35u in os.b69wspa0y7(n69wspa5l4):
                 dirs[:] = [n69wsp9oq0 for n69wsp9oq0 in dirs if not n69wsp9oq0.startswith('.') and n69wsp9oq0 != '__pycache__']
                 for file in n69wspa35u:
                     if file.endswith('.py') and (not file.startswith('__')):
@@ -451,7 +451,7 @@ class A69wspa5ap:
         n69wspa2nl = []
         n69wsp9osv = []
         n69wspa5m8 = {}
-        for (n69wspa2ne, items) in data.items():
+        for n69wspa2ne, items in data.items():
             if '.' in n69wspa2ne:
                 n69wspa337 = '[ENV]>' + x69xm5du01(n69wspa2ne)
             else:
@@ -466,7 +466,7 @@ class A69wspa5ap:
                     n69wspa2qn = n69wspa337 + '^1#_/' + item['name']
                     n69wspa5lj = {'uid': n69wspa2qn, 'def_id': n69wspa2qn, 'globals': [], 'nonlocals': [], 'imports_code': '', 'is_async': item['is_async'], 'deco_expr': '', 'xpos': 0, 'ypos': 0, 'doc': item['doc'], 'ethnic': '[ENV]', 'source_file': item.get('source_file', '<UNK>'), 'homeclass': ''}
                     n69wsp9p3q.append(n69wspa5lj)
-                    for (pi, n69wspa5mu) in enumerate(item['params']['inputs']):
+                    for pi, n69wspa5mu in enumerate(item['params']['inputs']):
                         n69wspa5n7 = {'name': n69wspa5mu['name'], 'type': n69wspa5mu['type_annotation'], 'doc': n69wspa5mu['doc'], 'default': n69wspa5mu['default'], 'place': pi, 'ctx': 'input', 'def_id': n69wspa2qn, 'source_file': item.get('source_file', '<UNK>')}
                         n69wsp9osv.append(n69wspa5n7)
                     n69wspa5mu = item['params']['return']
@@ -479,7 +479,7 @@ class A69wspa5ap:
                         n69wspa2qn = n69wspa5n8 + '/' + func['name']
                         n69wspa5lj = {'uid': n69wspa2qn, 'def_id': n69wspa2qn, 'globals': [], 'nonlocals': [], 'imports_code': '', 'is_async': func['is_async'], 'deco_expr': '', 'xpos': 0, 'ypos': 0, 'doc': func['doc'], 'ethnic': '[ENV]', 'source_file': func.get('source_file', item.get('source_file', '<UNK>')), 'homeclass': func['homeclass']}
                         n69wsp9p3q.append(n69wspa5lj)
-                        for (pi, n69wspa5mu) in enumerate(func['params']['inputs']):
+                        for pi, n69wspa5mu in enumerate(func['params']['inputs']):
                             n69wspa5n7 = {'name': n69wspa5mu['name'], 'type': n69wspa5mu['type_annotation'], 'doc': n69wspa5mu['doc'], 'default': n69wspa5mu['default'], 'place': pi, 'ctx': 'input', 'def_id': n69wspa2qn, 'source_file': item.get('source_file', '<UNK>')}
                             n69wsp9osv.append(n69wspa5n7)
                         n69wspa5mu = func['params']['return']
@@ -498,7 +498,7 @@ class A69wspa5ap:
                 continue
             if not '.' in n69wspa2dq:
                 continue
-            (rawmodid, vtype) = n69wspa2dq.rsplit('.', 1)
+            rawmodid, vtype = n69wspa2dq.rsplit('.', 1)
             n69wspa5le = n69wspa5m8.get(rawmodid)
             if not n69wspa5le:
                 if not '.' in rawmodid:
@@ -512,7 +512,7 @@ class A69wspa5ap:
         return {'funcs': n69wsp9p3q, 'params': n69wsp9osv, 'classes': n69wsp9p6q, 'objs': n69wspa5lt}
 
     def b69wspa5al(self, imports_code, spread_imports=True):
-        (n69wspa5n5, failed) = self.b69wspa5a8(imports_code)
+        n69wspa5n5, failed = self.b69wspa5a8(imports_code)
         n69wspa5m1 = self.b69wspa5ac(n69wspa5n5)
         n69wspa5nk = {'funcs': ['uid', 'def_id', 'globals', 'nonlocals', 'imports_code', 'is_async', 'deco_expr', 'doc', 'xpos', 'ypos', 'ethnic', 'source_file', 'homeclass'], 'params': ['name', 'type', 'doc', 'def_id', 'ctx', 'default', 'place', 'source_file'], 'classes': ['bases', 'vars', 'deco_expr', 'def_id', 'uid', 'doc', 'xpos', 'ypos', 'ethnic', 'source_file'], 'objs': ['name', 'from_node', 'from_def', 'ctx', 'def_id', 'uid', 'type', 'repr', 'value', 'ethnic', 'source_file']}
         for k in n69wspa5nk.keys():
@@ -525,12 +525,12 @@ class A69wspa5ap:
             for p in ext_paths:
                 sys.path.insert(0, p)
             if ',' in imports_code:
-                (_, _, imports_code) = b69wsp9mrs(b69wsp9mq1(imports_code), expand=True)
+                _, _, imports_code = b69wsp9mrs(b69wsp9mq1(imports_code), expand=True)
             n69wsp9p31 = imports_code.split('\n')
             n69wspa5mo = '\n'.join([l for l in n69wsp9p31 if l.startswith('from')])
             n69wspa5nv = '\n'.join([l for l in n69wsp9p31 if l.startswith('import')])
-            (n69wspa31q, ffails) = self.b69wspa5al(n69wspa5mo, spread_imports=spread_imports)
-            (n69wspa2dr, n69wspa5nc) = self.b69wspa5al(n69wspa5nv, spread_imports=spread_imports)
+            n69wspa31q, ffails = self.b69wspa5al(n69wspa5mo, spread_imports=spread_imports)
+            n69wspa2dr, n69wspa5nc = self.b69wspa5al(n69wspa5nv, spread_imports=spread_imports)
             n69wspa5mb = []
             for n69wspa2va in n69wspa5nc:
                 f = n69wspa2va[0]
@@ -565,7 +565,7 @@ class A69wspa5ap:
                         continue
                     if not (v['type'].startswith('[ENV]') and v['type'].count('^') == 1):
                         continue
-                    (n69wspa2jc, clspart) = v['type'][6:].split('^')
+                    n69wspa2jc, clspart = v['type'][6:].split('^')
                     if not clspart.count('*') == 1:
                         continue
                     n69wspa37l = clspart.split('*')[-1]
@@ -577,7 +577,7 @@ class A69wspa5ap:
                         n69wspa5ly = n69wspa5ly + (n69wspa5na + '\n')
                 if n69wspa5lw:
                     pass
-                (scanned2, fails2) = self.b69wspa5a8(n69wspa5ly, skip_privates=False)
+                scanned2, fails2 = self.b69wspa5a8(n69wspa5ly, skip_privates=False)
                 if fails2:
                     pass
                 n69wspa5me = self.b69wspa5ac(scanned2)
@@ -605,7 +605,7 @@ class A69wspa5ap:
 
     async def b69x8ynrdt(self, imports_code, ext_paths, spread_imports=True, retype='dict', recur_obj_cls=True, xform_imports=True):
         n69wspa2xu = asyncio.get_running_loop()
-        n69wspa2p9 = await n69wspa2xu.run_in_executor(None, lambda : self.b69wspa5ad(imports_code, ext_paths, spread_imports=spread_imports, retype=retype, recur_obj_cls=recur_obj_cls, xform_imports=xform_imports))
+        n69wspa2p9 = await n69wspa2xu.run_in_executor(None, lambda: self.b69wspa5ad(imports_code, ext_paths, spread_imports=spread_imports, retype=retype, recur_obj_cls=recur_obj_cls, xform_imports=xform_imports))
         return n69wspa2p9
 n69wspa5l3 = A69wspa5ap()
 if __name__ == '__main__':

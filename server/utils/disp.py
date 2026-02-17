@@ -14,7 +14,7 @@ class Disp(bcolors):
     def __call__(self, text, *args, **kwargs):
         add = ''.join([' ' + a for a in args])
         color = getattr(self, kwargs.get('color', 'plain'), 'plain')
-        print(color + str(text) + add + self.RESET, *args, **{k: v for (k, v) in kwargs.items() if not k == 'color'})
+        print(color + str(text) + add + self.RESET, *args, **{k: v for k, v in kwargs.items() if not k == 'color'})
 disp = Disp()
 if __name__ == '__main__':
     disp = Disp()

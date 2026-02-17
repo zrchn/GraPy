@@ -13,7 +13,7 @@ class JediEnvManager:
         temp_dir = tempfile.TemporaryDirectory()
         self._temp_dirs.append(temp_dir)
         temp_root = Path(temp_dir.name)
-        for (rel_path, code) in livecodes.items():
+        for rel_path, code in livecodes.items():
             full_path = temp_root / rel_path
             full_path.parent.mkdir(parents=True, exist_ok=True)
             full_path.write_text(code, encoding='utf-8')
@@ -22,7 +22,7 @@ class JediEnvManager:
         combined_path = [os.path.abspath(p) for p in extra_paths if os.path.isdir(p)]
         combined_path = [str(temp_root)] + combined_path + original_sys_path
         env._original_get_sys_path = env.get_sys_path
-        env.get_sys_path = lambda : combined_path
+        env.get_sys_path = lambda: combined_path
         env._temp_dir_holder = temp_dir
         return env
 

@@ -101,7 +101,7 @@ async def on_init(data: dict):
 async def x69z63qyiz(data: dict):
     flow_id = data['workflowId']
     assert flow_id.count(':') == 1
-    (left, right) = flow_id.split(':')
+    left, right = flow_id.split(':')
     nodedata = await handler.b69x8ynnvx(left, right, count_previews=True, to_bouncer=True)
     return nodedata
 
@@ -111,7 +111,7 @@ async def b69x8ynnu6(data: dict):
     try:
         if x69xm5dtzx(data['moduleId']) == 'folder':
             return {'error_code': 400, 'msg': 'Cannot undo at folder level.'}
-        (hist_scope, n69wspa2mh, n69wsp9oye, n69yxx8iwg) = await handler.b69x8ynnu6(data['moduleId'], data['xx'])
+        hist_scope, n69wspa2mh, n69wsp9oye, n69yxx8iwg = await handler.b69x8ynnu6(data['moduleId'], data['xx'])
         if n69wspa2mh != '<EMPTY>':
             x69ydt6f7z = False
         return {'error_code': 200, 'scopeId': hist_scope, 'data': n69wspa2mh, 'alsoReload': n69wsp9oye, 'focusNodeId': n69yxx8iwg}
@@ -140,13 +140,13 @@ async def x69y6b52rz(data: dict):
         await handler.b69x8ynnun(shell_br)
         location_now = data['locationNow']
         assert location_now.count(':') == 1
-        (n69wspa2wq, n69wspa2jq) = location_now.split(':')
+        n69wspa2wq, n69wspa2jq = location_now.split(':')
         assert n69wspa2jq == 'dag'
         shell_id = n69wspa2wq + '^' + shell_br
         if code != '<<TBY1>>':
-            (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnt6(code, shell_id, n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2, n69znp79nl=False)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnt6(code, shell_id, n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2, n69znp79nl=False)
         else:
-            (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnt4(shell_id, n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnt4(shell_id, n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2)
         return {'error_code': 200, 'data': {**n69wspa2nn, **n69wspa31g}}
     except Exception as e:
         e = str(e)
@@ -169,14 +169,14 @@ async def x69y6b52s0(data: dict):
         if x69xm5dtzx(data['branchId']) != 'class':
             replace_info = {'mode': 'tools', 'scope': n69wspa2jq, 'dels': n69wsp9oqx}
             if code != '<<TBY1>>':
-                (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnt6(code, data['branchId'], n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2, n69znp79nl=False)
+                _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnt6(code, data['branchId'], n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2, n69znp79nl=False)
             else:
-                (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnt4(data['branchId'], n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2)
+                _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnt4(data['branchId'], n69wspa2da=replace_info, cached=True, n69wspa381=data.get('rootpath'), tolerance=2)
         elif code != '<<TBY1>>':
             assert n69wspa2jq == 'funcs'
-            (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynntj(code, data['branchId'], cached=True, n69wspa381=data.get('rootpath'), del_funcs=n69wsp9oqx, tolerance=2, n69znp79nl=False)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynntj(code, data['branchId'], cached=True, n69wspa381=data.get('rootpath'), del_funcs=n69wsp9oqx, tolerance=2, n69znp79nl=False)
         else:
-            (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnt4(data['branchId'], cached=True, n69wspa381=data.get('rootpath'), del_funcs=n69wsp9oqx, tolerance=2)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnt4(data['branchId'], cached=True, n69wspa381=data.get('rootpath'), del_funcs=n69wsp9oqx, tolerance=2)
         n69wspa2nn = {**n69wspa2nn, **n69wspa31g}
         return {'error_code': 200, 'data': n69wspa2nn}
     except Exception as e:
@@ -194,7 +194,7 @@ async def reshell_by_llm(data: dict):
             if replace_info['mode'] == 'single':
                 replace_info = {'mode': 'replace', 'section': [replace_info['uid'], replace_info['uid']]}
         await handler.b69x8ynnun(upsert_shell)
-        (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnvz(data['prompt'], n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info)
+        _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnvz(data['prompt'], n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info)
         n69wspa2nn = {**n69wspa2nn, **n69wspa31g}
         return {'error_code': 200, 'data': n69wspa2nn}
     except Exception as e:
@@ -203,7 +203,7 @@ async def reshell_by_llm(data: dict):
         exc = traceback.format_exc()
         excs = exc.split('\n')
         localdex = 0
-        for (localdex, n69wsp9ou8) in enumerate(excs):
+        for localdex, n69wsp9ou8 in enumerate(excs):
             if 'File "<unknown>"' in n69wsp9ou8:
                 break
         appexc = '\n'.join(excs[localdex + 1:]) if localdex + 1 < len(excs) else str(e)
@@ -233,7 +233,7 @@ async def llm_reshell(websocket: WebSocket):
                 if replace_info['mode'] == 'single':
                     replace_info = {'mode': 'replace', 'section': [replace_info['uid'], replace_info['uid']]}
             await handler.b69x8ynnun(upsert_shell)
-            (_, n69wspa2nn, n69wspa31g) = await handler.b69x8ynnvz(prompt, n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info, ws=streamer)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnvz(prompt, n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info, ws=streamer)
             n69wspa2nn = {**n69wspa2nn, **n69wspa31g}
             await streamer.send_text(json.dumps({'event': 'reshell', 'data': n69wspa2nn}, ensure_ascii=False))
             await streamer.send_text(json.dumps({'event': 'end'}, ensure_ascii=False))
@@ -310,7 +310,7 @@ async def x69y6b52s2(data: dict):
                 n69wsp9onl['saved'] = True
             return n69wsp9onl
         elif data['scopeType'] == 'funcs':
-            (n69wspa2qg, n69wspa2jq) = n69wspa2qg.split(':')
+            n69wspa2qg, n69wspa2jq = n69wspa2qg.split(':')
             assert n69wspa2jq == 'funcs'
             n69wsp9onl = await handler.b69x8ynnvr(n69wspa2qg, data['nodes'], n69wsp9ore=n69wsp9ore, cached=x69xm5dtzx(n69wspa2wq) != 'folder', n69wspa2sf=False, timestamp=timestamp)
             n69wsp9onl = {'nodes': n69wsp9onl if not quiet else data['nodes'], 'error_code': 200}
@@ -318,7 +318,7 @@ async def x69y6b52s2(data: dict):
                 n69wsp9onl['saved'] = True
             return n69wsp9onl
         elif data['scopeType'] == 'classes':
-            (n69wspa2qg, n69wspa2jq) = n69wspa2qg.split(':')
+            n69wspa2qg, n69wspa2jq = n69wspa2qg.split(':')
             assert n69wspa2jq == 'classes'
             n69wsp9onl = await handler.b69x8ynntk(n69wspa2qg, data['nodes'], n69wsp9ore=n69wsp9ore, cached=x69xm5dtzx(n69wspa2wq) != 'folder', n69wspa2sf=False, timestamp=timestamp)
             n69wsp9onl = {'nodes': n69wsp9onl if not quiet else data['nodes'], 'error_code': 200}
@@ -427,11 +427,11 @@ async def b69x8ynntv(data: dict):
             else:
                 n69wspa2zf = data['labelInfo']
         if is_shell:
-            (code, xcode) = await handler.b69x8ynnu5(data['baseId'], n69wspa2k7=n69wspa2zf['node_br'], style='pure', tolerance=2)
+            code, xcode = await handler.b69x8ynnu5(data['baseId'], n69wspa2k7=n69wspa2zf['node_br'], style='pure', tolerance=2)
         elif not n69wspa2um:
-            (code, xcode) = await handler.b69x8ynntv(data['baseId'], data['choice'], n69wspa2zf=n69wspa2zf, style='pure', tolerance=2)
+            code, xcode = await handler.b69x8ynntv(data['baseId'], data['choice'], n69wspa2zf=n69wspa2zf, style='pure', tolerance=2)
         else:
-            (code, xcode) = await handler.b69x8ynnv8(n69wspa2zf['uid'], n69wspa2zf['node_type'], style='pure', tolerance=2)
+            code, xcode = await handler.b69x8ynnv8(n69wspa2zf['uid'], n69wspa2zf['node_type'], style='pure', tolerance=2)
         code = extract_roi(code)
         return {'error_code': 200, 'data': code}
     except Exception as e:
@@ -457,7 +457,7 @@ async def x69y6b52s8(data: dict):
 @app.post('/app/bgdcl')
 async def b69wsp9moz(data: dict):
     try:
-        (n69wsp9oz2, newedges) = await handler.b69x8ynnvo(data['nodeType'], data['defId'], data['srcNodeId'], data['srcHandleId'], data['srcX'], data['srcY'])
+        n69wsp9oz2, newedges = await handler.b69x8ynnvo(data['nodeType'], data['defId'], data['srcNodeId'], data['srcHandleId'], data['srcX'], data['srcY'])
         return {'error_code': 200, 'data': {'nodes': n69wsp9oz2, 'edges': newedges}}
     except Exception as e:
         traceback.print_exc()
@@ -480,7 +480,7 @@ async def x69y6b52sd(data: dict):
 async def b69x8ynnvc(data: dict):
     n65d20cda3 = data['uid']
     try:
-        (n69wsp9p51, n69wspa2w8) = await handler.b69x8ynnvc(n65d20cda3)
+        n69wsp9p51, n69wspa2w8 = await handler.b69x8ynnvc(n65d20cda3)
         return {'error_code': 200, 'hid': n69wsp9p51}
     except Exception as e:
         return {'error_code': 400, 'msg': str(e)}
@@ -489,7 +489,7 @@ async def b69x8ynnvc(data: dict):
 async def x69y6b52se(data: dict):
     n65d20cda3 = data['uid']
     try:
-        (n69wsp9p51, n69wspa2w8) = await handler.b69x8ynnvc(n65d20cda3)
+        n69wsp9p51, n69wspa2w8 = await handler.b69x8ynnvc(n65d20cda3)
         assert '.' in n69wsp9p51, f'uid {n65d20cda3}查出的hid {n69wsp9p51}不带.'
         n69wspa2ii = n69wsp9p51[:n69wsp9p51.rfind('.')]
         return {'error_code': 200, 'parentId': n69wspa2ii, 'branch': str(n69wspa2w8)}
@@ -507,7 +507,7 @@ async def b69x8ynnsw(data: dict):
                 v['from'] = (v.get('from_def') or '') + ' ' + (v.get('from_node') or '')
             if isinstance(v.get('repr'), str) and ENRICH == 'full':
                 v['repr'] = enrich_by_type(v['repr'], dtype=v.get('type'), enrichable_len=lazy_enrich_len)
-        n69wspa2f3 = [{k: v for (k, v) in n69wsp9oq0.items() if not k in ('ctx', 'uid', 'ethnic', 'from_def', 'from_node')} for n69wsp9oq0 in n69wspa2f3]
+        n69wspa2f3 = [{k: v for k, v in n69wsp9oq0.items() if not k in ('ctx', 'uid', 'ethnic', 'from_def', 'from_node')} for n69wsp9oq0 in n69wspa2f3]
         urvs = []
         urvset = set()
         for v in n69wspa2f3:
@@ -529,7 +529,7 @@ def is_solid(string):
 @app.post('/app/nddlu')
 async def x69y6b52sf(data: dict):
     try:
-        (rsp, n69wspa37a) = await handler.b69x8ynnsx(data['uid'], data['defId'], 'class', None, helpinfo={'obj': data['objName'], 'root': data['rootpath']})
+        rsp, n69wspa37a = await handler.b69x8ynnsx(data['uid'], data['defId'], 'class', None, helpinfo={'obj': data['objName'], 'root': data['rootpath']})
         if n69wspa37a:
             pass
         if not rsp:
@@ -575,7 +575,7 @@ async def x69y6b52sg(data: dict):
             elif data['metadata']['item'] == 'obj':
                 helpinfo = {'class': data['metadata'].get('class')}
             helpinfo['root'] = data['metadata'].get('root')
-            (n69wsp9onl, n69wspa37a) = await handler.b69x8ynnsx(data['metadata']['uid'], data['metadata']['def_id'], data['metadata']['item'], data['value'].strip(), helpinfo=helpinfo, _skiplock=True)
+            n69wsp9onl, n69wspa37a = await handler.b69x8ynnsx(data['metadata']['uid'], data['metadata']['def_id'], data['metadata']['item'], data['value'].strip(), helpinfo=helpinfo, _skiplock=True)
             if n69wspa37a:
                 pass
             if data['metadata']['item'] == 'func' and helpinfo.get('hasObj') and helpinfo.get('obj') and ('.' in data['value']) and isinstance(n69wsp9onl, list):
@@ -646,7 +646,7 @@ async def x69y6b52sh(data: dict):
                     data['funcName'] = '__call__'
                 else:
                     data['funcName'] = '__init__'
-        (n69wsp9onl, n69wspa37a) = await handler.b69x8ynnsx(data['uid'], data['defId'], 'params', data['funcName'], helpinfo={'hasObj': data.get('hasObj'), 'obj': (data.get('obj') or '').strip(), 'root': data['rootpath'], 'class': data['className'].strip() if isinstance(data['className'], str) else data['className']}, _skiplock=True)
+        n69wsp9onl, n69wspa37a = await handler.b69x8ynnsx(data['uid'], data['defId'], 'params', data['funcName'], helpinfo={'hasObj': data.get('hasObj'), 'obj': (data.get('obj') or '').strip(), 'root': data['rootpath'], 'class': data['className'].strip() if isinstance(data['className'], str) else data['className']}, _skiplock=True)
         if n69wspa37a:
             pass
         return {'error_code': 200, 'data': n69wsp9onl, 'warns': '\n'.join(n69wspa37a)}
@@ -671,7 +671,7 @@ async def x69y6b52si(data: dict):
                     data['funcName'] = '__call__'
                 else:
                     data['funcName'] = '__init__'
-        (n69wsp9onl, n69wspa37a) = await handler.b69x8ynnsx(data['uid'], data['defId'], 'func_desc', data['funcName'], helpinfo={'hasObj': data.get('hasObj'), 'obj': (data.get('obj') or '').strip(), 'root': data['rootpath'], 'class': data['className'].strip() if isinstance(data['className'], str) else data['className']})
+        n69wsp9onl, n69wspa37a = await handler.b69x8ynnsx(data['uid'], data['defId'], 'func_desc', data['funcName'], helpinfo={'hasObj': data.get('hasObj'), 'obj': (data.get('obj') or '').strip(), 'root': data['rootpath'], 'class': data['className'].strip() if isinstance(data['className'], str) else data['className']})
         if n69wspa37a:
             pass
         return {'error_code': 200, 'data': n69wsp9onl, 'warns': '\n'.join(n69wspa37a)}
@@ -690,7 +690,7 @@ async def x69y6b52sj(data: dict):
     try:
         if not (data['className'].strip() if isinstance(data['className'], str) else data['className']) and (not (data['objName'].strip() if isinstance(data['objName'], str) else data['objName'])):
             return {'error_code': 200, 'data': '<UNK>'}
-        (n69wsp9onl, n69wspa37a) = await handler.b69x8ynnsx(data['uid'], data['defId'], 'class_desc', data['className'], helpinfo={'root': data['rootpath'], 'obj': data['objName'].strip() if isinstance(data['objName'], str) else data['objName']})
+        n69wsp9onl, n69wspa37a = await handler.b69x8ynnsx(data['uid'], data['defId'], 'class_desc', data['className'], helpinfo={'root': data['rootpath'], 'obj': data['objName'].strip() if isinstance(data['objName'], str) else data['objName']})
         if n69wspa37a:
             pass
         return {'error_code': 200, 'data': n69wsp9onl, 'warns': '\n'.join(n69wspa37a)}
@@ -841,7 +841,7 @@ async def x69y6b52sm(data: dict):
                 del opened_scopes[td]
         targscope = data['openScopes'][-1] if data['openScopes'] else 'UNDEFINED'
         allopens = []
-        for (n69wspa2jx, fscopes) in opened_scopes.items():
+        for n69wspa2jx, fscopes in opened_scopes.items():
             allopens = allopens + fscopes
         data = False
         if allopens.count(targscope) > 1:
@@ -919,11 +919,11 @@ async def proxy_sandbox_run(streamer, start_info, timetag=None):
                                                 elif err_content['node_prop'] == 'task':
                                                     err_content['scope'] = hier_funcid + ':dag'
                                     if start_info['output_choice'] == 'stateonly':
-                                        for (n69wspa2e5, n69wsp9oxl) in n69wspa34v['content'].items():
+                                        for n69wspa2e5, n69wsp9oxl in n69wspa34v['content'].items():
                                             for n69wsp9p5e in n69wsp9oxl['errors']:
                                                 await trans_err(n69wsp9p5e['content'])
                                     else:
-                                        for (n69wspa2e5, n69wsp9oxl) in n69wspa34v['content'].items():
+                                        for n69wspa2e5, n69wsp9oxl in n69wspa34v['content'].items():
                                             for out_id in n69wsp9oxl.keys():
                                                 if n69wsp9oxl[out_id].get('content_type') == 'error':
                                                     await trans_err(n69wsp9oxl[out_id]['content'])
@@ -948,7 +948,7 @@ async def run(request: Request):
     start_info = {}
     reload_records = []
     try:
-        (run_id, timetag) = output_client.gen_run_id_pair()
+        run_id, timetag = output_client.gen_run_id_pair()
         output_choice = data.get('outputChoice', 'all')
         codedata = await handler.b69x8ynntt(data['projectRoot'], data['baseId'], choice=data['choice'], n69wspa2zf=data['labelInfo'])
         reload_records = codedata['reloads']
@@ -1003,11 +1003,11 @@ async def proxy_sandbox_ws_run(streamer, start_info, timetag=None):
                                         elif err_content['node_prop'] == 'task':
                                             err_content['scope'] = hier_funcid + ':dag'
                             if start_info['output_choice'] == 'stateonly':
-                                for (n69wspa2e5, n69wsp9oxl) in n69wspa34v['content'].items():
+                                for n69wspa2e5, n69wsp9oxl in n69wspa34v['content'].items():
                                     for n69wsp9p5e in n69wsp9oxl['errors']:
                                         await trans_err(n69wsp9p5e['content'])
                             else:
-                                for (n69wspa2e5, n69wsp9oxl) in n69wspa34v['content'].items():
+                                for n69wspa2e5, n69wsp9oxl in n69wspa34v['content'].items():
                                     for out_id in n69wsp9oxl.keys():
                                         if n69wsp9oxl[out_id].get('content_type') == 'error':
                                             await trans_err(n69wsp9oxl[out_id]['content'])
@@ -1051,10 +1051,10 @@ async def run(websocket: WebSocket):
     start_info = {}
     reload_records = []
     n69wsp9omi = False
-    (run_id, timetag) = output_client.gen_run_id_pair()
+    run_id, timetag = output_client.gen_run_id_pair()
     try:
         output_choice = data.get('outputChoice', 'all')
-        n69wspa39a = lambda : True
+        n69wspa39a = lambda: True
         codedata = await handler.b69x8ynntt(data['projectRoot'], data['baseId'], choice=data['choice'], n69wspa2zf=data['labelInfo'], n69wspa2wz=data.get('appdag'), n69wspa39a=n69wspa39a, tolerance=2, x69xm5dtzp=True)
         reload_records = codedata['reloads']
         codedata['loglevel'] = data.get('loglevel') or 'TRACE'
@@ -1173,7 +1173,7 @@ async def get_nodes_run_ids(data: dict):
         node_ids = data['uids']
         node_ids = [n.split('-')[0] for n in node_ids]
         n69wspa2xu = asyncio.get_running_loop()
-        n69wsp9onl = await n69wspa2xu.run_in_executor(None, lambda : output_client.format_nodes_run_ids(node_ids))
+        n69wsp9onl = await n69wspa2xu.run_in_executor(None, lambda: output_client.format_nodes_run_ids(node_ids))
         return {'error_code': 200, 'data': n69wsp9onl}
     except Exception as e:
         traceback.print_exc()
@@ -1184,7 +1184,7 @@ async def get_node_output(data: dict):
     try:
         n69wspa2e5 = str(data['uid']).split('-end')[0]
         run_id = int(data['runId'])
-        (n69wsp9onl, count) = output_client.format_n_outputs(run_id, n69wspa2e5)
+        n69wsp9onl, count = output_client.format_n_outputs(run_id, n69wspa2e5)
         print('getNodeOutput ret:', n69wsp9onl, count)
         return {'error_code': 200, 'data': {'md': n69wsp9onl, 'runcount': count}}
     except Exception as e:
