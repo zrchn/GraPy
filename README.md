@@ -5,7 +5,7 @@
 [English](#english) | [中文](#中文说明)
 
 <span>
-<img src="app/public/gplogo-tiny.png" style={{ width: '34px', verticalAlign: 'middle'}} />
+<img src="app/public/gplogo-tiny.png" style={{ width: '16px', verticalAlign: 'middle'}} />
 </span>
 
 ## GraPy: A Visual, Nestable, and Interactive Python Programming Platform
