@@ -1,3 +1,8 @@
+![Title](app/public/gptitle.jpg)
+
+### Demo video 
+An example of GraPy building and running an image RAG pipeline: https://www.youtube.com/watch?v=wQha8hiQ1n4
+
 ### Example snapshots
 ![Flow and functionalities overview](gpex2.jpg)
 ![Complicated nested logic](gpex1.jpg)
@@ -20,7 +25,7 @@ GraPy is the first visual programming environment that enables **interactive exe
 ## Use Cases
 - Develop any Python application with real-time debugging and iterative refinement.
 - Build, debug, and demo AI/ML pipelines, data processing workflows, automation scripts, and other tasks requiring high interactivity and visualization.
-- Debug existing local Python code by wrapping it in GraPy nodes.
+- Debug existing local Python code by connecting GraPy with them.
 - Visualize legacy code by converting it into interactive flow graphs.
 - Teach and learn Python with immediate feedback and structural clarity.
 - Discover your own creative workflows!
@@ -41,6 +46,8 @@ This hybrid approach gives you:
 git clone git@github.com:zrchn/GraPy.git
 cd GraPy
 ```
+Please modify configs.yaml on your demand.
+
 **Set up Python environment** (Python 3.10–3.12 supported)
 Skip if you already have a compatible environment.
 ```bash
@@ -110,6 +117,8 @@ Then restart the server and sandbox processes as above.
 ```bash
 git clone git@github.com:zrchn/GraPy.git
 ```
+请按需修改configs.yaml。
+
 **创建环境**。本应用支持Python 3.10~3.12版本。如果你已有现成的Python 3.10/3.11/3.12 环境，可以复用现有环境、跳过创建。此处命令仅在首次部署或切换到新环境时需要运行。
 ```bash
 conda create -n grapy python=3.11

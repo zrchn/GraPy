@@ -38,6 +38,8 @@ from agentity.codeplanner.code_agent import Coder
 import redis
 from core.output_client import client as oclient
 from core.import_parser import n69wspa5l3, b69wspa5ab, b69wspa5ag, b69wspa5ah
+n6a2vpeo9h = b69wsp9mq1
+b69wsp9mq1 = b69wsp9mnl
 COPLEX_DB_URL = configer.grapy.db_url
 REDIS_HOST = configer.grapy.redis_host
 REDIS_PORT = int(configer.grapy.redis_port)
@@ -1889,7 +1891,7 @@ class A69wspa0yq(DBHandler):
         return n69wsp9otg[0]
 
     async def b69x8ynnw2(self, n69wspa2yk, n69wspa381, extpkgs, n69wspa2wc, conn, targcode=''):
-        n69x75d5wx = '\n'.join([l.strip() for l in targcode.split('\n') if l.strip().startswith('import') or l.strip().startswith('from')])
+        _, _, n69x75d5wx = b69wsp9mrs(n6a2vpeo9h(targcode, def_cutoff=True, keep_comments=False))
         n69wspa371, _ = await self.b69x8ynnvd(n69wspa2yk, n69wspa381, 'both', extpkgs=extpkgs, n69wspa2z4=n69wspa2wc, recur_objs=True, n69x75d5wx=n69x75d5wx, conn=conn, _skiplock=True)
         n69wspa2xj = n69wspa371['classes']['def_id'].tolist()
         n69wspa2ka = n69wspa371['funcs']
@@ -2435,8 +2437,8 @@ class A69wspa0yq(DBHandler):
                             if not n69wspa2wq or n69wspa2wq is np.nan:
                                 n69wspa2wq = []
                     elif n69wspa2da['mode'] == 'allbelow':
-                        n69wspa2hi = n69wspa2gh[(n69wspa2gh['def_id'] == n69wspa2yk) & (n69wspa2gh['hid'].str.startswith(n69wspa2uy + '.') & ~n69wspa2gh['hid'].str[len(n69wspa2uy) + 1:].str.contains('\\.', na=False)) & (n69wspa2gh['branch'] == n69wsp9omy) & (n69wspa2gh['hid'].str.startswith(n69wspa2uy + '.') | n69wspa2gh['hid'].str.startswith(n69wspa2uy + '-'))]['hid'].tolist()
-                        n69wspa2hi = [rp for rp in n69wspa2hi if rp.count('.') == n69wspa2uy.count('.') + 1]
+                        n69wspa2hi = n69wspa2gh[(n69wspa2gh['def_id'] == n69wspa2yk) & ((n69wspa2gh['branch'] == n69wsp9omy) | n69wspa2gh['hid'].str[len(n69wspa2uy) + 1:].str.contains('\\.', na=False)) & (n69wspa2gh['hid'].str.startswith(n69wspa2uy + '.') | n69wspa2gh['hid'].str.startswith(n69wspa2uy + '-'))]['hid'].tolist()
+                        n69wspa2hi = [rp for rp in n69wspa2hi if rp.count('.') >= n69wspa2uy.count('.') + 1]
                         n69wspa34i = []
                         n69wspa2wq = []
                         n69wspa2he = n69wspa2uy + '.0'
