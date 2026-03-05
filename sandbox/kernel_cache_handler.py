@@ -429,7 +429,6 @@ def _disp_to_cache(run_id, *content, node_id=None, end=' ', content_type='text')
     cache.store(run_id, node_id, toprint, content_type=content_type)
 
 def _send_vars_to_cache(run_id, node_id, varsdic, cascns=None, cnskey=None, vars_tracking={}):
-    cache.store(run_id, node_id, '', content_type='node_runned')
     restrict = 0 if run_id == 10 else TRACK_VARS_MAXLEN
     varinfo = vars_tracking.get(cnskey)
     option = 'untrack'
@@ -437,6 +436,16 @@ def _send_vars_to_cache(run_id, node_id, varsdic, cascns=None, cnskey=None, vars
     if varinfo:
         option = varinfo.get('option', 'untrack')
         varnames = varinfo.get('vars') or []
+    if option == 'untrack':
+        docount = True
+        if '<ALL>' in varnames or '_rc' in varnames:
+            docount = False
+    else:
+        docount = False
+        if '<ALL>' in varnames or '_rc' in varnames:
+            docount = True
+    if docount:
+        cache.store(run_id, node_id, '', content_type='node_runned')
     for k, v in varsdic.items():
         if k == '_BUG_':
             print('[WARNING] 存变量出现_BUG_：', run_id, cnskey, node_id, v, file=sys.__stderr__)

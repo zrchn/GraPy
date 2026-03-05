@@ -1,7 +1,10 @@
+This repo is NOT 100% Python (as WRONGLY indicated by GitHub). The frontend is in TypeScript.
+
 ![Title](app/public/gptitle.jpg)
 
 ### Demo video 
 An example of GraPy building and running an image RAG pipeline: https://www.youtube.com/watch?v=wQha8hiQ1n4
+中文版演示案例视频：https://www.bilibili.com/video/BV1L4PMzrEvW/?vd_source=6fc788bfde56c51e0aab4c5df8eb6201
 
 ### Example snapshots
 ![Flow and functionalities overview](gpex2.jpg)
@@ -25,7 +28,7 @@ GraPy is the first visual programming environment that enables **interactive exe
 ## Use Cases
 - Develop any Python application with real-time debugging and iterative refinement.
 - Build, debug, and demo AI/ML pipelines, data processing workflows, automation scripts, and other tasks requiring high interactivity and visualization.
-- Debug existing local Python code by connecting GraPy with them.
+- Debug or test existing local Python code by connecting GraPy with them.
 - Visualize legacy code by converting it into interactive flow graphs.
 - Teach and learn Python with immediate feedback and structural clarity.
 - Discover your own creative workflows!
@@ -104,7 +107,7 @@ Then restart the server and sandbox processes as above.
 ### 使用场景
 - 开发任何可使用Python的应用，特别是希望边开发边调试的场景；
 - 对交互编程和可视化要求较高的AI、机器学习、数据处理、自动化查询等流程的搭建、调试与演示；
-- 连接本地代码，对本地代码进行调试；
+- 连接本地代码，对本地代码进行调试和测试；
 - 使用代码转任务流能力对代码进行可视化；
 - 初学Python入门和教学；
 - 更多应用场景等你发现！
