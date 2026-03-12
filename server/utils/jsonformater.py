@@ -17,7 +17,7 @@ class JsonFormater(OpenAILLM):
 
 async def jsonformat(text, sur='json'):
     try:
-        pattern = f'```{sur}\\n(.*?)\\n```'
+        pattern = f'```{sur}(.*?)```'
         jsn = text
         jsn = '\n'.join([j.split('//')[0] if j else '' for j in jsn.split('\n')])
         if f'```{sur}' in jsn:
@@ -40,7 +40,7 @@ async def jsonformat(text, sur='json'):
     except Exception as e:
         logger.warning(f'{e}, trying loading after AI reformatting')
         jsn = await JsonFormater().run(text)
-        pattern = f'```{sur}\\n(.*?)\\n```'
+        pattern = f'```{sur}(.*?)```'
         jsn = re.search(pattern, jsn, re.DOTALL).group(1).strip()
         jsn = json5.loads(jsn)
         return jsn

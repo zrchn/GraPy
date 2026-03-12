@@ -15,4 +15,4 @@ app/*
 **/__pycache__/
 **/tests/
 
-
+*.out

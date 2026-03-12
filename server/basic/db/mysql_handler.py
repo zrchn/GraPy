@@ -26,7 +26,7 @@ def gen_create_sql(table_name, typesdict, primes=[], need_new_mapping=False):
     type_mapping = {'int64': 'INT', 'int': 'INT', 'float64': 'FLOAT', 'float': 'FLOAT', 'str': 'VARCHAR(255)', 'bool': 'TINYINT(1)', 'object': 'JSON', 'dict': 'JSON', 'list': 'JSON', 'json': 'JSON', 'datetime64[ns]': 'DATETIME', 'timedelta[ns]': 'BIGINT'}
     new_mapping = {}
     sqls = []
-    for vname, vtypes in typesdict.items():
+    for n6a98zcevt, vtypes in typesdict.items():
         allownull = False
         if 'NoneType' in vtypes:
             allownull = True
@@ -35,11 +35,11 @@ def gen_create_sql(table_name, typesdict, primes=[], need_new_mapping=False):
             vtypes = ['json']
         vtype = vtypes[0]
         qtype = type_mapping.get(vtype, vtype)
-        asql = f'{vname} {qtype} '
+        asql = f'{n6a98zcevt} {qtype} '
         if not allownull:
             asql = asql + 'NOT NULL'
         sqls.append(asql)
-        new_mapping[vname] = asql[len(vname) + 1:]
+        new_mapping[n6a98zcevt] = asql[len(n6a98zcevt) + 1:]
     sqls = ',\n'.join(sqls)
     unique_clause = ''
     if primes:

@@ -6,7 +6,7 @@ Copyright (c) 2026 Zhiren Chen. Provided as-is for local use only.
 import os
 from pathlib import Path
 from loguru import logger
-CONFIG_PATH = os.getcwd().rsplit('/',1)[0]+'/configs.yaml'
+CONFIG_PATH = os.getcwd().replace('\\','/').replace('//','/').rsplit('/',1)[0]+'/configs.yaml'
 VARSEND_FUNC = '_se8N_dv742_arS' + '_safe'
 CONSOLE_PRINTER = '_d87I3s08P9'
 CONSOLE_INPUTER = '_input_via_cache'

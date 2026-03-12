@@ -44,6 +44,5 @@ typing-inspection
 tzdata
 urllib3
 uvicorn
-uvloop
 websockets
 yarl

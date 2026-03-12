@@ -51,7 +51,7 @@ class CodesRunner(AsyncTaskRunner):
         subpath = 'kernel_iworker.py'
 
         def reopen(subpath):
-            self.process = subprocess.Popen(['python', subpath], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+            self.process = subprocess.Popen([sys.executable, subpath], stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
         reopen(subpath)
 
     def safe_terminate(self, graceful_timeout=8, force_timeout=8):

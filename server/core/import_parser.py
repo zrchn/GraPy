@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, List, get_origin, get_args, Annotated, Optional
 from typing_extensions import Doc
 from core.cft.utils import idgen, x69xm5du01, x69xm5dtzx, gen_base36_id
-exec(f'from core.cft.processors{sys.version_info.minor} import *')
+exec(f'from core.cft.processors{sys.version_info.minor}{"w" if sys.platform == "win32" else ""} import *')
 from loguru import logger
 
 def b69wspa5ab(n69wspa2wq, n69wspa5mk, n69wspa381):

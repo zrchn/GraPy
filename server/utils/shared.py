@@ -192,6 +192,19 @@ def custout2dict(text, lower=False):
         outdic = {a.lower(): v for a, v in outdic.items()}
     return outdic
 
+def custout2dicts(text, lower=False):
+    lines = text.split('\n')
+    acdexs = [i for i in range(len(lines)) if '[<ACTION>]' in lines[i]]
+    assert len(acdexs) > 0, 'No [<ACTION>] tag found.'
+    acdexs.append(len(lines))
+    parts = []
+    for i in range(len(acdexs) - 1):
+        parts.append('\n'.join(lines[acdexs[i]:acdexs[i + 1]]))
+    outdics = []
+    for part in parts:
+        outdics.append(custout2dict(part, lower=lower))
+    return outdics
+
 def list_installed_packages():
     packages = []
     for dist in distributions():

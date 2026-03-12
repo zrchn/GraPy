@@ -30,10 +30,10 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncConnection
 from typing import Dict, List, Any, Literal, Set
 from basic.configer import configer
 from basic.db.mysql_handler import DBHandler, gen_create_sql
-exec(f'from core.cft.processors{sys.version_info.minor} import *')
+exec(f'from core.cft.processors{sys.version_info.minor}{"w" if sys.platform == "win32" else ""} import *')
 from core.cft.utils import all_desc_to_nl, x69xm5du07, find_nth, x69xm5du03, x69xm5du02, x69xm5dtzx, aidle, x69xm5du08, recover_conds, loadstr, idgen, replace_lastpart, x69xm5dtzz, x69xm5du00, x69xm5dtzw, x69xm5du09, table_lambda_get, table_unique_get, gen_base36_id, is_valid_varname, x69xm5du01, to_func_id, to_module_id, x69xm5dtzy, trunk_to_func
 from functools import partial
-from utils.shared import Bouncer, custout2dict, list_installed_packages, parse_for_sugs, remove_common_indents, redact_quoted_strings, requests_post
+from utils.shared import Bouncer, custout2dicts, list_installed_packages, parse_for_sugs, remove_common_indents, redact_quoted_strings, requests_post
 from agentity.codeplanner.code_agent import Coder
 import redis
 from core.output_client import client as oclient
@@ -919,7 +919,7 @@ class A69wspa0yq(DBHandler):
         n69wspa337 = upsert_base.split('^')[0]
 
         async def b69x8ynnvt(conn):
-            n69wspa2ck, _ = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', conn=None, _skiplock=True)
+            n69wspa2ck, _ = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', enblock=True, conn=None, _skiplock=True)
             n69wspa2pw = await self.b69x8ynntd(n69wspa35p, upsert_base, n69wspa381, conn=None, _skiplock=True)
             n69wspa2ck = '# env_level: 0\n' + n69wspa2ck
             n69wspa30j = all_desc_to_nl(n69wspa2pw)
@@ -972,83 +972,170 @@ class A69wspa0yq(DBHandler):
                 n69wsp9oyy = n69wsp9oyy + 1
                 assert rsp[0]['role'] == 'assistant'
                 try:
-                    n69wspa34v = custout2dict(rsp[0]['content'], lower=True)
+                    n6aagw0qg5 = custout2dicts(rsp[0]['content'], lower=True)
+                    n6aagw0qfs = [rd['action'] for rd in n6aagw0qg5]
                     n69wspa2ht = ''
-                    if n69wspa34v['action'] != 'orchestrate':
-                        if n69wsp9oyy > 20:
-                            n69wspa2ht = f'你已查询了{n69wsp9oyy}轮，上限为30轮。请尽快生成代码。'
-                        if n69wsp9oyy > 30:
-                            await n69wspa360(json.dumps({'event': 'info', 'data': 'Failed. Agent run out of rounds.'}, ensure_ascii=False))
-                            raise A69wspa0yp('Failed. Agent run out of rounds.')
-                        if n69wspa38p > 5:
+                    if not 'orchestrate' in n6aagw0qfs:
+                        if not 'talk_to_user' in n6aagw0qfs and n69wspa38p > 5:
                             await n69wspa360(json.dumps({'event': 'info', 'data': 'Failed. Agent keeps outputting illegal response.'}, ensure_ascii=False))
                             raise A69wspa0yp('Failed. Agent keeps outputting unparsable response.')
-                    await n69wspa360(json.dumps({'event': 'info', 'data': f"Thought:{n69wspa34v.get('explain')}\n\nAction:{n69wspa34v['action']}"}, ensure_ascii=False))
-                    if n69wspa34v['action'] == 'orchestrate':
-                        if 'code' in n69wspa34v:
-                            n69wsp9orm = n69wspa34v['code'].strip()
-                        elif '```python' in rsp[0]['content']:
-                            n69wsp9orm = rsp[0]['content'][rsp[0]['content'].rfind('```python'):]
-                        else:
-                            raise ValueError(f'Code unparsable. The orchestrate action requires a param like: [<CODE>]: ```python\n# your code\n```')
-                        if n69wsp9orm.startswith('```python'):
-                            n69wsp9orm = n69wsp9orm[9:].strip()
-                            if n69wsp9orm.count('```') > 0:
-                                n69wsp9orm = n69wsp9orm[:n69wsp9orm.find('```')].strip()
-                        await n69wspa360(json.dumps({'event': 'info', 'data': f'Code generated and will be updated into the workflow:\n\n' + n69wsp9orm}, ensure_ascii=False))
-                        await n69wspa360(json.dumps({'event': 'msg', 'data': 'Updating the workflow. This may take a moment...'}, ensure_ascii=False))
-                        break
-                    elif n69wspa34v['action'] == 'check_codes':
-                        n69wspa2jw = ''
-                        n69wspa35k = ''
-                        n69wspa2r2 = await jsonformat(n69wspa34v['selections'])
-                        for argdic in n69wspa2r2:
+                    n6aagw0qg1 = [{'role': 'system', 'content': 'tool'}]
+                    n6aagw0qgr = False
+                    for n69wspa34v in n6aagw0qg5:
+                        await n69wspa360(json.dumps({'event': 'info', 'data': f"Thought:{n69wspa34v.get('explain')}\n\nAction:{n69wspa34v['action']}"}, ensure_ascii=False))
+                        if n69wspa34v['action'] == 'orchestrate':
+                            if 'code' in n69wspa34v:
+                                n69wsp9orm = n69wspa34v['code'].strip()
+                            elif '```python' in rsp[0]['content']:
+                                n69wsp9orm = rsp[0]['content'][rsp[0]['content'].rfind('```python'):]
+                            else:
+                                raise ValueError(f'Code unparsable. The orchestrate action requires a param like: [<CODE>]: ```python\n# your code\n```')
+                            if n69wsp9orm.startswith('```python'):
+                                n69wsp9orm = n69wsp9orm[9:].strip()
+                                if n69wsp9orm.count('```') > 0:
+                                    n69wsp9orm = n69wsp9orm[:n69wsp9orm.find('```')].strip()
+                            await n69wspa360(json.dumps({'event': 'info', 'data': f'Code generated and will be updated into the workflow:\n\n' + n69wsp9orm}, ensure_ascii=False))
+                            await n69wspa360(json.dumps({'event': 'msg', 'data': 'Updating the workflow. This may take a moment...'}, ensure_ascii=False))
+                            n6aagw0qgr = True
+                        elif n69wspa34v['action'] == 'check_codes':
+                            n69wspa2jw = ''
+                            n69wspa35k = ''
+                            n69wspa2r2 = await jsonformat(n69wspa34v['selections'])
+                            for argdic in n69wspa2r2:
+                                try:
+                                    await n69wspa360(json.dumps({'event': 'info', 'data': f'Agent looking up code: {str(argdic)[1:-1]}'}, ensure_ascii=False))
+                                    n69wsp9p5m = await self.b69x8ynnul(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'], n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
+                                    n69wspa2jw = n69wspa2jw + f"----- {str({k: v for k, v in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
+                                    n69wspa2jw = n69wspa2jw + n69wsp9p5m
+                                    n69wsp9p2h = '<NOT_FOUND>' not in n69wsp9p5m[:20]
+                                    await n69wspa360(json.dumps({'event': 'info', 'data': 'code ' + 'found' if n69wsp9p2h else 'not found'}, ensure_ascii=False))
+                                except Exception as e:
+                                    await n69wspa360(json.dumps({'event': 'warn', 'data': f'Agent looking up code failed: {str(argdic)[1:-1]}'}, ensure_ascii=False))
+                                    traceback.print_exc()
+                                    n69wspa35k = n69wspa35k + ('args:' + str(argdic) + ' Error: ' + str(e) + '\n')
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': 'check_codes', 'rsp': n69wspa2jw, 'error': n69wspa35k, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'talk_to_user':
+                            n69wspa2ym = n69wspa34v['message']
+                            await n69wspa360(json.dumps({'event': 'quest', 'data': f'Question:{n69wspa2ym}'}, ensure_ascii=False))
+                            n69wspa2q7 = await n69wspa38v()
+                            n69wspa2q7 = json5.loads(n69wspa2q7)
+                            n69wspa2q7 = n69wspa2q7['input']
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n69wspa2q7, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'check_pkg_exist':
+                            n69wspa2fv = n69wspa34v['pkg_name'].strip('"').strip("'")
+                            n69wspa2lj = types.ModuleType('tmd')
+                            n69wspa2lj.__file__ = '<string>'
+                            n69wspa2lj.__name__ = 'tmd'
                             try:
-                                await n69wspa360(json.dumps({'event': 'info', 'data': f'Agent looking up code: {str(argdic)[1:-1]}'}, ensure_ascii=False))
-                                n69wsp9p5m = await self.b69x8ynnul(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'], n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
-                                n69wspa2jw = n69wspa2jw + f"----- {str({k: v for k, v in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
-                                n69wspa2jw = n69wspa2jw + n69wsp9p5m
-                                n69wsp9p2h = '<NOT_FOUND>' not in n69wsp9p5m[:20]
-                                await n69wspa360(json.dumps({'event': 'info', 'data': 'code ' + 'found' if n69wsp9p2h else 'not found'}, ensure_ascii=False))
-                            except Exception as e:
-                                await n69wspa360(json.dumps({'event': 'warn', 'data': f'Agent looking up code failed: {str(argdic)[1:-1]}'}, ensure_ascii=False))
-                                traceback.print_exc()
-                                n69wspa35k = n69wspa35k + ('args:' + str(argdic) + ' Error: ' + str(e) + '\n')
-                        await self.coder.listen_msgs([{'role': 'system', 'content': 'tool'}, {'role': 'user', 'content': {'action': 'check_codes', 'rsp': n69wspa2jw, 'error': n69wspa35k, 'extra_msg': n69wspa2ht}}], session_id=n69wspa337)
-                    elif n69wspa34v['action'] == 'ask_user':
-                        n69wspa2ym = n69wspa34v['query']
-                        await n69wspa360(json.dumps({'event': 'quest', 'data': f'Question:{n69wspa2ym}'}, ensure_ascii=False))
-                        n69wspa2q7 = await n69wspa38v()
-                        n69wspa2q7 = json5.loads(n69wspa2q7)
-                        n69wspa2q7 = n69wspa2q7['input']
-                        await self.coder.listen_msgs([{'role': 'system', 'content': 'tool'}, {'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n69wspa2q7, 'extra_msg': n69wspa2ht}}], session_id=n69wspa337)
-                    elif n69wspa34v['action'] == 'check_pkg_exist':
-                        n69wspa2fv = n69wspa34v['pkg_name'].strip('"').strip("'")
-                        n69wspa2lj = types.ModuleType('tmd')
-                        n69wspa2lj.__file__ = '<string>'
-                        n69wspa2lj.__name__ = 'tmd'
-                        try:
-                            exec(f'import {n69wspa2fv}', n69wspa2lj.__dict__)
-                            n69wspa2g8 = list_installed_packages()
-                            n69wspa349 = 'unknown'
-                            n69wspa2rs = 'none'
-                            for ep in n69wspa2g8:
-                                if ep['name'] == n69wspa2fv:
-                                    n69wspa349 = ep['version']
-                                    n69wspa2rs = ep.get(n69wspa2rs) or 'none'
-                                    break
-                            n69wspa2gy = f'package {n69wspa2fv} exists. Version: {n69wspa349}, summary: {n69wspa2rs}'
-                        except:
-                            n69wspa2gy = f'package {n69wspa2fv} does not exist.'
-                        await n69wspa360(json.dumps({'event': 'info', 'data': f'System: {n69wspa2gy}'}, ensure_ascii=False))
-                        await self.coder.listen_msgs([{'role': 'system', 'content': 'tool'}, {'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n69wspa2gy, 'extra_msg': n69wspa2ht}}], session_id=n69wspa337)
-                    elif n69wspa34v['action'] == 'fail_to_generate':
-                        await n69wspa360(json.dumps({'event': 'info', 'data': f"Agent aborted the generation. Explain: {n69wspa34v.get('explain')}"}, ensure_ascii=False))
-                        raise A69wspa0yp('Failed. Agent intentionally aborted the generation.')
+                                exec(f'import {n69wspa2fv}', n69wspa2lj.__dict__)
+                                n69wspa2g8 = list_installed_packages()
+                                n69wspa349 = 'unknown'
+                                n69wspa2rs = 'none'
+                                for ep in n69wspa2g8:
+                                    if ep['name'] == n69wspa2fv:
+                                        n69wspa349 = ep['version']
+                                        n69wspa2rs = ep.get(n69wspa2rs) or 'none'
+                                        break
+                                n69wspa2gy = f'package {n69wspa2fv} exists. Version: {n69wspa349}, summary: {n69wspa2rs}'
+                            except:
+                                n69wspa2gy = f'package {n69wspa2fv} does not exist.'
+                            await n69wspa360(json.dumps({'event': 'info', 'data': f'System: {n69wspa2gy}'}, ensure_ascii=False))
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n69wspa2gy, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'check_var_values':
+                            n69wspa2r2 = await jsonformat(n69wspa34v['selections'])
+                            if not isinstance(n69wspa2r2, list):
+                                raise TypeError(f'check_var_values的selections必须是json list、且每个元素必须是dict，收到{n69wspa2r2}')
+                            if not all([isinstance(n69wsp9oq0, dict) for n69wsp9oq0 in n69wspa2r2]):
+                                raise TypeError(f'check_var_values的selections必须是json list、且每个元素必须是dict，收到{n69wspa2r2}')
+                            n6a98zcew8 = []
+                            for sel in n69wspa2r2:
+                                n6a98zcevt = sel.get('var_name') or ''
+                                n65d20cda3 = sel.get('block_uid') or ''
+                                msg = ''
+                                dtype = None
+                                n69wsp9ola = None
+                                n6a98zcevy = True
+                                if not n65d20cda3.strip().strip("'").strip('"') in ('<LATEST>', '', 'LATEST', 'None'):
+                                    n6a98zceve = oclient.get_all_available_run_ids(n69wspa2e5=n65d20cda3)
+                                    if n6a98zceve:
+                                        n6a98zcewg = max(n6a98zceve)
+                                        n69wspa2f3 = await self.b69x8ynnsw(n65d20cda3, n6a98zcewg, _skiplock=True, conn=conn)
+                                        n6a98zcew0 = [v for v in n69wspa2f3 if v.get('name') == n6a98zcevt]
+                                        if n6a98zcew0:
+                                            n69wsp9owr = n6a98zcew0[0]
+                                            dtype = n69wsp9owr.get('type')
+                                            n69wsp9ola = n69wsp9owr.get('repr')
+                                        else:
+                                            n6a98zcevy = False
+                                            msg = msg + f'Block {n65d20cda3} did not store value of var {n6a98zcevt}. Trying to fetch the latest global value from the kernel instead.'
+                                    else:
+                                        n6a98zcevy = False
+                                        msg = msg + f'Block {n65d20cda3} was never runned. Trying to fetch the latest global value from the kernel instead.'
+                                else:
+                                    n6a98zcevy = False
+                                if not n6a98zcevy:
+                                    n69wsp9p6e = requests.post(url=f'http://localhost:{configer.grapy.sandbox_port}/get_kernel_var_value', json={'name': n6a98zcevt, 'defId': to_func_id(n69wspa35j)})
+                                    if n69wsp9p6e.status_code == 200:
+                                        n69wsp9p6e = n69wsp9p6e.json()
+                                        dtype = n69wsp9p6e.get('dtype')
+                                        n69wsp9ola = n69wsp9p6e.get('data')
+                                    else:
+                                        msg = msg + f'Kernel internal error: cannot fetch var {n6a98zcevt}.\n'
+                                n6a98zcewn = {'name': n6a98zcevt, 'uid': n65d20cda3}
+                                if msg:
+                                    n6a98zcewn['msg'] = msg
+                                n6a98zcewn['type'] = dtype
+                                n6a98zcewn['value'] = n69wsp9ola
+                                n6a98zcew8.append(n6a98zcewn)
+                            n6a98zcew5 = copy.deepcopy(n6a98zcew8)
+                            for n69wsp9oq0 in n6a98zcew5:
+                                if 'value' in n69wsp9oq0:
+                                    n69wsp9oq0['value'] = str(n69wsp9oq0['value'])
+                                    if len(n69wsp9oq0['value']) > 497:
+                                        n69wsp9oq0['value'] = n69wsp9oq0['value'][:497] + '...'
+                            await n69wspa360(json.dumps({'event': 'info', 'data': f'System: {n6a98zcew5}'}, ensure_ascii=False))
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n6a98zcew8, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'check_block_logs':
+                            n69wspa2r2 = await jsonformat(n69wspa34v['selections'])
+                            if not isinstance(n69wspa2r2, list):
+                                raise TypeError(f'check_block_logs的selections必须是json list、且每个元素必须是dict，收到{n69wspa2r2}')
+                            if not all([isinstance(n69wsp9oq0, dict) for n69wsp9oq0 in n69wspa2r2]):
+                                raise TypeError(f'check_block_logs的selections必须是json list、且每个元素必须是dict，收到{n69wspa2r2}')
+                            n6a98zcew8 = []
+                            for sel in n69wspa2r2:
+                                n65d20cda3 = sel.get('block_uid') or ''
+                                msg = ''
+                                log = None
+                                n6a98zceve = oclient.get_all_available_run_ids(n69wspa2e5=n65d20cda3)
+                                if n6a98zceve:
+                                    n6a98zcewg = max(n6a98zceve)
+                                    log, _ = oclient.format_n_outputs(n6a98zcewg, n65d20cda3)
+                                else:
+                                    msg = msg + f'Block {n65d20cda3} was never runned. No log content.'
+                                n6a98zcewn = {'uid': n65d20cda3}
+                                if msg:
+                                    n6a98zcewn['msg'] = msg
+                                n6a98zcewn['log'] = log
+                                n6a98zcew8.append(n6a98zcewn)
+                            n6a98zcew5 = copy.deepcopy(n6a98zcew8)
+                            for n69wsp9oq0 in n6a98zcew5:
+                                if 'log' in n69wsp9oq0:
+                                    n69wsp9oq0['log'] = str(n69wsp9oq0['log'])
+                                    if len(n69wsp9oq0['log']) > 497:
+                                        n69wsp9oq0['log'] = n69wsp9oq0['log'][:497] + '...'
+                            await n69wspa360(json.dumps({'event': 'info', 'data': f'System: {n6a98zcew5}'}, ensure_ascii=False))
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': n69wspa34v['action'], 'rsp': n6a98zcew8, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'fail_to_generate':
+                            await n69wspa360(json.dumps({'event': 'info', 'data': f"Agent aborted the generation. Explain: {n69wspa34v.get('explain')}"}, ensure_ascii=False))
+                            raise A69wspa0yp('Failed. Agent intentionally aborted the generation.')
+                    if n6aagw0qgr:
+                        break
+                    if len(n6aagw0qg1) > 1:
+                        await self.coder.listen_msgs(n6aagw0qg1, session_id=n69wspa337)
                     else:
                         n69wspa38p = n69wspa38p + 1
-                        await n69wspa360(json.dumps({'event': 'warn', 'data': f"Agent selected non-exist option: {n69wspa34v['action']}"}, ensure_ascii=False))
-                        await self.coder.listen_msgs([{'role': 'system', 'content': 'illegal'}], session_id=n69wspa337)
+                        await n69wspa360(json.dumps({'event': 'warn', 'data': f"Agent didn't output any correct action: {n6aagw0qfs}"}, ensure_ascii=False))
+                        await self.coder.listen_msgs([{'role': 'system', 'content': 'illegal'}, {'role': 'system', 'content': 'Agent did not output any parsable action. Please comply with the format requirements.'}], session_id=n69wspa337)
                 except A69wspa0yp as e:
                     traceback.print_exc()
                     raise RuntimeError(f'Failed. Agent aborted due to: {e}.')
@@ -1281,7 +1368,7 @@ class A69wspa0yq(DBHandler):
     async def b69x8ynnt1(self, modulename, import_data, conn=None, _skiplock=False):
         pass
 
-    async def b69x8ynnv8(self, n65d20cda3, n69wsp9p0w, n69wspa317=None, style='both', tolerance=0, codeswaps={}, n69wspa39a=None, _skiplock=False, conn=None):
+    async def b69x8ynnv8(self, n65d20cda3, n69wsp9p0w, n69wspa317=None, style='both', tolerance=0, codeswaps={}, n69wspa39a=None, enblock=False, _skiplock=False, conn=None):
         assert x69xm5dtzx(n65d20cda3) == 'folder'
         assert n69wsp9p0w not in nesttypes
         n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
@@ -1338,10 +1425,10 @@ class A69wspa0yq(DBHandler):
             n69wsp9oya.loc[0, 'code'] = codeswaps[n65d20cda3]
         n69wspa2r3 = {'by-branch': [{'uid': '1', 'func_id': n69wspa2q4, 'cond': '_', 'label1': SECTION_START_LABEL, 'label2': SECTION_END_LABEL, 'mode': 'embrace'}]}
         n69wsp9p6q = pd.DataFrame(columns=['bases', 'vars', 'deco_expr', 'def_id', 'uid', 'xpos', 'ypos', 'doc'])
-        code = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2q4, n69wspa2in=False, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance)
+        code = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2q4, n69wspa2in=False, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance, enblock=enblock)
         return (b6a0gjsmt7(code[0]), b6a0gjsmt7(code[1]))
 
-    async def b69x8ynntv(self, base_id, choice, n69wspa2zf=None, n69wspa2wz=None, style='both', codeswaps={}, tolerance=0, n69wspa39a=None, conn=None, _skiplock=False):
+    async def b69x8ynntv(self, base_id, choice, n69wspa2zf=None, n69wspa2wz=None, style='both', codeswaps={}, tolerance=0, n69wspa39a=None, enblock=False, conn=None, _skiplock=False):
         n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
         if x69xm5dtzx(base_id) == 'cond':
             assert not n69wspa2zf
@@ -1569,7 +1656,7 @@ class A69wspa0yq(DBHandler):
         if codeswaps:
             x69xm5du09(n69wsp9oya, codeswaps)
         n69wspa2xu = asyncio.get_running_loop()
-        code = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance))
+        code = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance, enblock=enblock))
         if n69wspa387 > 0:
 
             def b69wspa0xl(n69wspa2ta):
@@ -5058,12 +5145,13 @@ class A69wspa0yq(DBHandler):
                 n69wspa32z = n69wspa2v7['name'].tolist()
                 n69wsp9oq8 = n69wsp9oq8.fetchall()
                 n69wsp9onl = [x[0] for x in n69wsp9oq8] if not n69wspa2p3 else [{'name': x[0], 'def_id': x[1], 'type': x[2]} for x in n69wsp9oq8]
+                n6a98zcevm = [x[0] for x in n69wsp9oq8]
                 if '*' in n69wspa2wq:
                     n69wspa2c9 = n69wspa2wq.rsplit('/', 1)[0] if n69wspa2wq.rfind('/') > n69wspa2wq.rfind('*') else n69wspa2wq
-                    if value.strip() in ('', 's', 'se', 'sel', 'self') and 'self' in n69wspa32z:
-                        n69wsp9onl = ['self'] + n69wsp9onl if not n69wspa2p3 else [{'name': 'self', 'type': n69wspa2c9}] + n69wsp9onl
-                    elif value.strip() in ('', 'c', 'cl', 'cls') and 'cls' in n69wspa32z:
-                        n69wsp9onl = ['cls'] + n69wsp9onl if not n69wspa2p3 else [{'name': 'self', 'type': 'Type'}] + n69wsp9onl
+                    if value.strip() in ('', 's', 'se', 'sel', 'self') and 'self' in n69wspa32z and (not 'self' in n6a98zcevm):
+                        n69wsp9onl = ['self'] + n69wsp9onl if not n69wspa2p3 else [{'name': 'self', 'type': n69wspa2c9, 'def_id': n69wspa2wq}] + n69wsp9onl
+                    elif value.strip() in ('', 'c', 'cl', 'cls') and 'cls' in n69wspa32z and (not 'cls' in n6a98zcevm):
+                        n69wsp9onl = ['cls'] + n69wsp9onl if not n69wspa2p3 else [{'name': 'self', 'type': 'Type', 'def_id': n69wspa2wq}] + n69wsp9onl
                 if not n69wsp9oq8:
                     if '.' in value:
                         n69wspa371, n69wspa2lc = n69wspa30r or await self.b69x8ynnvd(n69wspa2wq, n69wspa381, 'imports', extpkgs=extpkgs, n69wspa2z4=n69wspa2z4, recur_objs=True, conn=conn, _skiplock=True)

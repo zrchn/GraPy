@@ -107,7 +107,7 @@ class CacheHandler:
             self.cache.execute_command('FT.CREATE', 'idx:output', 'ON', 'JSON', 'PREFIX', '1', 'output:', 'SCHEMA', '$.run_id', 'AS', 'run_id', 'NUMERIC', 'SORTABLE', '$.node_id', 'AS', 'node_id', 'TAG', '$.record_id', 'AS', 'record_id', 'NUMERIC', 'SORTABLE', '$.content_type', 'AS', 'content_type', 'TAG')
             logger.info(f'output index created')
         except redis.exceptions.ResponseError as e:
-            if e.__repr__() == "ResponseError('Index already exists')":
+            if 'Index already exists' in traceback.format_exc():
                 logger.info(f'using existing output index')
             else:
                 raise RuntimeError(e)

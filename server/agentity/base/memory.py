@@ -67,8 +67,9 @@ def suppress_by_tokens(context, max_tokens, session_id='<DEFAULT>', important_pa
             else:
                 delothers = delothers + 1
             deltokens = deltokens + estimate_tokens(str(mycontext.loc[i].to_dict()))
-            if idxi < len(mycontext.index) - 1:
-                nexti = mycontext.index[idxi + 1]
+            ipos = mycontext.index.get_loc(i)
+            if ipos < len(mycontext) - 1:
+                nexti = mycontext.index[ipos + 1]
                 if mycontext.loc[nexti, 'role'] in ('agent', 'assistant') and (not nexti in deldexs):
                     deldexs.append(nexti)
                     delagents = delagents + 1

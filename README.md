@@ -12,7 +12,7 @@ An example of GraPy building and running an image RAG pipeline: https://www.yout
 
 [English](#english) | [中文](#中文说明)
 
-## GraPy: A Visual, Nestable, and Interactive Python Programming Platform
+## GraPy: A Visual, Nestable, and Interactive Python Programming Platform with AI support
 GraPy is the first visual programming environment that enables **interactive execution inside deeply nested Python structures**—including functions, loops, and conditionals—while maintaining local state and full language expressiveness.
 ## Key Features
 - **Flow-based UI powered by ReactFlow**: Drag-and-drop task orchestration with seamless integration of hierarchical interactive programming and Python.
@@ -24,7 +24,7 @@ GraPy is the first visual programming environment that enables **interactive exe
 - **Enhanced productivity**: Built-in tool-call nodes, auto-completion features, and one-click auto-layout improve visual clarity and programming speed.
 - **Extensible connectivity**: Call other GraPy modules, import local Python scripts (configurable paths), reuse existing virtual environments, and read/write local files. Each module acts as a hub for local and network resources.
 - **Flexible workflow manipulation**: 4 selection modes let you run, convert to code, copy, or AI-edit partial or full flows.
-- **Built-in AI agent**: Interactively generate and optimize workflows using an integrated LLM-powered assistant.
+- **Built-in AI agent**: Interactively generate and optimize workflows, or help you to analyze and debug the workflow, using an integrated LLM-powered assistant. In addition to local workflow and imported codes, our agent can dynamically access variable values and node outputs to help real-time debug.
 ## Use Cases
 - Develop any Python application with real-time debugging and iterative refinement.
 - Build, debug, and demo AI/ML pipelines, data processing workflows, automation scripts, and other tasks requiring high interactivity and visualization.
@@ -34,8 +34,8 @@ GraPy is the first visual programming environment that enables **interactive exe
 - Discover your own creative workflows!
 ## Deployment
 GraPy is designed for **local deployment**.  
-✅ **Supported**: Linux (including WSL2 on Windows)  
-🚧 **Windows native support**: Coming soon
+✅ **Supported**: Linux (tested on WSL2 Ubuntu) and Windows (tested on Win11)
+We recommend using GraPy on Linux because we observed it running faster on Linux.
 ### Recommended Setup
 - Use **Docker Compose** to run the frontend, Redis, and MySQL services.
 - Run the **application server** (`server/`) and **sandbox executor** (`sandbox/`) directly in your local Python environment.
@@ -92,7 +92,7 @@ docker-compose up --build
 ```
 Then restart the server and sandbox processes as above.
 ## 中文说明
-## GraPy: 世界首个Python图像化可嵌套交互式编程平台。
+## GraPy: 世界首个Python图像化可嵌套交互式编程平台，并提供AI智能体。
 ### 创新功能
 - 使用ReactFlow流程图UI，首次实现任务流拖拽编排、深度分层交互式编程与Python的无缝整合；
 - 提供8种控制流节点、7种功能节点（含纯Python代码节点）和2种工具节点（类和函数），可完整实现Python的几乎所有能力；
@@ -103,7 +103,7 @@ Then restart the server and sandbox processes as above.
 - 内置工具调用节点和多种自动补全机制以提高可视化程度和编程效率，并提供一键自动布局功能；
 - 超强的拓展能力，能够调用其他GraPy模块、宿主机代码（可配置路径）、环境模块（可直接使用已有环境），也能增删查改本地文件，每个GraPy模块都是可调用本地和网络资源的枢纽；
 - 极佳的操控灵活性，4种选区模式选中局部或完整任务流运行、转代码、复制粘贴、AI修改等；
-- 内置交互式AI智能体可自动生成和优化任务流。
+- 内置交互式AI智能体可自动生成和优化任务流、分析任务流、辅助调试等。除任务流代码和导入的代码之外，我们的agent还可以访问变量实时值和节点输出，从而动态地帮助调试。
 ### 使用场景
 - 开发任何可使用Python的应用，特别是希望边开发边调试的场景；
 - 对交互编程和可视化要求较高的AI、机器学习、数据处理、自动化查询等流程的搭建、调试与演示；
@@ -112,7 +112,7 @@ Then restart the server and sandbox processes as above.
 - 初学Python入门和教学；
 - 更多应用场景等你发现！
 ### 部署
-本应用为本地部署。目前支持Linux系统（Windows用户可使用WSL2），纯Windows版本正在开发中。我们推荐的部署方案：
+本应用为本地部署。目前支持Linux系统和Windows系统。我们推荐的部署方案：
 - 使用Docker compose部署前端、Redis服务、MySQL服务；
 - 使用本地环境直接运行应用端（server路径）和执行器（sandbox路径）。
 好处：在支持无缝访问本地文件、调用本地代码、并允许复用已有环境的前提下，用Docker做最大程度的简化。
