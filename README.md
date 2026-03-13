@@ -116,7 +116,8 @@ Then restart the server and sandbox processes as above.
 - 使用Docker compose部署前端、Redis服务、MySQL服务；
 - 使用本地环境直接运行应用端（server路径）和执行器（sandbox路径）。
 好处：在支持无缝访问本地文件、调用本地代码、并允许复用已有环境的前提下，用Docker做最大程度的简化。
-**请先确保你有Linux系统**，并克隆本仓库。本示例将使用WSL2 Ububtu 20.04、Docker、miniconda3。
+
+**克隆本仓库** 本示例将使用WSL2 Ububtu 20.04、Docker、miniconda3。
 ```bash
 git clone git@github.com:zrchn/GraPy.git
 ```
