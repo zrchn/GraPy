@@ -24,7 +24,7 @@ import traceback
 from utils.shared import enrich_by_type, generate_unique_id, tostr, pretty_repr, safe_default
 import json
 import orjson
-from core.controller import ClientAbort, extract_roi, handler, x69xm5du01, nesttypes
+from core.controller import ClientAbort, extract_roi, handler, x69xm5du01, nesttypes, b6aj5n5vfd
 from core.cft.utils import x69xm5dtzx, idgen
 from core.output_client import client as output_client
 import copy
@@ -228,12 +228,19 @@ async def llm_reshell(websocket: WebSocket):
             upsert_shell = data['shellId']
             replace_info = data['upsertInfo']
             n69wspa381 = data['rootpath']
-            prompt = data['prompt']
+            n6aj5n5vxg = data['prompt']
+            n6aj5n5vxa = data.get('isCodesec')
+            if replace_info['mode'] != 'single' and n6aj5n5vxa:
+                n6aj5n5vxa = False
+            usage = 'csecer' if n6aj5n5vxa else 'coder'
+            codesec_states = {}
+            if usage == 'csecer':
+                codesec_states = data['codesecStates']
             if replace_info:
                 if replace_info['mode'] == 'single':
                     replace_info = {'mode': 'replace', 'section': [replace_info['uid'], replace_info['uid']]}
             await handler.b69x8ynnun(upsert_shell)
-            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnvz(prompt, n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info, ws=streamer)
+            _, n69wspa2nn, n69wspa31g = await handler.b69x8ynnvz(n6aj5n5vxg, n69wspa35p, upsert_shell, n69wspa381=n69wspa381, n69wspa2zf=replace_info, ws=streamer, usage=usage, codesec_states=codesec_states)
             n69wspa2nn = {**n69wspa2nn, **n69wspa31g}
             await streamer.send_text(json.dumps({'event': 'reshell', 'data': n69wspa2nn}, ensure_ascii=False))
             await streamer.send_text(json.dumps({'event': 'end'}, ensure_ascii=False))
@@ -615,6 +622,25 @@ async def set_external_paths(data: dict):
         traceback.print_exc()
         return {'error_code': 400, 'msg': str(e)}
 
+@app.post('/app/get_print_loc')
+async def b6aj5n5vfh(data: dict):
+    try:
+        n69wsp9onl = await handler.b6aj5n5vfh()
+        return {'error_code': 200, 'data': n69wsp9onl}
+    except Exception as e:
+        traceback.print_exc()
+        return {'error_code': 400, 'msg': str(e)}
+
+@app.post('/app/set_print_loc')
+async def b6aj5n5vff(data: dict):
+    try:
+        loc = data['loc']
+        await handler.b6aj5n5vff(loc)
+        return {'error_code': 200, 'data': None}
+    except Exception as e:
+        traceback.print_exc()
+        return {'error_code': 400, 'msg': str(e)}
+
 @app.post('/app/get_untracked_vars')
 async def b69x8ynnuf(data: dict):
     try:
@@ -708,6 +734,9 @@ async def x69y6b52sj(data: dict):
 async def b69x8ynnu3(data: dict):
     try:
         channel = data.get('channel') or 'hybrid'
+        if data.get('sugtype') == 'agent_ac':
+            n69wsp9onl = await handler.b6aj5n5vfc(data['defId'], data['uid'], data['code'], data['pos'], data['rootpath'], _skiplock=True)
+            return {'error_code': 200, 'data': n69wsp9onl}
         n69wsp9onl = await handler.b69x8ynnum(data['defId'], data['uid'], data['code'], data['pos'], data['rootpath'], sugtype=data.get('sugtype', 'objs'), allowjedi=channel == 'hybrid', _skiplock=True)
         return {'error_code': 200, 'data': n69wsp9onl}
     except Exception as e:
@@ -1053,9 +1082,14 @@ async def run(websocket: WebSocket):
     n69wsp9omi = False
     run_id, timetag = output_client.gen_run_id_pair()
     try:
+        if data.get('appdag'):
+            if data['appdag'].get('nodes'):
+                for n in data['appdag']['nodes']:
+                    if isinstance(n.get('data', {}).get('code'), str):
+                        n['data']['code'] = b6aj5n5vfd(n['data']['code'])
         output_choice = data.get('outputChoice', 'all')
         n69wspa39a = lambda: True
-        codedata = await handler.b69x8ynntt(data['projectRoot'], data['baseId'], choice=data['choice'], n69wspa2zf=data['labelInfo'], n69wspa2wz=data.get('appdag'), n69wspa39a=n69wspa39a, tolerance=2, x69xm5dtzp=True)
+        codedata = await handler.b69x8ynntt(data['projectRoot'], data['baseId'], choice=data['choice'], n69wspa2zf=data['labelInfo'], n69wspa2wz=data.get('appdag'), n69wspa39a=n69wspa39a, n6aj5n5vxa=data.get('isCodesec'), codesec_states=data.get('codesecStates'), tolerance=2, x69xm5dtzp=True)
         reload_records = codedata['reloads']
         codedata['loglevel'] = data.get('loglevel') or 'TRACE'
         start_info = {'codedata': codedata, 'run_id': run_id, 'output_choice': output_choice}

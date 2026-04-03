@@ -29,6 +29,10 @@ def extract_lineno_from_trace(trace):
         if lno.isdigit():
             real_linenos.append(int(lno))
     return real_linenos
+
+def get_all_levels(path: str, sep: str='^') -> list[str]:
+    parts = path.split(sep)
+    return [sep.join(parts[:i]) for i in range(1, len(parts) + 1)]
 plot_importer = "\ntry:\n    import matplotlib\n    matplotlib.use('Agg')\n    import matplotlib.pyplot as plt\nexcept:\n    pass\n"
 
 async def main():
@@ -127,8 +131,11 @@ async def main():
             namespace.update({'__file__': file_name, '__name__': module_name, '__package__': package_name, '_run_id': run_id, '_vars_tracking': vartrack})
             if not '_cascns' in namespace:
                 namespace['_cascns'] = {}
-            localns = namespace['_cascns'].get(cnskey, {})
-            namespace.update(localns)
+            hiers = get_all_levels(cnskey)
+            assert cnskey in hiers
+            for hier in hiers:
+                localns = namespace['_cascns'].get(hier, {})
+                namespace.update(localns)
             _disp_to_cache(10007, (file_name, module_name, package_name, run_id), node_id='<debug-__file__-__name__-__package__-run_id>')
             current_loader = install_virtual_importer(project_code, rootpath, run_id, cascns=namespace['_cascns'], vars_tracking=vartrack)
             main_code = project_code[entry_point]

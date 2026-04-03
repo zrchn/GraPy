@@ -200,10 +200,10 @@ class DBHandler:
                     v = n69wsp9p3g[k]
                     if isinstance(v, str):
                         v = f"'{v}'"
-                    elif type(v) in (int, float, bool):
+                    elif type(v) in (int, float, bool, np.int64):
                         pass
                     else:
-                        raise ValueError(f'用于查询的变量不能是非常规类型，收到的变量：{v}')
+                        raise ValueError(f'用于查询的变量不能是非常规类型，收到的变量：{v}, {type(v)}')
                     subquery.append(f'`{real_k}`{kpath} = {v}')
                 subquery = ' AND '.join(subquery)
                 subquery = f'({subquery})'

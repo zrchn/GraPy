@@ -418,7 +418,7 @@ class CacheHandler:
             logger.error(f'自杀失败：{e}')
 cache = CacheHandler()
 
-def _disp_to_cache(run_id, *content, node_id=None, end=' ', content_type='text'):
+def _disp_to_cache(run_id, *content, node_id=None, end=' ', content_type='text', printboth=False):
     if node_id is None:
         raise TypeError(f'Missing node_id, which is mandatory')
     if content_type == 'text':
@@ -426,6 +426,8 @@ def _disp_to_cache(run_id, *content, node_id=None, end=' ', content_type='text')
     else:
         assert len(content) == 1, f'非text模式只支持一个content，因为必须保留格式。收到：{content}'
         toprint = to_dumpable(content[0])
+    if printboth:
+        print(toprint)
     cache.store(run_id, node_id, toprint, content_type=content_type)
 
 def _send_vars_to_cache(run_id, node_id, varsdic, cascns=None, cnskey=None, vars_tracking={}):
@@ -542,6 +544,7 @@ class ErrToCache:
     def __init__(self, run_id):
         self.run_id = run_id
         self.printer = OutToCache(run_id)
+        self.real_stderr = sys.__stderr__
 
     def write(self, text):
         try:
@@ -559,10 +562,13 @@ class ErrToCache:
             print(f'[ERROR] 打印报错到缓存出错。text:{text}', file=sys.__stderr__)
 
     def flush(self):
-        pass
+        self.real_stderr.flush()
+
+    def fileno(self):
+        return self.real_stderr.fileno()
 
     def isatty(self):
-        return False
+        return self.real_stderr.isatty()
 
 class LoguruToCache:
 

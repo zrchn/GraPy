@@ -172,6 +172,25 @@ def suppress_tokens(context, limit):
         toolout_right = toolout_right[step:]
     return toolout_left[:-5] + ' ...略... ' + toolout_right[4:]
 
+def suppress_text(text, maxtokens, omitpatterns=[]):
+    assert isinstance(text, str)
+    origtokens = estimate_tokens(text)
+    overtokens = origtokens - maxtokens
+    lines = text.split('\n')
+    newdexs = []
+    tokencount = 0
+    for i, l in enumerate(lines):
+        if any([op in l for op in omitpatterns]):
+            newdexs.append(i)
+            tokencount = tokencount + (estimate_tokens(l) + 1)
+    for i, l in enumerate(lines):
+        tokencount = tokencount + (estimate_tokens(l) + 1)
+        if tokencount > maxtokens:
+            break
+        newdexs.append(i)
+    newlines = [lines[i] for i in range(len(lines)) if i in newdexs]
+    return '\n'.join(newlines)
+
 def extract_section(text: str, key: str) -> str | None:
     escaped_key = re.escape(key)
     pattern = f'\\[<{escaped_key}>\\]:\\s*(.*?)(?=\\[<[^>\\]]+>\\]:|$)'
@@ -193,6 +212,12 @@ def custout2dict(text, lower=False):
     return outdic
 
 def custout2dicts(text, lower=False):
+    if text.strip().startswith('```python') and text.strip().endswith('```'):
+        logger.info('模型又不安格式输出代码')
+        ret = [{'code': text, 'action': 'orchestrate'}]
+        if not lower:
+            ret[0] = {k.upper(): v for k, v in ret[0].items()}
+        return ret
     lines = text.split('\n')
     acdexs = [i for i in range(len(lines)) if '[<ACTION>]' in lines[i]]
     assert len(acdexs) > 0, 'No [<ACTION>] tag found.'

@@ -7,6 +7,8 @@ import sys
 import re
 import ast
 import json
+from typing import Annotated
+from typing_extensions import Doc, Any
 import numpy
 import pandas
 import copy
@@ -22,6 +24,7 @@ import random
 import time
 import threading
 from core.cft.consts import SKIPNAMES
+from utils.shared import estimate_tokens
 
 def table_get_record(n69wspa34p: list[dict], condition: dict, ensure_unique=False, need_indices=False):
     n69wsp9onl = []
@@ -432,9 +435,9 @@ def x69xm5du02(n69wspa2l4, n69wsp9osv):
     newfdic['raw_def_id'] = n69wspa2l4.get('raw_def_id', n69wspa2it)
     return newfdic
 
-def x69xm5du03(n69wspa2l4, n69wsp9osv, need_defid=True, need_srcfile=True, n69wspa2z4=[], rawclass=''):
+def x69xm5du03(n69wspa2l4, n69wsp9osv, need_defid=True, need_srcfile=True, n69wspa2z4=[], rawclass='', headonly=False):
     n69wspa2it = n69wspa2l4['def_id']
-    pdesc = ''
+    n6aj5n5m3h = ''
     for p in n69wsp9osv['inputs']:
         pdstr = ''
         if (p.get('type') or '').strip():
@@ -445,9 +448,9 @@ def x69xm5du03(n69wspa2l4, n69wsp9osv, need_defid=True, need_srcfile=True, n69ws
             pdstr = pdstr + f" (default={p['default']})"
         if not pdstr:
             pdstr = 'undescribed'
-        pdesc = pdesc + f"  {p['name']}: {pdstr}\n"
-    if not pdesc:
-        pdesc = 'No params.\n'
+        n6aj5n5m3h = n6aj5n5m3h + f"  {p['name']}: {pdstr}\n"
+    if not n6aj5n5m3h:
+        n6aj5n5m3h = 'No params.\n'
     rdesc = ''
     if (n69wsp9osv['return'].get('type') or '').strip():
         rdesc = rdesc + f"({n69wsp9osv['return']['type']}) "
@@ -457,7 +460,7 @@ def x69xm5du03(n69wspa2l4, n69wsp9osv, need_defid=True, need_srcfile=True, n69ws
         rdesc = 'undescribed'
     is_async = n69wspa2l4['is_async']
     n69wsp9p3c = n69wspa2l4['doc']
-    n69wsp9p3c = n69wsp9p3c + '\n' if (n69wsp9p3c or '').strip() else 'This function lacks description.\n'
+    n69wsp9p3c = n69wsp9p3c + '\n' if (n69wsp9p3c or '').strip() else 'undescribed\n'
     n69wsp9p3i = n69wspa2it.split('*')[-1].replace(DOT_REPL, '.')
     if n69wsp9p3i.count('/') == 1:
         n69wsp9oox = n69wsp9p3i.replace('/', '.')
@@ -480,7 +483,10 @@ def x69xm5du03(n69wspa2l4, n69wsp9osv, need_defid=True, need_srcfile=True, n69ws
     defidpart = f" at {n69wspa2it.replace(DOT_REPL, '.')}" if need_defid else ''
     n69wspa34o = (n69wspa2l4.get('source_file') or '').strip()
     srcpart = f' from {n69wspa34o}' if need_srcfile and (not n69wspa34o in ('', '<UNK>')) else ''
-    n69wspa30m = f'{fcate}: {fstr}{defidpart}{srcpart}\nDesc: {n69wsp9p3c}Params:\n{pdesc}Return: {rdesc}'
+    if not headonly:
+        n69wspa30m = f'{fcate}: {fstr}{defidpart}{srcpart}\nDesc: {n69wsp9p3c}Params:\n{n6aj5n5m3h}Return: {rdesc}'
+    else:
+        n69wspa30m = f'{fcate}: {fstr}{defidpart}{srcpart}'
     return n69wspa30m
 
 def x69xm5du04(n69wspa2wq, n69wspa2z4):
@@ -511,10 +517,114 @@ def x69xm5du04(n69wspa2wq, n69wspa2z4):
         assert x69xm5dtzx(n69wsp9p3n) == 'folder'
     return {'module': rmod, 'class': n69wsp9ole, 'func': n69wsp9p3n}
 
-def x69xm5du05(n69wspa2l4, need_defid=True, need_srcfile=True, n69wspa2z4=[], rawclass=''):
-    return x69xm5du03(n69wspa2l4, {'inputs': [{'name': n69wsp9p3n, **inp} for n69wsp9p3n, inp in n69wspa2l4['inputs'].items()], 'return': n69wspa2l4['return']}, need_defid=need_defid, need_srcfile=need_srcfile, n69wspa2z4=n69wspa2z4, rawclass=rawclass)
+def compress_tooldesc(data, maxtoken):
 
-def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[]):
+    def compress_clfuncs(n69wspa2us):
+        if n69wspa2us.get('doc') == objcl_dedupdoc:
+            return 0
+        saved_tokens = 0
+        cfkeys = list(n69wspa2us.get('funcs', {}).keys())
+        for n69wsp9p3n in cfkeys:
+            n69wspa2l4 = n69wspa2us['funcs'][n69wsp9p3n]
+            fsts = compress_func(n69wspa2l4)
+            saved_tokens = saved_tokens + fsts
+        return saved_tokens
+
+    def compress_clhead(n69wspa2us):
+        if n69wspa2us.get('doc') == objcl_dedupdoc:
+            return 0
+        saved_tokens = 0
+        funcs_str = ','.join(list(n69wspa2us.get('funcs', {}).keys()))
+        cleanfuncs = copy.deepcopy(n69wspa2us.get('funcs', {}))
+        for fn in cleanfuncs.keys():
+            cleanfuncs[fn] = {k: v for k, v in cleanfuncs[fn].items() if not k in ['def_id', 'source_file', 'raw_def_id']}
+        saved_tokens = saved_tokens + int(0.9 * estimate_tokens(cleanfuncs) - estimate_tokens(funcs_str))
+        n69wspa2us['funcs'] = {}
+        if len(n69wspa2us.get('doc') or '') > 1:
+            saved_tokens = saved_tokens + (estimate_tokens(n69wspa2us['doc']) - 1)
+            n69wspa2us['doc'] = f'略'
+            if funcs_str:
+                n69wspa2us['doc'] = n69wspa2us['doc'] + f'。类下函数: {funcs_str}'
+        return saved_tokens
+
+    def compress_func(funcdic) -> Annotated[Any, Doc('吧doc和param介绍全换成略后，返回压缩后的dict和减少的字数')]:
+        saved_tokens = 0
+        if len(funcdic.get('doc') or '') > 1:
+            saved_tokens = saved_tokens + (estimate_tokens(funcdic['doc']) - 1)
+            funcdic['doc'] = '略'
+        if funcdic.get('inputs'):
+            for pkey in funcdic['inputs'].keys():
+                fip = funcdic['inputs'][pkey]
+                if len(fip.get('doc') or '') > 1:
+                    saved_tokens = saved_tokens + (estimate_tokens(fip['doc']) - 1)
+                    funcdic['inputs'][pkey]['doc'] = '略'
+        if len(funcdic['return'].get('doc') or '') > 1:
+            saved_tokens = saved_tokens + estimate_tokens(funcdic['return']['doc']) - 1
+            funcdic['return']['doc'] = '略'
+        return saved_tokens
+    data = copy.deepcopy(data)
+    origtoken = int(estimate_tokens(all_desc_to_nl(data)) * 1.2)
+    mustsave = origtoken - maxtoken
+    if mustsave <= 0:
+        return (data, mustsave)
+    objcl_dedupdoc = 'This class was already described before.'
+    n69wspa2i3 = []
+    for n69wsp9ole, n69wspa2us in data.get('classes', {}).items():
+        n69wspa2i3.append(n69wspa2us.get('raw_def_id'))
+    for n69wspa2ce in data.get('objs', {}).keys():
+        odic = data['objs'][n69wspa2ce]
+        if odic['class'].get('raw_def_id') and odic['class'].get('raw_def_id') in n69wspa2i3:
+            data['objs'][n69wspa2ce]['doc'] = objcl_dedupdoc
+            data['objs'][n69wspa2ce]['class']['funcs'] = {}
+    compkeys = ['objfuncs', 'clfuncs', 'funcs', 'objcls', 'classes']
+    saved_tokens = 0
+    for ck in compkeys:
+        match ck:
+            case 'objfuncs':
+                for name, subdic in data['objs'].items():
+                    mysaved = compress_clfuncs(subdic['class'])
+                    saved_tokens = saved_tokens + mysaved
+            case 'clfuncs':
+                for name, subdic in data['classes'].items():
+                    mysaved = compress_clfuncs(subdic)
+                    saved_tokens = saved_tokens + mysaved
+            case 'funcs':
+                for name, subdic in data['classes'].items():
+                    mysaved = compress_clhead(subdic)
+                    saved_tokens = saved_tokens + mysaved
+            case 'objcls':
+                for name, subdic in data['objs'].items():
+                    mysaved = compress_clhead(subdic['class'])
+                    saved_tokens = saved_tokens + mysaved
+            case 'classes':
+                for name, subdic in data['funcs'].items():
+                    mysaved = compress_func(subdic)
+                    saved_tokens = saved_tokens + mysaved
+        if saved_tokens >= mustsave:
+            break
+    return (data, mustsave - saved_tokens)
+
+def all_desc2nl_in_tokens(data, maxtokens):
+    newdata, exceed = compress_tooldesc(data, maxtokens)
+    deparams = False
+    nldesc = all_desc_to_nl(ddic=newdata, func_headonly=deparams)
+    new_tokens = estimate_tokens(nldesc)
+    real_exceed = new_tokens - maxtokens
+    origtokens = estimate_tokens(data)
+    orig_amp = origtokens - maxtokens
+    overshot_ratio = real_exceed / orig_amp
+    if overshot_ratio > 0:
+        adjusted_target = origtokens - (1 + 1.5 * overshot_ratio) * orig_amp
+        newdata, exceed = compress_tooldesc(data, adjusted_target)
+    if exceed > 0:
+        deparams = True
+    nldesc = all_desc_to_nl(ddic=newdata, func_headonly=deparams)
+    return nldesc
+
+def x69xm5du05(n69wspa2l4, need_defid=True, need_srcfile=True, n69wspa2z4=[], rawclass='', func_headonly=False):
+    return x69xm5du03(n69wspa2l4, {'inputs': [{'name': n69wsp9p3n, **inp} for n69wsp9p3n, inp in n69wspa2l4['inputs'].items()], 'return': n69wspa2l4['return']}, need_defid=need_defid, need_srcfile=need_srcfile, n69wspa2z4=n69wspa2z4, rawclass=rawclass, headonly=func_headonly)
+
+def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[], was_described=False, func_headonly=False):
     rawinfo = x69xm5du04(n69wspa2us['raw_def_id'], n69wspa2z4=n69wspa2z4)
     asinfo = x69xm5du04(n69wspa2us['def_id'], n69wspa2z4=n69wspa2z4)
     n69wspa37g = 'class ' + rawinfo['class']
@@ -523,7 +633,10 @@ def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[]):
     n69wspa37g = n69wspa37g + f" from module {rawinfo['module']}"
     if need_defid:
         n69wspa37g = n69wspa37g + (' at ' + n69wspa2us['def_id'])
-    n69wspa37g = n69wspa37g + (': \n' + (n69wspa2us.get('doc') or 'No description.').strip() + '\n')
+    if was_described:
+        n69wspa37g = n69wspa37g + ('\nDesc: ' + 'This class was already described.')
+        return n69wspa37g.strip()
+    n69wspa37g = n69wspa37g + ('\nDesc: ' + (n69wspa2us.get('doc') or 'No description.').strip() + '\n')
     if n69wspa2us.get('sitepkg_bases'):
         n69wspa37g = n69wspa37g + 'This class is a child class of imported env classes: '
         sbstrs = []
@@ -533,22 +646,24 @@ def x69xm5du06(n69wspa2us, need_defid=True, n69wspa2z4=[]):
     if n69wspa2us.get('funcs'):
         n69wspa37g = n69wspa37g + 'attr funcs:\n'
     for n69wsp9p3n, n69wspa2l4 in n69wspa2us.get('funcs', {}).items():
-        fdesc = x69xm5du05(n69wspa2l4, need_defid=need_defid, need_srcfile=False, n69wspa2z4=n69wspa2z4, rawclass=rawinfo['class'])
-        n69wspa37g = n69wspa37g + (fdesc + '\n\n')
+        n6aj5n5m3d = x69xm5du05(n69wspa2l4, need_defid=need_defid, need_srcfile=False, n69wspa2z4=n69wspa2z4, rawclass=rawinfo['class'], func_headonly=func_headonly)
+        n69wspa37g = n69wspa37g + (n6aj5n5m3d + '\n\n')
     return n69wspa37g.strip()
 
-def all_desc_to_nl(ddic):
+def all_desc_to_nl(ddic, func_headonly=False):
     funcdesc = '# ------ Functions ------\n' if ddic.get('funcs') else ''
     for n69wsp9p3n, n69wspa2l4 in ddic.get('funcs', {}).items():
-        fstr = '## ' + x69xm5du05(n69wspa2l4, need_defid=False, need_srcfile=False, n69wspa2z4=ddic.get('visibility', []))
+        fstr = '## ' + x69xm5du05(n69wspa2l4, need_defid=False, need_srcfile=False, n69wspa2z4=ddic.get('visibility', []), func_headonly=func_headonly)
         funcdesc = funcdesc + (fstr.strip() + '\n\n')
     classdesc = '# ------ Classes ------\n' if ddic.get('classes') else ''
+    clids = []
     for n69wsp9ole, n69wspa2us in ddic.get('classes', {}).items():
-        n69wspa37g = '## ' + x69xm5du06(n69wspa2us, need_defid=False, n69wspa2z4=ddic.get('visibility', []))
+        n69wspa37g = '## ' + x69xm5du06(n69wspa2us, need_defid=False, n69wspa2z4=ddic.get('visibility', []), func_headonly=func_headonly)
         classdesc = classdesc + (n69wspa37g.strip() + '\n\n')
+        clids.append(n69wspa2us.get('raw_def_id'))
     objdesc = '# ------ Objects ------\n' if ddic.get('objs') else ''
     for n69wspa2ce, odic in ddic.get('objs', {}).items():
-        objdesc = objdesc + ('## ' + n69wspa2ce + '\ntype: ' + x69xm5du06(odic['class'], need_defid=False, n69wspa2z4=ddic.get('visibility', [])).strip() + '\n\n')
+        objdesc = objdesc + ('## ' + n69wspa2ce + '\ntype: ' + x69xm5du06(odic['class'], need_defid=False, n69wspa2z4=ddic.get('visibility', []), was_described=odic.get('class', {}).get('raw_def_id') in clids, func_headonly=func_headonly).strip() + '\n\n')
     alldesc = funcdesc + '\n' + classdesc + '\n' + objdesc
     alldesc = alldesc.replace(DOT_REPL, '.')
     return alldesc

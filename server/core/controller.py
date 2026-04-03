@@ -33,7 +33,7 @@ from basic.db.mysql_handler import DBHandler, gen_create_sql
 exec(f'from core.cft.processors{sys.version_info.minor}{"w" if sys.platform == "win32" else ""} import *')
 from core.cft.utils import all_desc_to_nl, x69xm5du07, find_nth, x69xm5du03, x69xm5du02, x69xm5dtzx, aidle, x69xm5du08, recover_conds, loadstr, idgen, replace_lastpart, x69xm5dtzz, x69xm5du00, x69xm5dtzw, x69xm5du09, table_lambda_get, table_unique_get, gen_base36_id, is_valid_varname, x69xm5du01, to_func_id, to_module_id, x69xm5dtzy, trunk_to_func
 from functools import partial
-from utils.shared import Bouncer, custout2dicts, list_installed_packages, parse_for_sugs, remove_common_indents, redact_quoted_strings, requests_post
+from utils.shared import Bouncer, custout2dicts, list_installed_packages, parse_for_sugs, remove_common_indents, redact_quoted_strings, requests_post, suppress_text
 from agentity.codeplanner.code_agent import Coder
 import redis
 from core.output_client import client as oclient
@@ -46,6 +46,7 @@ REDIS_PORT = int(configer.grapy.redis_port)
 NODESPACINGX = int(configer.ui.node_spacing_x)
 NODESPACINGY = int(configer.ui.node_spacing_y)
 MAX_REDOS = int(configer.grapy.max_redos)
+n6aj5n5vx2 = configer.codesug_lm
 PRECODE = '\nfrom typing_extensions import Annotated, Doc\nfrom typing import Any, Optional\nfrom functools import reduce as _functools_reduce\nfrom loguru import logger\n'
 n69wspa2ha = {'uid': {'VARCHAR(32)'}, 'hid': {'VARCHAR(255)'}, 'branch': {'JSON'}, 'data_providers': {'NoneType', 'list'}, 'node_type': {'VARCHAR(31)'}, 'code': {'NoneType', 'MEDIUMTEXT'}, 'pres': {'NoneType', 'list'}, 'nexts': {'NoneType', 'list'}, 'xpos': {'int'}, 'ypos': {'int'}, 'def_id': {'VARCHAR(512)'}, 'toolcall': {'NoneType', 'dict'}, 'targets': {'NoneType', 'str'}, 'params_map': {'NoneType', 'dict'}, 'comments': {'NoneType', 'VARCHAR(767)'}, 'expr': {'NoneType', 'VARCHAR(767)'}, 'cases': {'NoneType', 'dict'}, 'source': {'NoneType', 'str'}, 'iter': {'NoneType', 'str'}, 'slice': {'NoneType', 'str'}, 'misc': {'NoneType', 'dict'}}
 n69wspa2ts = {'uid': {'VARCHAR(64)'}, 'def_id': {'VARCHAR(512)'}, 'globals': {'NoneType', 'list'}, 'nonlocals': {'NoneType', 'list'}, 'imports_code': {'NoneType', 'TEXT'}, 'is_async': {'bool'}, 'deco_expr': {'NoneType', 'str'}, 'doc': {'NoneType', 'TEXT'}, 'xpos': {'NoneType', 'int'}, 'ypos': {'NoneType', 'int'}, 'ethnic': {'NoneType', 'VARCHAR(16)'}}
@@ -53,7 +54,7 @@ n69wspa2dn = {'bases': {'list'}, 'vars': {'list'}, 'deco_expr': {'NoneType', 'st
 n69wspa2hw = {'name': {'VARCHAR(128)'}, 'from_node': {'NoneType', 'str'}, 'from_def': {'NoneType', 'str'}, 'ctx': {'str'}, 'def_id': {'VARCHAR(512)'}, 'uid': {'VARCHAR(32)'}, 'type': {'NoneType', 'str'}, 'repr': {'NoneType', 'str'}, 'value': {'NoneType', 'str'}, 'ethnic': {'NoneType', 'VARCHAR(16)'}}
 n69wspa356 = {'name': {'VARCHAR(128)'}, 'type': {'NoneType', 'str'}, 'doc': {'NoneType', 'TEXT'}, 'def_id': {'VARCHAR(512)'}, 'ctx': {'VARCHAR(32)'}, 'default': {'NoneType', 'str'}, 'place': {'int'}}
 n69wspa2fi = {'def_id': {'VARCHAR(512)'}, 'untracked_vars': {'JSON'}}
-n69wspa2mc = {'user_id': {'int'}, 'external_pkgs': {'JSON'}}
+n69wspa2mc = {'user_id': {'int'}, 'external_pkgs': {'JSON'}, 'print_loc': {'VARCHAR(16)'}}
 n69wspa35q = ['uid']
 n69wspa2oa = ['uid']
 n69wspa2zt = ['uid']
@@ -191,6 +192,13 @@ def extract_roi(code, shift_after_varsender=False):
         code = b69wspa0ye(code)
     return code
 
+def b6aj5n5vfd(code):
+    if isinstance(code, str):
+        for pat in [SECTION_START_LABEL, SECTION_END_LABEL, INSERT_LABEL, UID_COMMENT_RIGHTLABEL, UID_COMMENT_LEFTLABEL]:
+            if pat in code:
+                code = code.replace(pat, pat[0] + '_' + pat[1:])
+    return code
+
 class A69wspa0yp(Exception):
 
     def __init__(self, msg):
@@ -217,18 +225,35 @@ class A69wspa0yq(DBHandler):
         self.n69wspa2gm = {}
         self.x69xm5dtzu = {}
         self.n69wspa2fo = None
+        self.printloc = 'run'
         try:
             self.n69wspa36f.execute_command('FT.DROPINDEX', 'idx:undo')
         except:
             pass
         self.n69wspa36f.execute_command('FT.CREATE', 'idx:undo', 'ON', 'JSON', 'PREFIX', '1', 'undo:', 'SCHEMA', '$.save_id', 'AS', 'save_id', 'NUMERIC', 'SORTABLE', '$.module_id', 'AS', 'module_id', 'TAG', '$.def_id', 'AS', 'def_id', 'TEXT', '$.scope_type', 'AS', 'scope_type', 'TAG', '$.undoed', 'AS', 'undoed', 'TAG')
-        self.coder = Coder({'node_id': 'Cody', 'node_type': 'coder'})
+        self.coder = Coder({'node_id': 'Cody', 'node_type': 'coder'}, role='module')
+        self.sugger = Coder({'node_id': 'Cody', 'node_type': 'sugger'}, role='sug', base_url=n6aj5n5vx2.base_url, api_key=n6aj5n5vx2.api_key, default_model=n6aj5n5vx2.model, llm_max_tokens=n6aj5n5vx2.max_tokens)
+        self.csecer = self.coder
 
     async def b69x8ynntf(self, conn=None, _skiplock=False):
         await self.b69x8ynnt8(conn=conn, _skiplock=_skiplock)
+        self.printloc = await self.b6aj5n5vfh(conn=conn, _skiplock=_skiplock)
+        if not self.printloc:
+            self.printloc = 'run'
+            await self.b6aj5n5vff('run')
 
     async def select(self, table_name: str, conds: list[dict]=[], cond_sql: str='', targets=[], avoids=[], post=None, conn=None, _skiplock=False, debuglabel=''):
         n69wsp9oq8 = await super().select(table_name, conds=conds, cond_sql=cond_sql, targets=targets, avoids=avoids, post=post, conn=conn, _skiplock=_skiplock, json_repairer=recover_conds, debuglabel=debuglabel)
+        if isinstance(n69wsp9oq8, pd.DataFrame):
+            if 'code' in n69wsp9oq8.columns and len(n69wsp9oq8) > 1:
+                n69wsp9oq8['code'] = n69wsp9oq8['code'].apply(b6aj5n5vfd)
+        return n69wsp9oq8
+
+    async def upsert(self, table_name, df, primekeys=None, skipna=True, force_update=0, conn=None, _skiplock=False):
+        if isinstance(df, pd.DataFrame):
+            if 'code' in df.columns and len(df) > 1:
+                df['code'] = df['code'].apply(b6aj5n5vfd)
+        n69wsp9oq8 = await super().upsert(table_name=table_name, df=df, primekeys=primekeys, skipna=skipna, force_update=force_update, conn=conn, _skiplock=_skiplock)
         return n69wsp9oq8
 
     async def b69x8ynnvq(self, n69wspa381='', conn=None, _skiplock=False):
@@ -907,7 +932,15 @@ class A69wspa0yq(DBHandler):
         n69wspa2el = n69wspa2el[:n69wspa2vg] + n69wsp9orn + n69wspa2el[n69wspa2ox:]
         return n69wspa2el
 
-    async def b69x8ynnvz(self, user_input, n69wspa35p, upsert_base, n69wspa381, n69wspa2zf, n69wspa2nm=[], external_class_ids=[], cached=True, ws=None, conn=None, _skiplock=False):
+    async def b69x8ynnvz(self, user_input, n69wspa35p, upsert_base, n69wspa381, n69wspa2zf, n69wspa2nm=[], external_class_ids=[], cached=True, usage='coder', n6aj5n5vww='', codesec_states={}, ws=None, conn=None, _skiplock=False):
+        n69wspa337 = upsert_base.split('^')[0]
+        if usage == 'sugger':
+            n6aj5n5vws = self.sugger
+            n6aj5n5vws.delete_memory(lambda x: True, session_id=n69wspa337)
+        elif usage == 'csecer':
+            n6aj5n5vws = self.csecer
+        else:
+            n6aj5n5vws = self.coder
 
         async def b69x8ynnvu(x):
             pass
@@ -916,13 +949,22 @@ class A69wspa0yq(DBHandler):
             return 'Cannot connect with user.'
         n69wspa360 = ws.send_text if ws else b69x8ynnvu
         n69wspa38v = ws.receive_text if ws else b69x8ynnsy
-        n69wspa337 = upsert_base.split('^')[0]
 
         async def b69x8ynnvt(conn):
-            n69wspa2ck, _ = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', enblock=True, conn=None, _skiplock=True)
-            n69wspa2pw = await self.b69x8ynntd(n69wspa35p, upsert_base, n69wspa381, conn=None, _skiplock=True)
+            n69wspa2ck, _ = await self.b69x8ynntv(n69wspa35p, 'all', n69wspa2zf=n69wspa2zf, style='pure', enblock=True, conn=conn, _skiplock=True) if usage != 'sugger' else (n6aj5n5vww, None)
+            n6aj5n5vwe = n69wspa2ck
+            n6aj5n5vxp = n6aj5n5vwe.split('\n')
+            for i in range(len(n6aj5n5vxp)):
+                if INSERT_LABEL in n6aj5n5vxp[i] and (not n6aj5n5vxp[i].strip().startswith('#')):
+                    n6aj5n5vxp[i] = ' ' * (len(n6aj5n5vxp[i]) - len(n6aj5n5vxp[i].lstrip())) + 'pass'
+            n6aj5n5vwe = '\n'.join(n6aj5n5vxp)
+            _, _, wildimpcode = b69wsp9mrs(n6a2vpeo9h(n6aj5n5vwe, keep_comments=False), expand=True)
+            n69wspa2pw = self.b69x8ynntd(n69wspa35p, upsert_base, n69wspa381, n69x75d5wx=wildimpcode, conn=conn, _skiplock=True)
+            n6aj5n5vxd = self.b69x8ynnv5(upsert_base, _skiplock=True, conn=conn)
+            n69wspa2pw, n6aj5n5vxd = await asyncio.gather(n69wspa2pw, n6aj5n5vxd)
+            n6aj5n5vxd.append(upsert_base) if not upsert_base in n6aj5n5vxd else 0
+            n6aj5n5vxd = [lv for lv in n6aj5n5vxd if not lv in n69wspa2pw['visibility'] and x69xm5dtzx(lv) == 'cond']
             n69wspa2ck = '# env_level: 0\n' + n69wspa2ck
-            n69wspa30j = all_desc_to_nl(n69wspa2pw)
             n69wspa2jq = None
             n69wspa2rt = copy.deepcopy(n69wspa2zf)
             n69wspa2cq = []
@@ -962,13 +1004,39 @@ class A69wspa0yq(DBHandler):
                 assert n69wspa2zf['shell_id'] == upsert_base
                 if x69xm5dtzx(n69wspa2zf['shell_id']) == 'class':
                     assert n69wspa2f0 == 2
+            if usage == 'csecer':
+                assert SECTION_END_LABEL in n69wspa2ck and SECTION_START_LABEL in n69wspa2ck, n69wspa2ck
+                assert n69wspa2ck.count(SECTION_END_LABEL) == 1 and n69wspa2ck.count(SECTION_START_LABEL) == 1 and (n69wspa2ck.find(SECTION_END_LABEL) > n69wspa2ck.find(SECTION_START_LABEL)), f'Conflicting section labels. Unable to focus on selection area. Remove conflicting patterns in your codes: {SECTION_END_LABEL}, {SECTION_START_LABEL}'
+                n6aj5n5vwb = n69wspa2ck[n69wspa2ck.find(SECTION_START_LABEL):n69wspa2ck.find(SECTION_END_LABEL) + len(SECTION_END_LABEL)]
+                n69wspa2oo = codesec_states['code']
+                n6aj5n5vxi = n69wspa2oo.split('\n')
+                n6aj5n5vwo = n69wspa2ck.split('\n')
+                n6aj5n5vwy = [l for l in range(len(n6aj5n5vwo)) if SECTION_START_LABEL in n6aj5n5vwo[l]][0]
+                n6aj5n5vwq = [l for l in range(len(n6aj5n5vwo)) if SECTION_END_LABEL in n6aj5n5vwo[l]][0]
+                n6aj5n5vwx = len(n6aj5n5vwo[n6aj5n5vwy]) - len(n6aj5n5vwo[n6aj5n5vwy].lstrip())
+                n6aj5n5vxn = False
+                n6aj5n5vxh = int(codesec_states['startRow']) - 1
+                n6aj5n5vxb = int(codesec_states['endRow']) - 1
+                n6aj5n5vwa = n6aj5n5vxi[n6aj5n5vxh]
+                n6aj5n5vw5 = n6aj5n5vxi[n6aj5n5vxb]
+                n6aj5n5vwz = n6aj5n5vxi[n6aj5n5vxb + 1] if n6aj5n5vxb < len(n6aj5n5vxi) - 1 else ''
+                n6aj5n5vw7 = int(codesec_states['startCol']) - 1
+                n6aj5n5vx9 = int(codesec_states['endCol']) - 1
+                n6aj5n5vwn = len(n6aj5n5vwa) - len(n6aj5n5vwa.lstrip())
+                n6aj5n5vxc = len(n6aj5n5vwz) - len(n6aj5n5vwz.lstrip())
+                n6aj5n5vx0 = ' ' * n6aj5n5vwn + '# ' + SECTION_START_LABEL
+                n6aj5n5vwk = ' ' * n6aj5n5vxc + '# ' + SECTION_END_LABEL
+                n69wsp9ozc = n6aj5n5vxi[:n6aj5n5vxh] + [n6aj5n5vx0] + n6aj5n5vxi[n6aj5n5vxh:n6aj5n5vxb + 1] + [n6aj5n5vwk] + n6aj5n5vxi[n6aj5n5vxb + 1:]
+                n69wsp9ozc = [' ' * n6aj5n5vwx + l for l in n69wsp9ozc]
+                n6aj5n5vwf = n6aj5n5vwo[:n6aj5n5vwy] + n69wsp9ozc + n6aj5n5vwo[n6aj5n5vwq + 1:]
+                n69wspa2ck = '\n'.join(n6aj5n5vwf)
             n69wsp9orm = None
-            await self.coder.start_duty_cycle()
-            n69wspa2lh = [{'role': 'system', 'content': 'userquery'}, {'role': 'user', 'content': {'category': n69wspa2jq, 'mode': n69wspa2zf['mode'], 'existing_code': n69wspa2ck, 'user_input': user_input, 'tools_desc': n69wspa30j, 'class_above': n69wspa2u8}}]
-            await self.coder.listen_msgs(n69wspa2lh, session_id=n69wspa337)
+            await n6aj5n5vws.start_duty_cycle()
+            n69wspa2lh = [{'role': 'system', 'content': 'userquery'}, {'role': 'user', 'content': {'category': n69wspa2jq, 'mode': n69wspa2zf['mode'], 'existing_code': n69wspa2ck, 'user_input': user_input, 'tools_desc': n69wspa2pw, 'class_above': n69wspa2u8}}]
+            await n6aj5n5vws.listen_msgs(n69wspa2lh, session_id=n69wspa337)
             n69wsp9oyy = 0
             n69wspa38p = 0
-            async for rsp in self.coder.acquiring_rsps(error_behavior='raise', session_id=n69wspa337):
+            async for rsp in n6aj5n5vws.acquiring_rsps(error_behavior='raise', session_id=n69wspa337):
                 n69wsp9oyy = n69wsp9oyy + 1
                 assert rsp[0]['role'] == 'assistant'
                 try:
@@ -985,15 +1053,15 @@ class A69wspa0yq(DBHandler):
                         await n69wspa360(json.dumps({'event': 'info', 'data': f"Thought:{n69wspa34v.get('explain')}\n\nAction:{n69wspa34v['action']}"}, ensure_ascii=False))
                         if n69wspa34v['action'] == 'orchestrate':
                             if 'code' in n69wspa34v:
-                                n69wsp9orm = n69wspa34v['code'].strip()
+                                n69wsp9orm = n69wspa34v['code'].strip('\n')
                             elif '```python' in rsp[0]['content']:
-                                n69wsp9orm = rsp[0]['content'][rsp[0]['content'].rfind('```python'):]
+                                n69wsp9orm = rsp[0]['content'][rsp[0]['content'].find('```python'):]
                             else:
                                 raise ValueError(f'Code unparsable. The orchestrate action requires a param like: [<CODE>]: ```python\n# your code\n```')
-                            if n69wsp9orm.startswith('```python'):
-                                n69wsp9orm = n69wsp9orm[9:].strip()
+                            if n69wsp9orm.strip().startswith('```python'):
+                                n69wsp9orm = n69wsp9orm.strip()[9:].strip('\n')
                                 if n69wsp9orm.count('```') > 0:
-                                    n69wsp9orm = n69wsp9orm[:n69wsp9orm.find('```')].strip()
+                                    n69wsp9orm = n69wsp9orm[:n69wsp9orm.rfind('```')].strip('\n')
                             await n69wspa360(json.dumps({'event': 'info', 'data': f'Code generated and will be updated into the workflow:\n\n' + n69wsp9orm}, ensure_ascii=False))
                             await n69wspa360(json.dumps({'event': 'msg', 'data': 'Updating the workflow. This may take a moment...'}, ensure_ascii=False))
                             n6aagw0qgr = True
@@ -1004,16 +1072,32 @@ class A69wspa0yq(DBHandler):
                             for argdic in n69wspa2r2:
                                 try:
                                     await n69wspa360(json.dumps({'event': 'info', 'data': f'Agent looking up code: {str(argdic)[1:-1]}'}, ensure_ascii=False))
-                                    n69wsp9p5m = await self.b69x8ynnul(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'], n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
+                                    n69wsp9p5m = await self.b69x8ynnul(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'] + n6aj5n5vxd, n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
                                     n69wspa2jw = n69wspa2jw + f"----- {str({k: v for k, v in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
-                                    n69wspa2jw = n69wspa2jw + n69wsp9p5m
+                                    n69wspa2jw = n69wspa2jw + (n69wsp9p5m + '\n')
                                     n69wsp9p2h = '<NOT_FOUND>' not in n69wsp9p5m[:20]
-                                    await n69wspa360(json.dumps({'event': 'info', 'data': 'code ' + 'found' if n69wsp9p2h else 'not found'}, ensure_ascii=False))
+                                    await n69wspa360(json.dumps({'event': 'info', 'data': suppress_text(n69wsp9p5m, 500)}, ensure_ascii=False))
                                 except Exception as e:
                                     await n69wspa360(json.dumps({'event': 'warn', 'data': f'Agent looking up code failed: {str(argdic)[1:-1]}'}, ensure_ascii=False))
                                     traceback.print_exc()
                                     n69wspa35k = n69wspa35k + ('args:' + str(argdic) + ' Error: ' + str(e) + '\n')
                             n6aagw0qg1.append({'role': 'user', 'content': {'action': 'check_codes', 'rsp': n69wspa2jw, 'error': n69wspa35k, 'extra_msg': n69wspa2ht}})
+                        elif n69wspa34v['action'] == 'check_signatures':
+                            n69wspa2jw = ''
+                            n69wspa35k = ''
+                            n69wspa2r2 = await jsonformat(n69wspa34v['selections'])
+                            for argdic in n69wspa2r2:
+                                try:
+                                    await n69wspa360(json.dumps({'event': 'info', 'data': f'Agent looking up signature: {str(argdic)[1:-1]}'}, ensure_ascii=False))
+                                    n6aj5n5vxo = await self.b6aj5n5vfi(argdic['module'], argdic.get('class') or '', argdic.get('func') or '', n69wspa2pw['visibility'] + n6aj5n5vxd, n69wspa381, current_space=int(argdic.get('env_level') or 0), conn=conn, _skiplock=True)
+                                    n69wspa2jw = n69wspa2jw + f"----- {str({k: v for k, v in argdic.items() if k != 'env_level'})[1:-1]} -----\n"
+                                    n69wspa2jw = n69wspa2jw + (n6aj5n5vxo + '\n')
+                                    await n69wspa360(json.dumps({'event': 'info', 'data': suppress_text(n6aj5n5vxo, 500)}, ensure_ascii=False))
+                                except Exception as e:
+                                    await n69wspa360(json.dumps({'event': 'warn', 'data': f'Agent looking up signature failed: {str(argdic)[1:-1]}'}, ensure_ascii=False))
+                                    traceback.print_exc()
+                                    n69wspa35k = n69wspa35k + ('args:' + str(argdic) + ' Error: ' + str(e) + '\n')
+                            n6aagw0qg1.append({'role': 'user', 'content': {'action': 'check_signatures', 'rsp': n69wspa2jw, 'error': n69wspa35k, 'extra_msg': n69wspa2ht}})
                         elif n69wspa34v['action'] == 'talk_to_user':
                             n69wspa2ym = n69wspa34v['message']
                             await n69wspa360(json.dumps({'event': 'quest', 'data': f'Question:{n69wspa2ym}'}, ensure_ascii=False))
@@ -1131,11 +1215,11 @@ class A69wspa0yq(DBHandler):
                     if n6aagw0qgr:
                         break
                     if len(n6aagw0qg1) > 1:
-                        await self.coder.listen_msgs(n6aagw0qg1, session_id=n69wspa337)
+                        await n6aj5n5vws.listen_msgs(n6aagw0qg1, session_id=n69wspa337)
                     else:
                         n69wspa38p = n69wspa38p + 1
                         await n69wspa360(json.dumps({'event': 'warn', 'data': f"Agent didn't output any correct action: {n6aagw0qfs}"}, ensure_ascii=False))
-                        await self.coder.listen_msgs([{'role': 'system', 'content': 'illegal'}, {'role': 'system', 'content': 'Agent did not output any parsable action. Please comply with the format requirements.'}], session_id=n69wspa337)
+                        await n6aj5n5vws.listen_msgs([{'role': 'system', 'content': 'illegal'}, {'role': 'system', 'content': 'Agent did not output any parsable action. Please comply with the format requirements.'}], session_id=n69wspa337)
                 except A69wspa0yp as e:
                     traceback.print_exc()
                     raise RuntimeError(f'Failed. Agent aborted due to: {e}.')
@@ -1148,7 +1232,39 @@ class A69wspa0yq(DBHandler):
                     if n69wspa38p > 3:
                         await n69wspa360(json.dumps({'event': 'info', 'data': 'Failed. Agent keeps outputting illegal response.'}, ensure_ascii=False))
                         raise RuntimeError('Failed. Agent keeps outputting unparsable response.')
-                    await self.coder.listen_msgs([{'role': 'system', 'content': 'illegal'}, {'role': 'system', 'content': str(e)}], session_id=n69wspa337)
+                    await n6aj5n5vws.listen_msgs([{'role': 'system', 'content': 'illegal'}, {'role': 'system', 'content': str(e)}], session_id=n69wspa337)
+            if usage == 'sugger':
+                return n69wsp9orm
+            elif usage == 'csecer':
+                n6aj5n5vw1 = n69wsp9orm.split('\n')
+                n69wsp9ozc = []
+                li = 0
+                for li in range(len(n6aj5n5vw1)):
+                    if n6aj5n5vw1[li].strip():
+                        break
+                n69wsp9ozc = n6aj5n5vw1[li:]
+                n6aj5n5vxj = len(n69wsp9ozc[0]) - len(n69wsp9ozc[0].lstrip())
+                n6aj5n5vxm = n6aj5n5vwn - n6aj5n5vxj
+                if n6aj5n5vxm > 0:
+                    n69wsp9ozc = [' ' * n6aj5n5vxm + n69wsp9ou8 for n69wsp9ou8 in n69wsp9ozc]
+                elif n6aj5n5vxm < 0:
+
+                    def b6aj5n5vfg(aline, n69wsp9oq0):
+                        assert n69wsp9oq0 >= 0
+                        if len(aline) > n69wsp9oq0:
+                            if not aline[:n69wsp9oq0].strip():
+                                return aline[n69wsp9oq0:]
+                        return aline
+                    n69wsp9ozc = [b6aj5n5vfg(aline, -n6aj5n5vxm) for aline in n69wsp9ozc]
+                n69wsp9ozc = [nl for nl in n69wsp9ozc if not any([lb in nl for lb in (SECTION_END_LABEL, SECTION_START_LABEL)])]
+                n69wsp9ozc = n6aj5n5vxi[:n6aj5n5vxh] + n69wsp9ozc + n6aj5n5vxi[n6aj5n5vxb + 1:]
+                n69wsp9orm = '\n'.join(n69wsp9ozc)
+                n6aj5n5vxl = n69wspa2zf['section'][0]
+                n69wspa32l = pd.DataFrame([{'uid': n6aj5n5vxl, 'code': n69wsp9orm}])
+                await self.upsert('nodes', n69wspa32l, conn=conn, _skiplock=True)
+                n69wspa36f = await self.b69x8ynnvg(to_func_id(upsert_base), 'dag', debugtag=f'(产生缓存，LLM-csecer)', conn=conn, _skiplock=True)
+                n69wsp9onl = (None, n69wspa36f['data']['app'], {})
+                return n69wsp9onl
             if n69wspa2f0 == 1:
                 n69wsp9onl = await self.b69x8ynnt6(n69wsp9orm, n69wspa35j, n69wspa2nm=[], external_class_ids=[], n69wspa2da=n69wspa2rt, cached=True, n69wspa381=n69wspa381, sustainable=True, n69znp79nl=False, _skiplock=True, conn=conn, tolerance=1)
             else:
@@ -1213,9 +1329,25 @@ class A69wspa0yq(DBHandler):
                 n69wspa35s = True
             return n69wspa35s
 
+    async def b6aj5n5vfi(self, n69wspa38w, n69wsp9onk, n69wsp9p0f, n69wspa2z4, n69wspa381, current_space=0, conn=None, _skiplock=False):
+        if not n69wspa38w:
+            n69wspa38w = '[LOCAL]'
+        if not n69wsp9onk and (not n69wsp9p0f):
+            return 'Unable to get signature. In addition to the module name, you at least must provide a function name, or a classname, or both.'
+        code = await self.b69x8ynnul(n69wspa38w, n69wsp9onk, n69wsp9p0f, n69wspa2z4, n69wspa381, current_space=current_space, conn=conn, _skiplock=_skiplock)
+        if not n69wsp9p0f:
+            n69wspa30m = b6aj5n5ljs(code, n69wsp9onk)
+        else:
+            code = code.replace('self', '_GRAPY_SELF')
+            n69wspa30m = b6aj5n5ljj(code, n69wsp9p0f)
+            n69wspa30m = n69wspa30m.replace('_GRAPY_SELF', 'self')
+        return n69wspa30m
+
     async def b69x8ynnul(self, n69wspa38w, n69wsp9onk, n69wsp9p0f, n69wspa2z4, n69wspa381, current_space=0, conn=None, _skiplock=False):
         n69wsp9p0f = n69wsp9p0f.strip()
         n69wsp9onk = n69wsp9onk.strip()
+        if not n69wspa38w:
+            n69wspa38w = '[LOCAL]'
         n69wspa38w = n69wspa38w.strip()
         if current_space > 0:
             n69wspa2z4 = []
@@ -1368,7 +1500,7 @@ class A69wspa0yq(DBHandler):
     async def b69x8ynnt1(self, modulename, import_data, conn=None, _skiplock=False):
         pass
 
-    async def b69x8ynnv8(self, n65d20cda3, n69wsp9p0w, n69wspa317=None, style='both', tolerance=0, codeswaps={}, n69wspa39a=None, enblock=False, _skiplock=False, conn=None):
+    async def b69x8ynnv8(self, n65d20cda3, n69wsp9p0w, n69wspa317=None, style='both', tolerance=0, codeswaps={}, n69wspa39a=None, enblock=False, n6aj5n5vxq=None, printloc='run', _skiplock=False, conn=None):
         assert x69xm5dtzx(n65d20cda3) == 'folder'
         assert n69wsp9p0w not in nesttypes
         n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
@@ -1378,6 +1510,7 @@ class A69wspa0yq(DBHandler):
             n69wsp9oya = self.select('nodes', cond_sql=n69wspa2gl, conn=conn, _skiplock=True)
             n69wspa2mh = self.select('vars', cond_sql=n69wspa2hg, conn=conn, _skiplock=True)
             n69wsp9oya, n69wspa2mh = await asyncio.gather(n69wsp9oya, n69wspa2mh)
+            assert len(n69wsp9oya) == 1
             return (n69wsp9oya, n69wspa2mh)
         n69wspa2q4 = ('_fAk84289epATh_/_fAke_FUnc',)
         if n69wspa317 and n69wspa39a():
@@ -1413,6 +1546,8 @@ class A69wspa0yq(DBHandler):
         if len(n69wsp9oya) == 0:
             raise RuntimeError(f'[BUG] The backend may have failed to validate and save the workflow into the DB. This is a bug.')
         assert n69wsp9oya.loc[0, 'node_type'] == n69wsp9p0w or (n69wsp9oya.loc[0, 'node_type'] == 'code' and n69wsp9p0w == 'tool'), f"eh011：{n69wsp9oya.loc[0, 'node_type']} vs {n69wsp9p0w}, {n69wsp9oya.to_dict(orient='records')}"
+        if n6aj5n5vxq:
+            n69wsp9oya.loc[0, 'code'] = n6aj5n5vxq
         n69wsp9p3q = pd.DataFrame([{'uid': 'ffakerr', 'def_id': n69wspa2q4, 'globals': [], 'nonlocals': [], 'imports_code': '', 'is_async': False, 'deco_expr': '', 'xpos': 0, 'ypos': 0, 'doc': ''}])
         n69wsp9osv = pd.DataFrame([{'name': 'return', 'type': 'int', 'doc': '', 'def_id': n69wspa2q4, 'ctx': 'return', 'place': 0}])
         n69wsp9oya.loc[0, 'hid'] = '1.' + n65d20cda3
@@ -1425,16 +1560,21 @@ class A69wspa0yq(DBHandler):
             n69wsp9oya.loc[0, 'code'] = codeswaps[n65d20cda3]
         n69wspa2r3 = {'by-branch': [{'uid': '1', 'func_id': n69wspa2q4, 'cond': '_', 'label1': SECTION_START_LABEL, 'label2': SECTION_END_LABEL, 'mode': 'embrace'}]}
         n69wsp9p6q = pd.DataFrame(columns=['bases', 'vars', 'deco_expr', 'def_id', 'uid', 'xpos', 'ypos', 'doc'])
-        code = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2q4, n69wspa2in=False, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance, enblock=enblock)
+        n6aj5n5m28 = ['input']
+        if printloc == 'src':
+            n6aj5n5m28.append('print')
+        elif printloc == 'both':
+            n6aj5n5m28.append('printboth')
+        code = b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2q4, n69wspa2in=False, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, n6aj5n5m28=n6aj5n5m28, style=style, tolerance=tolerance, enblock=enblock)
         return (b6a0gjsmt7(code[0]), b6a0gjsmt7(code[1]))
 
-    async def b69x8ynntv(self, base_id, choice, n69wspa2zf=None, n69wspa2wz=None, style='both', codeswaps={}, tolerance=0, n69wspa39a=None, enblock=False, conn=None, _skiplock=False):
+    async def b69x8ynntv(self, base_id, choice, n69wspa2zf=None, n69wspa2wz=None, style='both', codeswaps={}, tolerance=0, n69wspa39a=None, enblock=False, printloc='run', conn=None, _skiplock=False):
         n69wspa39a = n69wspa39a if n69wspa39a is not None else lambda: self.x69xm5dtzq
         if x69xm5dtzx(base_id) == 'cond':
             assert not n69wspa2zf
             assert choice in ('funcs', 'classes')
             shellfid, hidbr = base_id.rsplit('^', 1)
-            n69wsp9p6r = await self.b69x8ynnu5(shellfid, n69wspa2k7=hidbr, choices=['imports', choice], style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock)
+            n69wsp9p6r = await self.b69x8ynnu5(shellfid, n69wspa2k7=hidbr, choices=['imports', choice], style=style, tolerance=tolerance, codeswaps=codeswaps, printloc=printloc, conn=conn, _skiplock=_skiplock)
             return n69wsp9p6r
 
         async def b69wsp9mrq(conn):
@@ -1656,7 +1796,12 @@ class A69wspa0yq(DBHandler):
         if codeswaps:
             x69xm5du09(n69wsp9oya, codeswaps)
         n69wspa2xu = asyncio.get_running_loop()
-        code = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, style=style, tolerance=tolerance, enblock=enblock))
+        n6aj5n5m28 = ['input']
+        if printloc == 'src':
+            n6aj5n5m28.append('print')
+        elif printloc == 'both':
+            n6aj5n5m28.append('printboth')
+        code = await n69wspa2xu.run_in_executor(None, lambda: b69wsp9mnm(n69wsp9oya, n69wsp9p3q, n69wsp9p6q, n69wsp9osv, n69wspa2zj, n69wspa2in=n69wspa2in, n69wsp9ot1=n69wspa2mh, n69wspa2r3=n69wspa2r3, n6aj5n5m28=n6aj5n5m28, style=style, tolerance=tolerance, enblock=enblock))
         if n69wspa387 > 0:
 
             def b69wspa0xl(n69wspa2ta):
@@ -1678,7 +1823,7 @@ class A69wspa0yq(DBHandler):
             code = (n69wspa2ol, n69wspa34d)
         return (b6a0gjsmt7(code[0]), b6a0gjsmt7(code[1]))
 
-    async def b69x8ynnu5(self, n69wspa2wq, n69wspa2k7='^1#_', choices=['imports', 'funcs', 'classes'], style='both', tolerance=0, codeswaps={}, add_start_uidcomments=False, conn=None, _skiplock=False):
+    async def b69x8ynnu5(self, n69wspa2wq, n69wspa2k7='^1#_', choices=['imports', 'funcs', 'classes'], style='both', tolerance=0, codeswaps={}, add_start_uidcomments=False, printloc='run', conn=None, _skiplock=False):
         assert x69xm5dtzx(n69wspa2wq) == 'func'
         n69wspa2k7 = '^' + n69wspa2k7.lstrip('^')
         assert x69xm5dtzx(n69wspa2k7) == 'cond'
@@ -1700,8 +1845,8 @@ class A69wspa0yq(DBHandler):
         n69zpbli8f = n69wspa2dp['ypos'].tolist()
         n69wspa2dp = n69wspa2dp['def_id'].tolist()
         n69zpbli8f, n69wspa2dp = zip(*sorted(zip(n69zpbli8f, n69wspa2dp))) if n69wspa2dp else ([], [])
-        n69wspa2vf = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock) for aid in n69wspa2gf]
-        n69wspa2dh = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, conn=conn, _skiplock=_skiplock) for aid in n69wspa2dp]
+        n69wspa2vf = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, printloc=printloc, conn=conn, _skiplock=_skiplock) for aid in n69wspa2gf]
+        n69wspa2dh = [self.b69x8ynntv(aid, 'all', style=style, tolerance=tolerance, codeswaps=codeswaps, printloc=printloc, conn=conn, _skiplock=_skiplock) for aid in n69wspa2dp]
         n69wspa2vf = asyncio.gather(*n69wspa2vf)
         n69wspa2dh = asyncio.gather(*n69wspa2dh)
         n69wspa2vf, n69wspa2dh = await asyncio.gather(n69wspa2vf, n69wspa2dh)
@@ -1729,7 +1874,7 @@ class A69wspa0yq(DBHandler):
         n69wspa38q = n69wsp9p6r + '\n' + n69wspa2qt + '\n' + n69wspa31n if style in ('both', 'run') else ''
         return (n69wspa2fz, n69wspa38q)
 
-    async def b69x8ynntt(self, n69wspa2np, base_id, choice, n69wspa2zf, n69wspa2wz=None, style='run', tolerance=0, codeswaps={}, import_range='current', x69xm5dtzp=False, n69wspa39a=None, conn=None, _skiplock='auto'):
+    async def b69x8ynntt(self, n69wspa2np, base_id, choice, n69wspa2zf, n69wspa2wz=None, style='run', tolerance=0, codeswaps={}, import_range='current', x69xm5dtzp=False, n69wspa39a=None, n6aj5n5vxa=False, codesec_states={}, conn=None, _skiplock='auto'):
         n69wspa2np = n69wspa2np.strip()
         assert x69xm5dtzx(n69wspa2np) == 'folder', f'Project root must be a directory, got {n69wspa2np}'
         assert base_id.startswith(n69wspa2np + '>') or base_id.startswith(n69wspa2np + '/') or n69wspa2np == '', f"Project root '{n69wspa2np}' is not a parent folder of your flow '{base_id}'."
@@ -1737,6 +1882,7 @@ class A69wspa0yq(DBHandler):
         assert '/' in n69wspa398
         n69wspa398 = n69wspa398.split('/')[-1]
         n69wspa2lv = n69wspa2np.rstrip('>') + '/' + n69wspa398 if n69wspa2np else n69wspa398
+        n6aj5n5vwr = n6aj5n5vxa
         n69wspa2um = False
         if n69wspa2zf:
             if n69wspa2zf['mode'] == 'single':
@@ -1759,14 +1905,32 @@ class A69wspa0yq(DBHandler):
             nonlocal n69wspa2qs
             if n69wspa2zf:
                 if n69wspa2zf['mode'] == 'shell_only':
-                    n69wspa2pu = self.b69x8ynnu5(base_id, n69wspa2k7=n69wspa2zf.get('node_br', '^1#_'), style=style, tolerance=tolerance, codeswaps=codeswaps, add_start_uidcomments=True, _skiplock=True, conn=conn)
+                    n69wspa2pu = self.b69x8ynnu5(base_id, n69wspa2k7=n69wspa2zf.get('node_br', '^1#_'), style=style, tolerance=tolerance, codeswaps=codeswaps, add_start_uidcomments=True, printloc=self.printloc, _skiplock=True, conn=conn)
                 elif not n69wspa2um:
-                    n69wspa2pu = self.b69x8ynntv(base_id, choice, n69wspa2zf=n69wspa2zf, n69wspa2wz=n69wspa2wz, style=style, tolerance=tolerance, codeswaps=codeswaps, n69wspa39a=n69wspa39a, _skiplock=True, conn=conn)
+                    n69wspa2pu = self.b69x8ynntv(base_id, choice, n69wspa2zf=n69wspa2zf, n69wspa2wz=n69wspa2wz, style=style, tolerance=tolerance, codeswaps=codeswaps, n69wspa39a=n69wspa39a, printloc=self.printloc, _skiplock=True, conn=conn)
                 else:
+                    n6aj5n5vxa = n6aj5n5vwr and codesec_states and (n69wspa2zf['node_type'] == 'code')
+                    if n6aj5n5vxa:
+                        if codesec_states.get('startRow') == codesec_states.get('endRow') and codesec_states.get('startCol') == codesec_states.get('endCol'):
+                            n6aj5n5vxa = False
+                        if not all([ck in codesec_states for ck in ('startRow', 'endRow', 'startCol', 'endCol', 'code')]):
+                            n6aj5n5vxa = False
+                    n6aj5n5vxq = None
+                    if n6aj5n5vxa:
+                        n69wsp9oza = codesec_states['code'].split('\n')
+                        n6aj5n5vwj = int(codesec_states['startRow'])
+                        n6aj5n5vwg = int(codesec_states['endRow'])
+                        n6aj5n5vwv = int(codesec_states['startCol'])
+                        n6aj5n5vx1 = int(codesec_states['endCol'])
+                        n69wsp9oza = n69wsp9oza[n6aj5n5vwj - 1:n6aj5n5vwg]
+                        n69wsp9oza[-1] = n69wsp9oza[-1][:n6aj5n5vx1 - 1]
+                        n69wsp9oza[0] = n69wsp9oza[0][n6aj5n5vwv - 1:]
+                        n6aj5n5vxq = '\n'.join(n69wsp9oza)
+                        n6aj5n5vxq = remove_common_indents(n6aj5n5vxq)
                     n69wspa317 = table_lambda_get(n69wspa2wz['nodes'], lambda x: x['data']['uid'] == n69wspa2zf['uid'])[0]
-                    n69wspa2pu = self.b69x8ynnv8(n69wspa2zf['uid'], n69wspa2zf['node_type'], n69wspa317=n69wspa317, style=style, tolerance=tolerance, codeswaps=codeswaps, n69wspa39a=n69wspa39a, _skiplock=True, conn=conn)
+                    n69wspa2pu = self.b69x8ynnv8(n69wspa2zf['uid'], n69wspa2zf['node_type'], n69wspa317=n69wspa317, style=style, tolerance=tolerance, codeswaps=codeswaps, n69wspa39a=n69wspa39a, n6aj5n5vxq=n6aj5n5vxq, printloc=self.printloc, _skiplock=True, conn=conn)
             else:
-                n69wspa2pu = self.b69x8ynntv(base_id, choice, n69wspa2zf=None, style=style, tolerance=tolerance, codeswaps=codeswaps, _skiplock=True, conn=conn)
+                n69wspa2pu = self.b69x8ynntv(base_id, choice, n69wspa2zf=None, style=style, tolerance=tolerance, codeswaps=codeswaps, printloc=self.printloc, _skiplock=True, conn=conn)
             n69wspa2r3 = self.b69x8ynnw4(trunk_to_func(base_id), conn=conn, _skiplock=True) if import_range == 'allabove' else aidle()
             n69wspa2pu, n69wspa2r3 = await asyncio.gather(n69wspa2pu, n69wspa2r3)
             n69wspa2dc = n69wspa2pu[0] if style == 'pure' else n69wspa2pu[1]
@@ -1852,7 +2016,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa36c = []
                 for n69wspa2hh in n69wspa2uo:
                     if not self.x69xm5dtzs.get(n69wspa2hh):
-                        n69wspa2ze = self.b69x8ynntv(n69wspa2hh, choice='all', style='run', tolerance=tolerance, conn=conn, _skiplock=True)
+                        n69wspa2ze = self.b69x8ynntv(n69wspa2hh, choice='all', style='run', tolerance=tolerance, printloc=self.printloc, conn=conn, _skiplock=True)
                     else:
 
                         async def b69x8ynnsu(n69wspa2hh):
@@ -2572,10 +2736,13 @@ class A69wspa0yq(DBHandler):
                     n69wspa2xk = max([ii for ii in [n69wspa2yk.rfind('/'), n69wspa2yk.rfind('*')] if ii != -1])
                     n69wsp9oye = self.b69wspa0yj(n69wspa2yk[:n69wspa2xk]) + ':funcs'
                 n69wspa2w0 = copy.deepcopy(n69wspa2zq)
-                n69wspa2x5 = n69wsp9owv['imports_code'] + '\n' + n69wspa2w0['imports_code']
-                _, _, n69wspa2x5 = b69wsp9mrs(b69wsp9mq1(n69wspa2x5), expand=True)
-                n69wspa2x5 = '\n'.join(list(set(n69wspa2x5.split('\n'))))
-                n69wspa2w0['imports_code'] = n69wspa2x5
+                n69wspa2x5 = n69wspa2w0['imports_code'] + '\n' + n69wsp9owv['imports_code']
+                n6aj5n5vwp = b69wsp9mq1(n69wspa2x5)['body']
+                n6aj5n5vw2 = []
+                for imn in n6aj5n5vwp:
+                    if not imn in n6aj5n5vw2:
+                        n6aj5n5vw2.append(imn)
+                _, n69wspa2w0['imports_code'] = b65wsp9mrz({'ntype': 'Module', 'body': n6aj5n5vw2})
                 for ng in n69wsp9owv['globals']:
                     if not ng in n69wspa2w0['globals']:
                         n69wspa2w0['globals'].append(ng)
@@ -2826,10 +2993,13 @@ class A69wspa0yq(DBHandler):
                     n69wspa2xk = max([ii for ii in [n69wspa2yk.rfind('/'), n69wspa2yk.rfind('*')] if ii != -1])
                     n69wsp9oye = self.b69wspa0yj(n69wspa2yk[:n69wspa2xk]) + ':funcs'
                 n69wspa2w0 = copy.deepcopy(n69wspa2zq)
-                n69wspa2ve = n69wsp9owv['imports_code'].split('\n')
-                for nimp in n69wspa2ve:
-                    if not nimp + '\n' in n69wspa2w0['imports_code']:
-                        n69wspa2w0['imports_code'] = n69wspa2w0['imports_code'] + (nimp + '\n' if n69wspa2w0['imports_code'].endswith('\n') else '\n' + nimp + '\n')
+                n69wspa2x5 = n69wspa2w0['imports_code'] + '\n' + n69wsp9owv['imports_code']
+                n6aj5n5vwp = b69wsp9mq1(n69wspa2x5)['body']
+                n6aj5n5vw2 = []
+                for imn in n6aj5n5vwp:
+                    if not imn in n6aj5n5vw2:
+                        n6aj5n5vw2.append(imn)
+                _, n69wspa2w0['imports_code'] = b65wsp9mrz({'ntype': 'Module', 'body': n6aj5n5vw2})
                 for ng in n69wsp9owv['globals']:
                     if not ng in n69wspa2w0['globals']:
                         n69wspa2w0['globals'].append(ng)
@@ -3440,9 +3610,9 @@ class A69wspa0yq(DBHandler):
             del func['node_type']
             if func.get('imports_code'):
                 try:
-                    b69wsp9mo8(func['imports_code'], ['Import', 'ImportFrom'])
+                    b69wsp9mq1(func['imports_code'])
                 except Exception as e:
-                    raise ValueError(f'[404] Error in imports: {e}')
+                    raise ValueError(f'Error in imports: {e}')
             func['xpos'] = n69wspa317['position']['x']
             func['ypos'] = n69wspa317['position']['y']
             n69wspa2d8.append(func)
@@ -3549,7 +3719,7 @@ class A69wspa0yq(DBHandler):
         if x69xm5dtzx(n69wspa2qg) == 'cond':
             n69wspa2qg = await self.b69x8ynnvl(n69wspa2qg)
         n69wspa30z = 'your_func_name'
-        n69wspa2cw = {'id': n65d20cda3, 'type': 'switch', 'position': {'x': (src_x or 0) + n69wsp9osu, 'y': (src_y or 0) + n69wsp9ozl}, 'data': {'uid': n65d20cda3, 'node_type': 'func', 'def_id': n69wspa2qg + '/' + n69wspa30z, 'globals': '', 'nonlocals': '', 'imports_code': '', 'is_async': 0, 'deco_expr': '', 'inputs': [] if not '*' in n69wspa2qg else [{'name': 'self', 'ctx': 'intput', 'place': 0}], 'return': {'name': 'result', 'type': '', 'doc': '', 'default': None}, 'tool_counts': {'_': {'nodes': 0, 'funcs': 0, 'classes': 0}}, 'subWorkflowIds': {'_': {'funcs': f'{n69wspa2qg}/{n69wspa30z}^1#_:funcs', 'classes': f'{n69wspa2qg}/{n69wspa30z}^1#_:classes', 'dag': f'{n69wspa2qg}/{n69wspa30z}:dag'}}}}
+        n69wspa2cw = {'id': n65d20cda3, 'type': 'switch', 'position': {'x': (src_x or 0) + n69wsp9osu, 'y': (src_y or 0) + n69wsp9ozl}, 'data': {'uid': n65d20cda3, 'node_type': 'func', 'def_id': n69wspa2qg + '/' + n69wspa30z, 'globals': '', 'nonlocals': '', 'imports_code': '', 'is_async': 0, 'deco_expr': '', 'inputs': [] if not '*' in n69wspa2qg else [{'name': 'self', 'ctx': 'intput', 'place': 0}], 'return': {'name': 'return', 'type': '', 'doc': '', 'default': None}, 'tool_counts': {'_': {'nodes': 0, 'funcs': 0, 'classes': 0}}, 'subWorkflowIds': {'_': {'funcs': f'{n69wspa2qg}/{n69wspa30z}^1#_:funcs', 'classes': f'{n69wspa2qg}/{n69wspa30z}^1#_:classes', 'dag': f'{n69wspa2qg}/{n69wspa30z}:dag'}}}}
         return n69wspa2cw
 
     @n69wspa2pp.debounce([1, 2, 'timestamp'], [list], compare_func=n69wspa2s9, intercepted_kws=['timestamp'])
@@ -3876,7 +4046,10 @@ class A69wspa0yq(DBHandler):
         assert not '^' in n69wspa38m and n69wspa38m.count('/') == 1
         assert target in ('desc', 'imports')
         if target == 'imports':
-            b69wsp9mo8(n69wsp9p72, ['Import', 'ImportFrom'])
+            try:
+                b69wsp9mq1(n69wsp9p72)
+            except Exception as e:
+                raise SyntaxError(e)
         target = {'desc': 'doc', 'imports': 'imports_code'}[target]
         n69wspa32l = pd.DataFrame([{'def_id': n69wspa38m, target: n69wsp9p72}])
 
@@ -4265,6 +4438,7 @@ class A69wspa0yq(DBHandler):
                 n69wsp9orh, raw_args = b69wsp9mon(n69wsp9ozv)
                 n69wsp9p60[n69wspa2ob] = raw_args
         if not inject_imports:
+            _, _, n69wspa2yn = b69wsp9mrs(n6a2vpeo9h(n69wspa2yn, def_cutoff=True, keep_comments=False))
             n69wsp9onl = [n69wsp9opz, n69wsp9oxq, n69wsp9p60, n69wspa2yn]
         else:
             n69wsp9on4 = b69wsp9mrs(b69wsp9mq1(n69wspa2yn), names_only=True)
@@ -4742,11 +4916,11 @@ class A69wspa0yq(DBHandler):
             n69wspa36s = pd.concat([n69wspa2dr.get(k, n69wspa2nd[k]), n69wspa31q.get(k, n69wspa2nd[k])], ignore_index=True)
             n69wspa36s = n69wspa36s[~(n69wspa36s['def_id'] == '<UNK>')]
             if k == 'objs':
-                n69wspa36s = n69wspa36s.drop_duplicates(['name', 'type', 'uid'])
+                n69wspa36s = n69wspa36s.drop_duplicates(['name', 'type', 'uid']).reset_index(drop=True)
             elif k == 'params':
-                n69wspa36s = n69wspa36s.drop_duplicates(['name', 'def_id', 'ctx'])
+                n69wspa36s = n69wspa36s.drop_duplicates(['name', 'def_id', 'ctx']).reset_index(drop=True)
             else:
-                n69wspa36s = n69wspa36s.drop_duplicates(['def_id'])
+                n69wspa36s = n69wspa36s.drop_duplicates(['def_id']).reset_index(drop=True)
             n69wspa36s = n69wspa36s.replace(np.nan, None)
             n69wspa2g9[k] = n69wspa36s
             if not 'source_file' in n69wspa36s.columns:
@@ -4766,7 +4940,7 @@ class A69wspa0yq(DBHandler):
         n69wspa2tc = n69wspa2tc[0]
         return n69wspa2tc
 
-    async def b69x8ynntd(self, n69wspa35p, n69wspa2wq, n69wspa381, _skiplock=False, conn=None):
+    async def b69x8ynntd(self, n69wspa35p, n69wspa2wq, n69wspa381, n69x75d5wx='', _skiplock=False, conn=None):
         assert x69xm5dtzx(n69wspa381) == 'folder'
         n69wspa2it = trunk_to_func(n69wspa2wq)
         n69wspa35p = trunk_to_func(n69wspa35p)
@@ -4802,7 +4976,7 @@ class A69wspa0yq(DBHandler):
                 n69wspa33f['raw_def_id'] = n69wspa33f['def_id']
                 n69wspa2l3['raw_def_id'] = n69wspa2l3['def_id']
                 return (n69wspa2l3, n69wspa33f, n69wspa37d, n69wspa2pa, n69wspa2z4)
-            n69wspa384 = self.b69x8ynnvd(n69wspa2it, n69wspa381, 'both', extpkgs=extpkgs, recur_objs=True, conn=None, _skiplock=True)
+            n69wspa384 = self.b69x8ynnvd(n69wspa2it, n69wspa381, 'both', extpkgs=extpkgs, recur_objs=True, n69x75d5wx=n69x75d5wx, conn=None, _skiplock=True)
             lvs, n69wspa384 = await asyncio.gather(b69x8ynnss(), n69wspa384)
             n69wspa371, misc = n69wspa384
             n69wspa2l3, n69wspa33f, n69wspa37d, n69wspa2pa, n69wspa2z4 = lvs
@@ -4866,7 +5040,7 @@ class A69wspa0yq(DBHandler):
             for cid in n69wspa30a:
                 n69wspa2us = n69wspa30a[cid].to_dict(orient='records')[0]
                 n69wspa37g = n69wspa2us['doc']
-                n69wspa37g = n69wspa37g if (n69wspa37g or '').strip() else 'This class lacks description.\n'
+                n69wspa37g = n69wspa37g if (n69wspa37g or '').strip() else 'Undescribed\n'
                 n69wsp9ole = cid.split('*')[-1].replace(DOT_REPL, '.')
                 n69wsp9p6f.append(n69wsp9ole)
                 n69wspa2dp.append(cid)
@@ -5619,7 +5793,7 @@ class A69wspa0yq(DBHandler):
                             n69wspa37a.append(f'Cannot find class {n69wsp9ou1}.')
                             return '<UNK>'
                         n69wspa37g = n69wspa2nr.loc[0, 'doc']
-                        n69wspa37g = n69wspa37g if n69wspa37g else 'This class lacks description.\n'
+                        n69wspa37g = n69wspa37g if n69wspa37g else 'Undescribed\n'
                         n69wspa30t = f"Type: {(n69wsp9ou1.split('*')[-1] if helpinfo['obj'].strip() != 'cls' else 'Type[' + n69wsp9ou1.split('*')[-1] + ']')} at {n69wsp9ou1}\n"
                         n69wspa37g = n69wspa30t + n69wspa37g
                         return n69wspa37g
@@ -5649,7 +5823,7 @@ class A69wspa0yq(DBHandler):
                             n69wspa37a.append(f"Cannot find matching class {value} of obj {helpinfo['obj']}. We found its class might be {n69wspa2ih}.")
                             return '<UNK>'
                         n69wspa37g = n69wsp9oq8[0][1]
-                        n69wspa37g = n69wspa37g if n69wspa37g else 'This class lacks description.\n'
+                        n69wspa37g = n69wspa37g if n69wspa37g else 'Undescribed\n'
                         n69wspa30t = f"Type: {n69wsp9oq8[0][0].split('*')[-1]} at {n69wsp9oq8[0][0]}\n"
                         n69wspa37g = n69wspa30t + n69wspa37g
                         return n69wspa37g
@@ -5680,7 +5854,7 @@ class A69wspa0yq(DBHandler):
                         n69wspa37a.append(f'Cannot find class {value}.')
                         return '<UNK>'
                     n69wspa37g = n69wspa2me[0]['doc'] if n69wspa2me else '<UNK>'
-                    n69wspa37g = n69wspa37g if n69wspa37g else 'This class lacks description.\n'
+                    n69wspa37g = n69wspa37g if n69wspa37g else 'Undescribed\n'
                     n69wspa37g = f"dir: {n69wspa2me[0]['def_id']}\n{n69wspa37g}" if n69wspa2me else '<UNK>'
                     return n69wspa37g
         n69wsp9onl = await self._batch_read([b69wsp9mrq], _skiplock=_skiplock, conn=conn)
@@ -5915,6 +6089,48 @@ class A69wspa0yq(DBHandler):
         n69wspa2i1 = await self.b69x8ynntt(n69wspa381, n69wspa337, 'allbelow', tolerance=2, style='pure', n69wspa2zf=None, codeswaps={n65d20cda3: SUGCODE_HOLDER}, import_range='allabove', conn=conn, _skiplock=_skiplock)
         self.n69wspa2gm = {'entry_module': n69wspa337, 'target_uid': n65d20cda3, 'codes': n69wspa2i1}
 
+    async def b6aj5n5vfc(self, n69wspa2wq, n65d20cda3, code, pos, n69wspa381='', conn=None, _skiplock=False):
+
+        async def b69wsp9mrq(conn):
+            n69wspa2gm = self.n69wspa2gm
+            if not n69wspa2gm:
+                raise ValueError(f'Code cache not prepared yet. Please try again later.')
+            n69wspa337 = to_module_id(n69wspa2wq)
+            if n69wspa2gm['entry_module'] != n69wspa337 or n69wspa2gm['target_uid'] != n65d20cda3:
+                raise ValueError(f'Code cache not prepared yet. Please try again later. If this error persists, click into another node then click back again.')
+            n69wspa340 = time.time()
+            n69wspa2i1 = n69wspa2gm['codes']
+            n69wspa2ug = time.time()
+            n69wspa2sm = n69wspa2i1['files'][n69wspa2i1['entry']]
+            n69wspa2va = n69wspa2sm[:n69wspa2sm.find(SUGCODE_HOLDER)]
+            n69wsp9p1r = len(n69wspa2va) - n69wspa2va.rfind('\n') - 1
+            n69wspa2oo = code.replace('\n', '\n' + ' ' * n69wsp9p1r).strip() + '\n'
+            n69wspa2sm = n69wspa2sm.replace(SUGCODE_HOLDER, n69wspa2oo)
+            n69wsp9oyj = n69wspa2va.count('\n') + pos['lineNumber'] - 1
+            n69wspa2id = n69wsp9p1r + pos['column'] - 1
+            n69wsp9p31 = n69wspa2sm.split('\n')
+            n6aj5n5vxf = n69wsp9p31[n69wsp9oyj][:n69wspa2id].lstrip()
+            n6aj5n5vxk = n69wsp9p31[n69wsp9oyj][n69wspa2id:].rstrip()
+            n69wsp9p31[n69wsp9oyj] = n69wsp9p31[n69wsp9oyj][:n69wspa2id] + INSERT_LABEL + n69wsp9p31[n69wsp9oyj][n69wspa2id:]
+            n6aj5n5vwx = len(n69wsp9p31[n69wsp9oyj]) - len(n69wsp9p31[n69wsp9oyj].lstrip())
+            n6aj5n5vx4 = n6aj5n5vwx - n69wsp9p1r
+            n6aj5n5vww = '\n'.join(n69wsp9p31)
+            n6aj5n5vxg = f"Please suggest some code at the '{INSERT_LABEL}' label. ONLY incrementally output the code you want to insert. Do NOT repeat existing code. If you believe no code need to be added, or if you are unsure what to add, you may output empty code. "
+            if n69wsp9p31[n69wsp9oyj].strip() == INSERT_LABEL:
+                n6aj5n5vxg = n6aj5n5vxg + 'Your suggested code can be one line or a few lines. '
+            else:
+                n6aj5n5vxg = 'Your suggested code MUST be within one line.'
+            n6aj5n5vw9 = await self.b69x8ynnvz(user_input=n6aj5n5vxg, n69wspa35p=n69wspa337, upsert_base=n69wspa337, n69wspa381=n69wspa381, n69wspa2zf={'mode': 'replace', 'section': [n65d20cda3, n65d20cda3]}, usage='sugger', n6aj5n5vww=n6aj5n5vww, conn=conn, _skiplock=True)
+            n69wsp9omg = remove_common_indents(n6aj5n5vw9)
+            n69wsp9omg = n69wsp9omg.strip()
+            if n6aj5n5vxf and n69wsp9omg.startswith(n6aj5n5vxf):
+                n69wsp9omg = n69wsp9omg[len(n6aj5n5vxf):]
+            if n6aj5n5vxk and n69wsp9omg.endswith(n6aj5n5vxk):
+                n69wsp9omg = n69wsp9omg[:-len(n6aj5n5vxk)]
+            return [{'name': n69wsp9omg, 'type': 'statement'}]
+        n69wspa2or = await self._batch_read([b69wsp9mrq], conn=conn, _skiplock=_skiplock)
+        return n69wspa2or[0]
+
     async def b69x8ynnv7(self, n69wspa2gm, n69wspa2wq, n65d20cda3, code, pos, n69wspa381='', conn=None, _skiplock=False):
         n69wspa381 = n69wspa381.strip()
         n69wspa337 = n69wspa2wq.split('^')[0]
@@ -6021,8 +6237,20 @@ class A69wspa0yq(DBHandler):
         assert isinstance(n69wsp9oxz, list), f'Paths must be a list, got {n69wsp9oxz}'
         for p in n69wsp9oxz:
             assert isinstance(p, str), f'Each path must be string, got {p}'
-        n69wspa2hy = pd.DataFrame([{'user_id': self.x69xm5dtzt, 'external_pkgs': n69wsp9oxz}])
+        n69wspa2hy = pd.DataFrame([{'user_id': self.x69xm5dtzt, 'print_loc': n69wsp9oxz}])
         await self.upsert('misc', n69wspa2hy, conn=conn, _skiplock=_skiplock)
+
+    async def b6aj5n5vfh(self, conn=None, _skiplock=False):
+        loc = await self.select('misc', cond_sql='true', targets=['print_loc'], conn=conn, _skiplock=_skiplock)
+        loc = loc.loc[0, 'print_loc'] if len(loc) > 0 else ''
+        return loc
+
+    async def b6aj5n5vff(self, loc, conn=None, _skiplock=False):
+        assert isinstance(loc, str), f'print_loc must be a str, got {loc}'
+        n69wspa2hy = pd.DataFrame([{'user_id': self.x69xm5dtzt, 'print_loc': loc}])
+        await self.upsert('misc', n69wspa2hy, conn=conn, _skiplock=_skiplock)
+        self.x69xm5dtzs = {}
+        self.printloc = loc
 
     async def b69x8ynntz(self, conn=None, _skiplock=False):
 
